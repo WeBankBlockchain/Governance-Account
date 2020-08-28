@@ -1,0 +1,57 @@
+=============================================================================================
+Welcome to FISCO BCOS console(1.0.9)!
+Type 'help' or 'h' for help. Type 'quit' or 'q' to quit console.
+ ________ ______  ______   ______   ______       _______   ______   ______   ______
+|        |      \/      \ /      \ /      \     |       \ /      \ /      \ /      \
+| $$$$$$$$\$$$$$|  $$$$$$|  $$$$$$|  $$$$$$\    | $$$$$$$|  $$$$$$|  $$$$$$|  $$$$$$\
+| $$__     | $$ | $$___\$| $$   \$| $$  | $$    | $$__/ $| $$   \$| $$  | $| $$___\$$
+| $$  \    | $$  \$$    \| $$     | $$  | $$    | $$    $| $$     | $$  | $$\$$    \
+| $$$$$    | $$  _\$$$$$$| $$   __| $$  | $$    | $$$$$$$| $$   __| $$  | $$_\$$$$$$\
+| $$      _| $$_|  \__| $| $$__/  | $$__/ $$    | $$__/ $| $$__/  | $$__/ $|  \__| $$
+| $$     |   $$ \\$$    $$\$$    $$\$$    $$    | $$    $$\$$    $$\$$    $$\$$    $$
+ \$$      \$$$$$$ \$$$$$$  \$$$$$$  \$$$$$$      \$$$$$$$  \$$$$$$  \$$$$$$  \$$$$$$
+
+=============================================================================================
+[group:1]> deploy AdminGovernFacade
+contract address: 0xd17a5cdcb5e4b1cc3ce67c71c8e0e1dd07f33914
+
+[group:1]> call AdminGovernFacade 0xd17a5cdcb5e4b1cc3ce67c71c8e0e1dd07f33914 _governance
+0xda80ff2d1cd498c86439cf52c1b1a8bb01da6fbc
+
+[group:1]> call WEGovernance 0xda80ff2d1cd498c86439cf52c1b1a8bb01da6fbc getAccountManager
+0x199a2b9f43415f1f5ca9da6dc7c3dc124c531fd5
+
+[group:1]> deploy TransferDemo "0x199a2b9f43415f1f5ca9da6dc7c3dc124c531fd5" 1000
+contract address: 0x7873756b7a93afed89482040257d332e3fc72336
+
+[group:1]> call TransferDemo 0x7873756b7a93afed89482040257d332e3fc72336 transfer "0x1" 1
+The execution of the contract rolled back.
+
+[group:1]> call AccountManager 0x199a2b9f43415f1f5ca9da6dc7c3dc124c531fd5 newAccount "0x1"
+transaction hash: 0xf5a806396256e01295d014edf5688afdc0e7c1f4363c47f5bd083a14f1398192
+---------------------------------------------------------------------------------------------
+Output
+function: newAccount(address)
+return type: (bool, address)
+return value: (true, 0x941d587493454784874e7d463dc76368f20bd3ff)
+---------------------------------------------------------------------------------------------
+Event logs
+event signature: LogSetOwner(address,address) index: 0
+event value: (0x0000000000000000000000000000000000000001, 0x941d587493454784874e7d463dc76368f20bd3ff)
+event signature: LogManageNewAccount(address,address,address) index: 0
+event value: (0x0000000000000000000000000000000000000001, 0x941d587493454784874e7d463dc76368f20bd3ff, 0x199a2b9f43415f1f5ca9da6dc7c3dc124c531fd5)
+---------------------------------------------------------------------------------------------
+
+[group:1]> call TransferDemo 0x7873756b7a93afed89482040257d332e3fc72336 transfer "0x1" 1
+transaction hash: 0xdbe329df31c18fd54b87139045db1fe2d0358c54139f1b2b649fb730c9a33420
+---------------------------------------------------------------------------------------------
+Output
+function: transfer(address,uint256)
+return type: (bool)
+return value: (true)
+---------------------------------------------------------------------------------------------
+
+[group:1]> call TransferDemo 0x7873756b7a93afed89482040257d332e3fc72336 balance "0x1"
+1
+
+[group:1]>

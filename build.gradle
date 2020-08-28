@@ -1,0 +1,115 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.9.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'com.github.sherter.google-java-format' version '0.8'
+}
+
+group = 'com.webank'
+version = '0.1.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "https://dl.bintray.com/ethereum/maven/" }
+    mavenLocal()
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    compile ('org.fisco-bcos:web3sdk:2.4.2')    
+}
+
+googleJavaFormat {
+    options style: 'AOSP'
+    source = sourceSets*.allJava
+    include '**/*.java'
+}
+
+verifyGoogleJavaFormat {
+    source = sourceSets*.allJava
+    include '**/*.java'
+}
+
+task ecdsa {
+    println "copy ecdsa files to sources"
+    doLast {
+        copy {
+            from file('src/main/sdk/ecdsa/')
+            into 'src/main/java/com/webank/blockchain/acct/gov/contract/'
+        }
+    }
+}
+
+task gm {
+    println "copy gm files to sources"
+    doLast {
+        copy {
+            from file('src/main/sdk/gm/')
+            into 'src/main/java/com/webank/blockchain/acct/gov/contract/'
+        }
+    }
+}
+
+bootJar {
+    destinationDir file('dist')
+    archiveName project.name + version + '.jar'
+    //exclude '**/*.xml'
+    //exclude '**/*.properties'
+    //exclude '**/*.yml'
+    doLast {
+        copy {
+            from file('src/main/resources/')
+            into 'dist/config'
+        }
+        copy {
+            from file('.').listFiles().findAll{File f -> (f.name.endsWith('.crt') || f.name.endsWith('.keystore'))}
+            into 'dist/config'
+        }
+    }
+}
+
+jar {
+    enabled = true
+    destinationDir file('dist')
+    archiveName project.name + version + '.jar'
+    exclude '**/*.xml'
+    exclude '**/*.properties'
+    exclude '**/spring.factories'
+    doLast {
+        copy {
+            from file('src/main/resources/')
+            into 'dist/config'
+        }
+        copy {
+            from configurations.runtime
+            into 'dist/lib'
+        }
+    }
+}
+
+clean {
+    println "delete ${projectDir}/dist"
+    delete "${projectDir}/dist"
+}
+
+

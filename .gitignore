@@ -2,6 +2,10 @@
 log/
 src/main/resources
 src/test/resources
+config
+
+### mac ###
+.DS_Store
 
 ### gradle ###
 .gradle/
@@ -66,3 +70,4 @@ build_chain.sh
 hs_err_pid*
 
 ### repo ###
+src/main/java/com/webank/blockchain/acct/gov/contract

@@ -1,0 +1,34 @@
+=============================================================================================
+Welcome to FISCO BCOS console(1.0.9)!
+Type 'help' or 'h' for help. Type 'quit' or 'q' to quit console.
+ ________ ______  ______   ______   ______       _______   ______   ______   ______
+|        |      \/      \ /      \ /      \     |       \ /      \ /      \ /      \
+| $$$$$$$$\$$$$$|  $$$$$$|  $$$$$$|  $$$$$$\    | $$$$$$$|  $$$$$$|  $$$$$$|  $$$$$$\
+| $$__     | $$ | $$___\$| $$   \$| $$  | $$    | $$__/ $| $$   \$| $$  | $| $$___\$$
+| $$  \    | $$  \$$    \| $$     | $$  | $$    | $$    $| $$     | $$  | $$\$$    \
+| $$$$$    | $$  _\$$$$$$| $$   __| $$  | $$    | $$$$$$$| $$   __| $$  | $$_\$$$$$$\
+| $$      _| $$_|  \__| $| $$__/  | $$__/ $$    | $$__/ $| $$__/  | $$__/ $|  \__| $$
+| $$     |   $$ \\$$    $$\$$    $$\$$    $$    | $$    $$\$$    $$\$$    $$\$$    $$
+ \$$      \$$$$$$ \$$$$$$  \$$$$$$  \$$$$$$      \$$$$$$$  \$$$$$$  \$$$$$$  \$$$$$$
+
+=============================================================================================
+[group:1]> deploy EvidenceDemo "0x08ba44f04df9671a2fc298756bc06f1dbca56e11"
+revert instruction
+
+[group:1]> deploy AdminGovernFacade
+contract address: 0xc00504c8dad8f75d08ebceda4f7c7b1d13b327d5
+
+[group:1]> call AdminGovernFacade 0xc00504c8dad8f75d08ebceda4f7c7b1d13b327d5 _governance
+0x24c327f0bf851a936c5049b019142709067b711d
+
+[group:1]> call WEGovernance 0x24c327f0bf851a936c5049b019142709067b711d getAccountManager
+0x6e869333a1e3dc83501723b7dcb624b09c1757e3
+
+[group:1]>  deploy EvidenceDemo "0x6e869333a1e3dc83501723b7dcb624b09c1757e3"
+contract address: 0x99276281a782a199d1998ce7a56927d99dcd6c6a
+
+[group:1]> call EvidenceDemo 0x99276281a782a199d1998ce7a56927d99dcd6c6a setData "hash" "0x6e869333a1e3dc83501723b7dcb624b09c1757e3" 1
+transaction hash: 0xc7f2531ca9e968a97a6035a4fbfa79f2a0cda7adfb4b9f878e36e4a879fa5249
+
+[group:1]> call EvidenceDemo 0x99276281a782a199d1998ce7a56927d99dcd6c6a getData "hash"
+[hash, 0x6e869333a1e3dc83501723b7dcb624b09c1757e3, 1]

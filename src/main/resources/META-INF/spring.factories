@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.webank.blockchain.acct.gov.config.SystemEnvironmentConfig,\
+com.webank.blockchain.acct.gov.config.Web3jV2BeanConfig,\
+com.webank.blockchain.acct.gov.config.EthTransactionBeanConfig\
