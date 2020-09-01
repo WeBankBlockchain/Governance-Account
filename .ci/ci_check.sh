@@ -27,6 +27,7 @@ download_build_chain()
 prepare_environment()
 {
   cp -r nodes/127.0.0.1/sdk/* src/test/resources/
+  cp -r src/test/resources/* src/main/resources/
 }
 
 build_node()
