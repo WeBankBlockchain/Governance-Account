@@ -120,4 +120,4 @@ clean {
     delete "${projectDir}/dist"
 }
 
-check.dependsOn jacocoTestReport
+//check.dependsOn jacocoTestReport
