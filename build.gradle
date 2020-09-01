@@ -5,7 +5,6 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'com.github.sherter.google-java-format' version '0.8'
-    id 'jacoco'
 }
 
 group = 'com.webank'
@@ -46,12 +45,6 @@ googleJavaFormat {
     include '**/*.java'
 }
 
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled false
-    }
-}
 
 verifyGoogleJavaFormat {
     source = sourceSets*.allJava
@@ -120,4 +113,3 @@ clean {
     delete "${projectDir}/dist"
 }
 
-//check.dependsOn jacocoTestReport
