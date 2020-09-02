@@ -27,6 +27,11 @@ download_build_chain()
 prepare_environment()
 {
   cp -r nodes/127.0.0.1/sdk/* src/test/resources/
+  
+  if [ "${node_type}" == "sm" ];then
+    sed -i.bak 's/"=0"/"=1"/g' src/test/resources/application.properties
+  fi
+
 }
 
 build_node()

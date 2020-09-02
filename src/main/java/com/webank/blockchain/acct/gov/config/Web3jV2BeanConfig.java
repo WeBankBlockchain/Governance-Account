@@ -131,7 +131,7 @@ public class Web3jV2BeanConfig {
             throw new InvalidParamException("Invalid private key format! " + privateKey);
         }
         privateKey = StringUtils.substring(privateKey, 2);
-        EncryptType.encryptType = systemEnvironmentConfig.getEncryptType();
+        new EncryptType(systemEnvironmentConfig.getEncryptType());
         ECKeyPair keyPair = GenCredential.createKeyPair(privateKey);
         return Credentials.create(keyPair);
     }
