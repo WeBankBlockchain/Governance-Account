@@ -105,6 +105,7 @@ public class GovernOfBoardVoteScene extends BaseTests {
 
         // set credential
         Assertions.assertEquals(1, govern._mode().send().intValue());
+        voteModeGovernManager.changeCredentials(u);
         BigInteger requestId =
                 voteModeGovernManager.requestResetAccount(p2.getAddress(), p1.getAddress());
         voteModeGovernManager.vote(requestId, true);

@@ -24,9 +24,25 @@ download_build_chain()
   curl -LO "https://github.com/FISCO-BCOS/FISCO-BCOS/releases/download/${tag}/build_chain.sh" && chmod u+x build_chain.sh
 }
 
+get_sed_cmd()
+{
+  local sed_cmd="sed -i"
+  if [ "$(uname)" == "Darwin" ];then
+        sed_cmd="sed -i .bkp"
+  fi
+  echo "$sed_cmd"
+}
+
 prepare_environment()
 {
-  cp -r nodes/127.0.0.1/sdk/* src/test/resources/
+  cp -rf nodes/127.0.0.1/sdk/* src/test/resources/
+  sed_cmd=$(get_sed_cmd)
+  $sed_cmd 's/encryptType=1/encryptType=0/g' src/test/resources/application.properties
+  local node_type="${1}"
+  if [ "${node_type}" == "sm" ];then
+    $sed_cmd 's/encryptType=0/encryptType=1/g' src/test/resources/application.properties
+  fi
+
 }
 
 build_node()
