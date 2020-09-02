@@ -131,13 +131,15 @@ public class Web3jV2BeanConfig {
             throw new InvalidParamException("Invalid private key format! " + privateKey);
         }
         privateKey = StringUtils.substring(privateKey, 2);
-        EncryptType.encryptType = systemEnvironmentConfig.getEncryptType();
+        new EncryptType(systemEnvironmentConfig.getEncryptType());
         ECKeyPair keyPair = GenCredential.createKeyPair(privateKey);
         return Credentials.create(keyPair);
     }
 
     @Bean
     public WEGovernance getGovernance() throws Exception {
+        System.out.println(getCredentials().getAddress());
+        System.out.println(getCredentials().getAddress());
         WEGovernance governance =
                 WEGovernance.deploy(
                                 getWeb3j(),
@@ -151,6 +153,7 @@ public class Web3jV2BeanConfig {
 
     @Bean
     public AccountManager getAccountManager() throws Exception {
+        System.out.println(getCredentials().getAddress());
         String address = getGovernance().getAccountManager().send();
         log.info("AccountManager address is {}", address);
         return AccountManager.load(address, getWeb3j(), getCredentials(), getContractGasProvider());

@@ -1,8 +1,10 @@
 package com.webank.blockchain.acct.gov;
 
+import com.webank.blockchain.acct.gov.config.SystemEnvironmentConfig;
 import com.webank.blockchain.acct.gov.tool.CredentialUtils;
 import javax.annotation.PostConstruct;
 import org.fisco.bcos.web3j.crypto.Credentials;
+import org.fisco.bcos.web3j.crypto.gm.GenCredential;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.tx.gas.ContractGasProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class BaseTests {
     @Autowired protected Web3j web3j;
     @Autowired protected ContractGasProvider contractGasProvider;
+    @Autowired private SystemEnvironmentConfig systemEnvironmentConfig;
 
     protected Credentials u;
     protected Credentials u1;
@@ -22,11 +25,21 @@ public class BaseTests {
 
     @PostConstruct
     public void init() throws Exception {
+        if(systemEnvironmentConfig.getEncryptType()==0) {
         u = CredentialUtils.loadKey("user.jks", "123456", "123456");
         u1 = CredentialUtils.loadKey("user1.jks", "123456", "123456");
         u2 = CredentialUtils.loadKey("user2.jks", "123456", "123456");
         p1 = CredentialUtils.loadKey("p1.jks", "123456", "123456");
         p2 = CredentialUtils.loadKey("p2.jks", "123456", "123456");
-        p3 = CredentialUtils.loadKey("p3.jks", "123456", "123456");
+        p3 = CredentialUtils.loadKey("p3.jks", "123456", "123456");}
+        else {
+            u = GenCredential.create(GenCredential.createGuomiKeyPair());
+            u1 = GenCredential.create(GenCredential.createGuomiKeyPair());
+            u2 = GenCredential.create(GenCredential.createGuomiKeyPair());
+            p1 = GenCredential.create(GenCredential.createGuomiKeyPair());
+            p2 = GenCredential.create(GenCredential.createGuomiKeyPair());
+            p3 = GenCredential.create(GenCredential.createGuomiKeyPair());
+
+        }
     }
 }
