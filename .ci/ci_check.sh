@@ -38,13 +38,10 @@ prepare_environment()
   cp -rf nodes/127.0.0.1/sdk/* src/test/resources/
   sed_cmd=$(get_sed_cmd)
   local node_type="${1}"
-  mkdir -p src/main/java/com/webank/blockchain/acct/gov/contract/
   if [ "${node_type}" == "sm" ];then
     $sed_cmd 's/encryptType=0/encryptType=1/g' src/test/resources/application.properties
-    cp -rf src/main/sdk/gm/* src/main/java/com/webank/blockchain/acct/gov/contract/
   else
     $sed_cmd 's/encryptType=1/encryptType=0/g' src/test/resources/application.properties
-    cp -rf src/main/sdk/ecdsa/* src/main/java/com/webank/blockchain/acct/gov/contract/
   fi
 
 }
