@@ -5,6 +5,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'com.github.sherter.google-java-format' version '0.8'
+    id 'jacoco'
 }
 
 group = 'com.webank'
@@ -112,4 +113,13 @@ clean {
     delete "${projectDir}/dist"
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+        xml.destination file("$buildDir/jacocoXml.xml")
+        html.destination file("$buildDir/jacocoHtml")
+    }
+}
 
+check.dependsOn jacocoTestReport
