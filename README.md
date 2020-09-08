@@ -1,9 +1,19 @@
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Build Status](https://travis-ci.org/WeBankBlockchain/acct-gov.svg?branch=dev)](https://travis-ci.org/WeBankBlockchain/acct-gov)
+[![codecov](https://codecov.io/gh/WeBankBlockchain/acct-gov/branch/dev/graph/badge.svg)](https://codecov.io/gh/WeBankBlockchain/acct-gov)
+[![GitHub All Releases](https://img.shields.io/github/downloads/WeBankBlockchain/acct-gov/total.svg)](https://github.com/WeBankBlockchain/acct-gov)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/97cfccf07bb446a6b3b0be6d7a1a6fe2)](https://app.codacy.com/gh/WeBankBlockchain/acct-gov?utm_source=github.com&utm_medium=referral&utm_content=WeBankBlockchain/acct-gov&utm_campaign=Badge_Grade_Dashboard)
+
+
+
+
+
 
 # 1、术语定义
 <br />下图为账户治理各主体概念之间的联系：<br />
-<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/620138/1595856167712-2d18a422-d584-49ed-a939-9d5b3d02d8c7.png#align=left&display=inline&height=326&margin=%5Bobject%20Object%5D&name=image.png&originHeight=447&originWidth=578&size=20594&status=done&style=none&width=421)<br />
+<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/620138/1599558255575-ccb164f7-9a3b-4323-8c2d-18d4ae594298.png#align=left&display=inline&height=407&margin=%5Bobject%20Object%5D&name=image.png&originHeight=970&originWidth=908&size=119581&status=done&style=none&width=381)<br />
 
-区块链和区块链治理的相关术语可参考： 《[术语定义](term_def.md)》
+区块链和区块链治理的相关术语可参考： 《[术语定义](docs/term_def.md)》
 
 # 2、背景
 
@@ -17,7 +27,6 @@
 
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/620138/1593951446452-39e8ee0a-69e3-4f2b-a529-398a14281862.png#align=left&display=inline&height=277&margin=%5Bobject%20Object%5D&name=image.png&originHeight=554&originWidth=724&size=39211&status=done&style=none&width=362)<br />在现有的业务场景中，欠缺对上述两种情况的有效应对和补救措施，只能寄希望于参与者自身能做好隐私保护和预防措施。<br />
 
-<a name="a4179219"></a>
 ## 2.2、账户治理机制是如何解决上述痛点的？
 
 <br />为了解决此问题，需要引入一种账户治理的机制，将原有的账户控制以私钥为中心，改为以普通账户为中心。当用户发现泄露私钥后，可以自助发起重置普通账户所关联映射的私钥。当用户发现丢失私钥后，可以通过向账户治理委员会发起重置申请，更换私钥。而且，当用户更换私钥后，普通账户的地址始终不变，保证了业务平滑运行。<br />
@@ -58,7 +67,7 @@
 - **合约集成Demo**。提供了基于存证和积分转账场景的两个demo。（详情可参考合约中samples目录）
 - **SDK集成Demo**。以Weledger项目为例，展示了如何使用Java SDK。（详情可参考Weleder项目）
 - **TDD测试代码**。包含了全套的合约测试代码，轻松支持CI/CD。(详情可参考Java SDK中src/test/java目录下的代码)
-- _web管理台_  直接通过可视化页面来进行操作，正在开发中……
+- **web管理台**  直接通过可视化页面来进行操作，正在开发中……
 
 
 <br />使用者基于自身业务的实际场景来自由、灵活地使用和集成。<br />
@@ -117,16 +126,55 @@
 1. 普通账户销户。普通账户销户完成后，该账户生命周期终结。
 
 
-# 4、[快速开始](quick_start.md)
+# 4、快速开始
 
+阅读[快速开始](docs/quick_start.md)，来获取最简单的acct-gov的快速入门。
 
 # 5、组件使用demo
+## 5.1、合约集成demo
 
+### 5.1.1、存证demo
+
+[存证合约的demo](src/main/contracts/samples/evidence/EvidenceDemo.sol) 
+
+[存证合约的demo在控制台的部署指令](src/main/contracts/samples/evidence/console-demo.txt)
+
+### 5.1.2、转账demo
+
+[转账合约的demo](src/main/contracts/samples/transfer/TransferDemo.sol)
+
+[转账合约的demo在控制台的部署指令](src/main/contracts/samples/transfer/console-demo.txt)
+
+## 5.2、SDK集成Demo
+
+Weledger项目完整集成了acct-gov的Java SDK，相关的用法详情可参考Weledger项目的文档和代码。
 
 # 6、测试代码说明
+
+## CI/CD测试代码
+
+### 链配置
+
+打开src/main/application.properties，修改链配置信息。
+
+```
+## 机构ID
+system.orgId=org1
+## 链的ip端口，多个节点使用;分隔
+system.nodeStr=node1@[ip]:[channel_port]
+## 群组ID
+system.groupId=1
+```
+
+### 自动运行
+
+```
+./gradlew test
+```
+<br />可查看自动化测试的运行结果报告。<br />
 
 
 # 7、Java SDK 详细功能API使用说明
 
-
+详细的API使用说明可参考《[API使用说明](docs/api.md)》
 
