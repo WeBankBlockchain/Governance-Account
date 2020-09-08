@@ -11,10 +11,10 @@ chmod +x gradlew
 # check code format
 bash gradlew verifyGoogleJavaFormat
 # build
-./gradlew clean ecdsa jar
-./gradlew clean ecdsa bootJar
-./gradlew clean gm jar
-./gradlew clean gm bootJar
+./gradlew clean jar
+./gradlew clean bootJar
+./gradlew clean jar
+./gradlew clean bootJar
 }
 
 download_build_chain()
@@ -70,7 +70,7 @@ check_standard_node()
   build_node
   prepare_environment
   ## run integration test
-  bash gradlew clean ecdsa test --info
+  bash gradlew clean test --info
   ## clean
   clean_node
 }
@@ -80,7 +80,7 @@ check_sm_node()
   build_node "sm"
   prepare_environment "sm"
   ## run integration test
-  bash gradlew clean gm test --info
+  bash gradlew clean test --info
   ## clean
   clean_node
 }

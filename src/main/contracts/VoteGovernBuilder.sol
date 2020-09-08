@@ -4,7 +4,7 @@ import "./WEGovernance.sol";
 import "./AccountManager.sol";
 
 
-contract VoteGovernFacade {
+contract VoteGovernBuilder {
     address public _governance;
 
     constructor(address[] externalAccounts, uint16 threshold) public {
@@ -22,10 +22,10 @@ contract VoteGovernFacade {
             (b, externalAccounts[i]) = accountManager.newAccount(
                 externalAccounts[i]
             );
-            require(b == true, "Facade: create account fail.");
+            require(b == true, "Builder: create account fail.");
         }
         bool r = governance.init(externalAccounts, weights, threshold);
-        require(r == true, "Facade: create account fail.");
+        require(r == true, "Builder: create account fail.");
     }
 
     function getGovernance() public view returns (address) {

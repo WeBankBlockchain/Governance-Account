@@ -14,10 +14,10 @@
 package com.webank.blockchain.acct.gov.manager;
 
 import com.webank.blockchain.acct.gov.contract.AccountManager;
-import com.webank.blockchain.acct.gov.contract.AdminGovernFacade;
-import com.webank.blockchain.acct.gov.contract.VoteGovernFacade;
+import com.webank.blockchain.acct.gov.contract.AdminGovernBuilder;
+import com.webank.blockchain.acct.gov.contract.VoteGovernBuilder;
 import com.webank.blockchain.acct.gov.contract.WEGovernance;
-import com.webank.blockchain.acct.gov.contract.WeightVoteGovernFacade;
+import com.webank.blockchain.acct.gov.contract.WeightVoteGovernBuilder;
 import com.webank.blockchain.acct.gov.exception.InvalidParamException;
 import java.math.BigInteger;
 import java.util.List;
@@ -37,9 +37,9 @@ import org.springframework.stereotype.Service;
 public class GovernAccountInitializer extends BasicManager {
 
     public WEGovernance createGovernAccount(Credentials credential) throws Exception {
-        AdminGovernFacade facade =
-                AdminGovernFacade.deploy(web3j, credential, contractGasProvider).send();
-        String governanceAddress = facade._governance().send();
+        AdminGovernBuilder Builder =
+                AdminGovernBuilder.deploy(web3j, credential, contractGasProvider).send();
+        String governanceAddress = Builder._governance().send();
         WEGovernance governance =
                 WEGovernance.load(governanceAddress, web3j, credential, contractGasProvider);
         log.info("Governance acct create succeed {} ", governance.getContractAddress());
@@ -61,15 +61,15 @@ public class GovernAccountInitializer extends BasicManager {
             log.error("externalAccountList can't be empty.");
             throw new InvalidParamException("externalAccountList can't be empty.");
         }
-        VoteGovernFacade facade =
-                VoteGovernFacade.deploy(
+        VoteGovernBuilder Builder =
+                VoteGovernBuilder.deploy(
                                 web3j,
                                 credentials,
                                 contractGasProvider,
                                 externalAccountList,
                                 BigInteger.valueOf(threshold))
                         .send();
-        String governanceAddress = facade._governance().send();
+        String governanceAddress = Builder._governance().send();
         WEGovernance governance =
                 WEGovernance.load(governanceAddress, web3j, credentials, contractGasProvider);
         log.info("Governance acct create succeed {} ", governance.getContractAddress());
@@ -90,8 +90,8 @@ public class GovernAccountInitializer extends BasicManager {
             log.error("externalAccountList or weights can't be empty.");
             throw new InvalidParamException("externalAccountList or weights can't be empty.");
         }
-        WeightVoteGovernFacade facade =
-                WeightVoteGovernFacade.deploy(
+        WeightVoteGovernBuilder Builder =
+                WeightVoteGovernBuilder.deploy(
                                 web3j,
                                 credentials,
                                 contractGasProvider,
@@ -99,7 +99,7 @@ public class GovernAccountInitializer extends BasicManager {
                                 weights,
                                 BigInteger.valueOf(threshold))
                         .send();
-        String governanceAddress = facade._governance().send();
+        String governanceAddress = Builder._governance().send();
         WEGovernance governance =
                 WEGovernance.load(governanceAddress, web3j, credentials, contractGasProvider);
         log.info("Governance acct create succeed {} ", governance.getContractAddress());

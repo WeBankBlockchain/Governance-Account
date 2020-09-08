@@ -15,10 +15,10 @@ Type 'help' or 'h' for help. Type 'quit' or 'q' to quit console.
 [group:1]> deploy EvidenceDemo "0x08ba44f04df9671a2fc298756bc06f1dbca56e11"
 revert instruction
 
-[group:1]> deploy AdminGovernFacade
+[group:1]> deploy AdminGovernBuilder
 contract address: 0xc00504c8dad8f75d08ebceda4f7c7b1d13b327d5
 
-[group:1]> call AdminGovernFacade 0xc00504c8dad8f75d08ebceda4f7c7b1d13b327d5 _governance
+[group:1]> call AdminGovernBuilder 0xc00504c8dad8f75d08ebceda4f7c7b1d13b327d5 _governance
 0x24c327f0bf851a936c5049b019142709067b711d
 
 [group:1]> call WEGovernance 0x24c327f0bf851a936c5049b019142709067b711d getAccountManager

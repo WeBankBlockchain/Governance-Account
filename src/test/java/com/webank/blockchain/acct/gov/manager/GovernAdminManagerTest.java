@@ -14,7 +14,7 @@
 package com.webank.blockchain.acct.gov.manager;
 
 import com.webank.blockchain.acct.gov.BaseTests;
-import com.webank.blockchain.acct.gov.contract.AdminGovernFacade;
+import com.webank.blockchain.acct.gov.contract.AdminGovernBuilder;
 import com.webank.blockchain.acct.gov.contract.WEGovernance;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,8 +32,8 @@ public class GovernAdminManagerTest extends BaseTests {
     @Test
     // create govern account of admin by user
     public void testCreate() throws Exception {
-        AdminGovernFacade a = AdminGovernFacade.deploy(web3j, u, contractGasProvider).send();
-        System.out.println("AdminGovernFacade " + a.getContractAddress());
+        AdminGovernBuilder a = AdminGovernBuilder.deploy(web3j, u, contractGasProvider).send();
+        System.out.println("AdminGovernBuilder " + a.getContractAddress());
         WEGovernance govern = manager.createGovernAccount(u);
         System.out.println(govern.getContractAddress());
         Assertions.assertNotNull(govern);

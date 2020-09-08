@@ -3,7 +3,7 @@
 set -e
 
 scan_code_script="cobra/cobra.py -f json -o /tmp/report.json -t "
-ignore_files=(sh crt key json toml md bin abi AccountManager.java BaseAccount.java UserAccount.java WEBasicAuth.java WEGovernance.java AdminGovernFacade.java BaseAccountInterface.java VoteGovernFacade.java WEBoardVoteGuard.java WeightVoteGovernFacade.java)
+ignore_files=(sh crt key json toml md bin abi AccountManager.java BaseAccount.java UserAccount.java WEBasicAuth.java WEGovernance.java AdminGovernBuilder.java BaseAccountInterface.java VoteGovernBuilder.java WEBoardVoteGuard.java WeightVoteGovernBuilder.java)
 commit_limit=6
 
 LOG_ERROR() {

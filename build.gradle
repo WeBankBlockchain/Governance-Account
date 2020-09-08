@@ -51,26 +51,6 @@ verifyGoogleJavaFormat {
     include '**/*.java'
 }
 
-task ecdsa {
-    println "copy ecdsa files to sources"
-    doLast {
-        copy {
-            from file('src/main/sdk/ecdsa/')
-            into 'src/main/java/com/webank/blockchain/acct/gov/contract/'
-        }
-    }
-}
-
-task gm {
-    println "copy gm files to sources"
-    doLast {
-        copy {
-            from file('src/main/sdk/gm/')
-            into 'src/main/java/com/webank/blockchain/acct/gov/contract/'
-        }
-    }
-}
-
 bootJar {
     destinationDir file('dist')
     archiveName project.name + version + '.jar'
