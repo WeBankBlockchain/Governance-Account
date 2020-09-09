@@ -90,11 +90,11 @@ Type 'help' or 'h' for help. Type 'quit' or 'q' to quit console.
 
 ### 4.3.3、部署治理合约
 
-<br />为了便于部署acct-gov治理合约，我们共提供了三个facade合约，来便于快速部署，分别是：<br />
+<br />为了便于部署acct-gov治理合约，我们共提供了三个Builder合约，来便于快速部署，分别是：<br />
 
-1. AdminGovernFacade
-1. VoteGovernFacade
-1. WeightVoteGovernFacade
+1. AdminGovernBuilder
+1. VoteGovernBuilder
+1. WeightVoteGovernBuilder
 
 
 
@@ -102,20 +102,20 @@ Type 'help' or 'h' for help. Type 'quit' or 'q' to quit console.
 
 
 ```shell
-deploy AdminGovernFacade
+deploy AdminGovernBuilder
 ```
 
 <br />在控制台中，执行上述的命令，然后可以调用_governance函数来获得治理账户合约的地址，然后调用WEGovernnance合约的getAccountManager函数来获得账户管理合约的地址和账户管理控制器的地址。<br />
 
 ```shell
 # 部署超级管理员模式的治理账户
-[group:1]> deploy AdminGovernFacade
+[group:1]> deploy AdminGovernBuilder
 contract address: 0x6b10051756bf259efe7b4c22fad3925700ab2e1e
 # 获取治理合约的地址
-[group:1]> call AdminGovernFacade 0x6b10051756bf259efe7b4c22fad3925700ab2e1e getGovernance
+[group:1]> call AdminGovernBuilder 0x6b10051756bf259efe7b4c22fad3925700ab2e1e getGovernance
 0x9d8ff088555122e7bcb0827130a9ac64780dff25
 # 获取账户管理控制器的地址
-[group:1]> call AdminGovernFacade 0x6b10051756bf259efe7b4c22fad3925700ab2e1e getAccountManager
+[group:1]> call AdminGovernBuilder 0x6b10051756bf259efe7b4c22fad3925700ab2e1e getAccountManager
 0x26ceac6bb9e727ed69fa391ae2eba9a3f5c0c8d0
 ```
 
@@ -125,20 +125,20 @@ contract address: 0x6b10051756bf259efe7b4c22fad3925700ab2e1e
 <br />需要输入部署的治理账户的外部账户地址列表和阈值。<br />
 
 ```shell
-deploy VoteGovernFacade(externalAccounts, threshold)
+deploy VoteGovernBuilder(externalAccounts, threshold)
 ```
 
 <br />我们可以配置每个投票账户拥有相同的投票权重，这种投票方式也被称为多签制。<br />例如，我们部署三个地址，分别为三个不同的地址，三个账户的投票权限相同，阈值为2：<br />
 
 ```shell
 # 部署多签制模式的治理账户
-[group:1]> deploy VoteGovernFacade ["0x14b0b2e52a156fcd310acee0692501ca23bb8a3e","0x1c7560296c101171eb8015cdc6cfbda26c866189","0x5b15b41277f4cacfdad39ba06a5dcc1295af0fd8"] 2
+[group:1]> deploy VoteGovernBuilder ["0x14b0b2e52a156fcd310acee0692501ca23bb8a3e","0x1c7560296c101171eb8015cdc6cfbda26c866189","0x5b15b41277f4cacfdad39ba06a5dcc1295af0fd8"] 2
 contract address: 0xe96b9fcb5c9d1e0d9a4baa2ad304578363c05bd6
 # 获取治理合约的地址
-[group:1]> call VoteGovernFacade 0xe96b9fcb5c9d1e0d9a4baa2ad304578363c05bd6 getGovernance
+[group:1]> call VoteGovernBuilder 0xe96b9fcb5c9d1e0d9a4baa2ad304578363c05bd6 getGovernance
 0x003a512af46eb456b1c57a70b95caf104db1df1b
 # 获取账户管理控制器的地址
-[group:1]> call VoteGovernFacade 0xe96b9fcb5c9d1e0d9a4baa2ad304578363c05bd6 getAccountManager
+[group:1]> call VoteGovernBuilder 0xe96b9fcb5c9d1e0d9a4baa2ad304578363c05bd6 getAccountManager
 0x50c903e4580682060984b971270f7c7864a6cc81
 ```
 
@@ -146,13 +146,13 @@ contract address: 0xe96b9fcb5c9d1e0d9a4baa2ad304578363c05bd6
 
 ```shell
 # 部署多签制模式的治理账户
-[group:1]> deploy WeightVoteGovernFacade ["0x14b0b2e52a156fcd310acee0692501ca23bb8a3e","0x1c7560296c101171eb8015cdc6cfbda26c866189","0x5b15b41277f4cacfdad39ba06a5dcc1295af0fd8"] [1,2,3] 2
+[group:1]> deploy WeightVoteGovernBuilder ["0x14b0b2e52a156fcd310acee0692501ca23bb8a3e","0x1c7560296c101171eb8015cdc6cfbda26c866189","0x5b15b41277f4cacfdad39ba06a5dcc1295af0fd8"] [1,2,3] 2
 contract address: 0xbf8b5357a01232ab2e3ac8922fbe9a425afba026
 # 获取治理合约的地址
-[group:1]> call WeightVoteGovernFacade 0xbf8b5357a01232ab2e3ac8922fbe9a425afba026 getGovernance
+[group:1]> call WeightVoteGovernBuilder 0xbf8b5357a01232ab2e3ac8922fbe9a425afba026 getGovernance
 0x9ba26b43e00fb112da14b509715b868bb8fb1a2d
 # 获取账户管理控制器的地址
-[group:1]> call WeightVoteGovernFacade 0xbf8b5357a01232ab2e3ac8922fbe9a425afba026 getAccountManager
+[group:1]> call WeightVoteGovernBuilder 0xbf8b5357a01232ab2e3ac8922fbe9a425afba026 getAccountManager
 0x2c02a11a0fc9eaf1ded01e844b35456aeb352261
 ```
 
@@ -527,10 +527,7 @@ contract TransferDemo {
 <br />由于本项目未正式发布，暂未发布Jar包到maven仓库，需要自己编译。也可以索取编译后的版本。<br />
 
 ```shell
-## ecdsa 版本
-./gradlew clean ecdsa jar
-## 国密版本
-./gradlew clean gm jar
+./gradlew clean jar
 ```
 
 <br />生成的Jar包位于： dist/acct-gov.jar<br />

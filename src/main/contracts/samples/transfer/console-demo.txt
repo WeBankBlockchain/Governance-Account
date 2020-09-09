@@ -12,10 +12,10 @@ Type 'help' or 'h' for help. Type 'quit' or 'q' to quit console.
  \$$      \$$$$$$ \$$$$$$  \$$$$$$  \$$$$$$      \$$$$$$$  \$$$$$$  \$$$$$$  \$$$$$$
 
 =============================================================================================
-[group:1]> deploy AdminGovernFacade
+[group:1]> deploy AdminGovernBuilder
 contract address: 0xd17a5cdcb5e4b1cc3ce67c71c8e0e1dd07f33914
 
-[group:1]> call AdminGovernFacade 0xd17a5cdcb5e4b1cc3ce67c71c8e0e1dd07f33914 _governance
+[group:1]> call AdminGovernBuilder 0xd17a5cdcb5e4b1cc3ce67c71c8e0e1dd07f33914 _governance
 0xda80ff2d1cd498c86439cf52c1b1a8bb01da6fbc
 
 [group:1]> call WEGovernance 0xda80ff2d1cd498c86439cf52c1b1a8bb01da6fbc getAccountManager

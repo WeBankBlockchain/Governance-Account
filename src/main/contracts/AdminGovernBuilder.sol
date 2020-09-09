@@ -4,7 +4,7 @@ import "./WEGovernance.sol";
 import "./AccountManager.sol";
 
 
-contract AdminGovernFacade {
+contract AdminGovernBuilder {
     address public _governance;
      event LogCreate(
         address governanceAddress,

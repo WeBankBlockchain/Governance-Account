@@ -17,6 +17,7 @@ import org.fisco.bcos.web3j.abi.datatypes.Function;
 import org.fisco.bcos.web3j.abi.datatypes.Type;
 import org.fisco.bcos.web3j.abi.datatypes.generated.Bytes32;
 import org.fisco.bcos.web3j.crypto.Credentials;
+import org.fisco.bcos.web3j.crypto.EncryptType;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
 import org.fisco.bcos.web3j.protocol.core.methods.response.Log;
@@ -52,6 +53,10 @@ public class BaseAccountInterface extends Contract {
 
     public static final TransactionDecoder transactionDecoder = new TransactionDecoder(ABI, BINARY);
 
+    public static final String[] SM_BINARY_ARRAY = {};
+
+    public static final String SM_BINARY = String.join("", SM_BINARY_ARRAY);
+
     public static final String FUNC_FREEZE = "freeze";
 
     public static final String FUNC_UNFREEZE = "unfreeze";
@@ -73,7 +78,7 @@ public class BaseAccountInterface extends Contract {
             Credentials credentials,
             BigInteger gasPrice,
             BigInteger gasLimit) {
-        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
+        super(getBinary(), contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     protected BaseAccountInterface(
@@ -81,7 +86,7 @@ public class BaseAccountInterface extends Contract {
             Web3j web3j,
             Credentials credentials,
             ContractGasProvider contractGasProvider) {
-        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
+        super(getBinary(), contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
@@ -91,7 +96,7 @@ public class BaseAccountInterface extends Contract {
             TransactionManager transactionManager,
             BigInteger gasPrice,
             BigInteger gasLimit) {
-        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
+        super(getBinary(), contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
     protected BaseAccountInterface(
@@ -99,7 +104,11 @@ public class BaseAccountInterface extends Contract {
             Web3j web3j,
             TransactionManager transactionManager,
             ContractGasProvider contractGasProvider) {
-        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
+        super(getBinary(), contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public static String getBinary() {
+        return (EncryptType.encryptType == EncryptType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
     public static TransactionDecoder getTransactionDecoder() {
@@ -282,10 +291,10 @@ public class BaseAccountInterface extends Contract {
     public void registerLogBaseAccountEventLogFilter(
             String fromBlock,
             String toBlock,
-            List<String> otherTopcs,
+            List<String> otherTopics,
             EventLogPushWithDecodeCallback callback) {
         String topic0 = EventEncoder.encode(LOGBASEACCOUNT_EVENT);
-        registerEventLogPushFilter(ABI, BINARY, topic0, fromBlock, toBlock, otherTopcs, callback);
+        registerEventLogPushFilter(ABI, BINARY, topic0, fromBlock, toBlock, otherTopics, callback);
     }
 
     public void registerLogBaseAccountEventLogFilter(EventLogPushWithDecodeCallback callback) {
@@ -334,14 +343,25 @@ public class BaseAccountInterface extends Contract {
     public static RemoteCall<BaseAccountInterface> deploy(
             Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
         return deployRemoteCall(
-                BaseAccountInterface.class, web3j, credentials, contractGasProvider, BINARY, "");
+                BaseAccountInterface.class,
+                web3j,
+                credentials,
+                contractGasProvider,
+                getBinary(),
+                "");
     }
 
     @Deprecated
     public static RemoteCall<BaseAccountInterface> deploy(
             Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
         return deployRemoteCall(
-                BaseAccountInterface.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+                BaseAccountInterface.class,
+                web3j,
+                credentials,
+                gasPrice,
+                gasLimit,
+                getBinary(),
+                "");
     }
 
     public static RemoteCall<BaseAccountInterface> deploy(
@@ -353,7 +373,7 @@ public class BaseAccountInterface extends Contract {
                 web3j,
                 transactionManager,
                 contractGasProvider,
-                BINARY,
+                getBinary(),
                 "");
     }
 
@@ -369,7 +389,7 @@ public class BaseAccountInterface extends Contract {
                 transactionManager,
                 gasPrice,
                 gasLimit,
-                BINARY,
+                getBinary(),
                 "");
     }
 

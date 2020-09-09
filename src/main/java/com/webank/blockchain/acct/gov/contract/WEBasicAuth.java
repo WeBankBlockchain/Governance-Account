@@ -15,6 +15,7 @@ import org.fisco.bcos.web3j.abi.datatypes.Event;
 import org.fisco.bcos.web3j.abi.datatypes.Function;
 import org.fisco.bcos.web3j.abi.datatypes.Type;
 import org.fisco.bcos.web3j.crypto.Credentials;
+import org.fisco.bcos.web3j.crypto.EncryptType;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
 import org.fisco.bcos.web3j.protocol.core.methods.response.Log;
@@ -39,7 +40,7 @@ import org.fisco.bcos.web3j.tx.txdecode.TransactionDecoder;
 @SuppressWarnings("unchecked")
 public class WEBasicAuth extends Contract {
     public static final String[] BINARY_ARRAY = {
-        "608060405234801561001057600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506102c3806100606000396000f30060806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806313af403514610051578063b2bdfa7b14610094575b600080fd5b34801561005d57600080fd5b50610092600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100eb565b005b3480156100a057600080fd5b506100a9610272565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156101d5576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260268152602001807f57454261736963417574683a206f6e6c79206f776e657220697320617574686f81526020017f72697a65642e000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055503073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff167fc66d1d23a5b7baf1f496bb19f580d7b12070ad5a08a758c990db97d961fa33a660405160405180910390a350565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820708ef810acb084a480f1ba709268fcee74090111b0a01c3c5d5e7409ebaa12a00029"
+        "608060405234801561001057600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506102c3806100606000396000f30060806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806313af403514610051578063b2bdfa7b14610094575b600080fd5b34801561005d57600080fd5b50610092600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100eb565b005b3480156100a057600080fd5b506100a9610272565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156101d5576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260268152602001807f57454261736963417574683a206f6e6c79206f776e657220697320617574686f81526020017f72697a65642e000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055503073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff167fc66d1d23a5b7baf1f496bb19f580d7b12070ad5a08a758c990db97d961fa33a660405160405180910390a350565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582049edc82220d08a1e99fb75dae412d5b1e734e198e6349bd0f38c6b3d95b149ed0029"
     };
 
     public static final String BINARY = String.join("", BINARY_ARRAY);
@@ -51,6 +52,12 @@ public class WEBasicAuth extends Contract {
     public static final String ABI = String.join("", ABI_ARRAY);
 
     public static final TransactionDecoder transactionDecoder = new TransactionDecoder(ABI, BINARY);
+
+    public static final String[] SM_BINARY_ARRAY = {
+        "608060405234801561001057600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506102c3806100606000396000f30060806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806305282c701461005157806328e9148914610094575b600080fd5b34801561005d57600080fd5b50610092600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100eb565b005b3480156100a057600080fd5b506100a9610272565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156101d5576040517fc703cb120000000000000000000000000000000000000000000000000000000081526004018080602001828103825260268152602001807f57454261736963417574683a206f6e6c79206f776e657220697320617574686f81526020017f72697a65642e000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055503073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff167f480107a875206c9f5ec6e8b65d989106e27d0fc8b130625b25997540ddfc334a60405160405180910390a350565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582020bd68daf7e3357744431677c83d3a0041deb5015ab966d9f688b43c21b2cd020029"
+    };
+
+    public static final String SM_BINARY = String.join("", SM_BINARY_ARRAY);
 
     public static final String FUNC_SETOWNER = "setOwner";
 
@@ -70,7 +77,7 @@ public class WEBasicAuth extends Contract {
             Credentials credentials,
             BigInteger gasPrice,
             BigInteger gasLimit) {
-        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
+        super(getBinary(), contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     protected WEBasicAuth(
@@ -78,7 +85,7 @@ public class WEBasicAuth extends Contract {
             Web3j web3j,
             Credentials credentials,
             ContractGasProvider contractGasProvider) {
-        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
+        super(getBinary(), contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
@@ -88,7 +95,7 @@ public class WEBasicAuth extends Contract {
             TransactionManager transactionManager,
             BigInteger gasPrice,
             BigInteger gasLimit) {
-        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
+        super(getBinary(), contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
     protected WEBasicAuth(
@@ -96,7 +103,11 @@ public class WEBasicAuth extends Contract {
             Web3j web3j,
             TransactionManager transactionManager,
             ContractGasProvider contractGasProvider) {
-        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
+        super(getBinary(), contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public static String getBinary() {
+        return (EncryptType.encryptType == EncryptType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
     public static TransactionDecoder getTransactionDecoder() {
@@ -171,10 +182,10 @@ public class WEBasicAuth extends Contract {
     public void registerLogSetOwnerEventLogFilter(
             String fromBlock,
             String toBlock,
-            List<String> otherTopcs,
+            List<String> otherTopics,
             EventLogPushWithDecodeCallback callback) {
         String topic0 = EventEncoder.encode(LOGSETOWNER_EVENT);
-        registerEventLogPushFilter(ABI, BINARY, topic0, fromBlock, toBlock, otherTopcs, callback);
+        registerEventLogPushFilter(ABI, BINARY, topic0, fromBlock, toBlock, otherTopics, callback);
     }
 
     public void registerLogSetOwnerEventLogFilter(EventLogPushWithDecodeCallback callback) {
@@ -221,7 +232,7 @@ public class WEBasicAuth extends Contract {
     public static RemoteCall<WEBasicAuth> deploy(
             Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
         return deployRemoteCall(
-                WEBasicAuth.class, web3j, credentials, contractGasProvider, BINARY, "");
+                WEBasicAuth.class, web3j, credentials, contractGasProvider, getBinary(), "");
     }
 
     public static RemoteCall<WEBasicAuth> deploy(
@@ -229,14 +240,14 @@ public class WEBasicAuth extends Contract {
             TransactionManager transactionManager,
             ContractGasProvider contractGasProvider) {
         return deployRemoteCall(
-                WEBasicAuth.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+                WEBasicAuth.class, web3j, transactionManager, contractGasProvider, getBinary(), "");
     }
 
     @Deprecated
     public static RemoteCall<WEBasicAuth> deploy(
             Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
         return deployRemoteCall(
-                WEBasicAuth.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+                WEBasicAuth.class, web3j, credentials, gasPrice, gasLimit, getBinary(), "");
     }
 
     @Deprecated
@@ -246,7 +257,7 @@ public class WEBasicAuth extends Contract {
             BigInteger gasPrice,
             BigInteger gasLimit) {
         return deployRemoteCall(
-                WEBasicAuth.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+                WEBasicAuth.class, web3j, transactionManager, gasPrice, gasLimit, getBinary(), "");
     }
 
     public static class LogSetOwnerEventResponse {
