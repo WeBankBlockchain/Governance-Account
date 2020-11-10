@@ -37,7 +37,14 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    compile ('org.fisco-bcos:web3sdk:2.4.2')    
+    implementation ('org.fisco-bcos.java-sdk:java-sdk:2.6.1') {
+        exclude group: 'org.slf4j'
+    }
+    compile group: 'com.google.guava', name: 'guava', version: '30.0-jre'
+    compile 'commons-codec:commons-codec:1.4'
+    compile group: 'org.apache.commons', name:"commons-pool2",version:"2.4.2"
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.2'
+
 }
 
 googleJavaFormat {
