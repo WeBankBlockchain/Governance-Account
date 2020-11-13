@@ -29,8 +29,7 @@ public class AccountManagerTest extends BaseTests {
 
     // @Test
     public void testNewAcctMgr() throws Exception {
-        AccountManager accountManager =
-                AccountManager.deploy(client, u1);
+        AccountManager accountManager = AccountManager.deploy(client, u1);
         System.out.println("account manager address: " + accountManager.getContractAddress());
         Assert.notNull(accountManager, "acctManager can't be null.");
     }

@@ -18,7 +18,6 @@ import com.webank.blockchain.gov.acct.enums.RequestEnum;
 import com.webank.blockchain.gov.acct.exception.TransactionReceiptException;
 import com.webank.blockchain.gov.acct.tool.JacksonUtils;
 import java.math.BigInteger;
-
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +34,12 @@ public class SocialVoteManager extends BasicManager {
             String newExternalAccount, String oldExternalAccount) throws Exception {
         UserAccount accountConfig = getUserAccount(oldExternalAccount);
         TransactionReceipt tr =
-                accountConfig
-                        .register(
-                                RequestEnum.OPER_CHANGE_CREDENTIAL.getType(),
-                                RequestEnum.OPER_CHANGE_CREDENTIAL.getType(),
-                                oldExternalAccount,
-                                newExternalAccount,
-                                BigInteger.ZERO);
+                accountConfig.register(
+                        RequestEnum.OPER_CHANGE_CREDENTIAL.getType(),
+                        RequestEnum.OPER_CHANGE_CREDENTIAL.getType(),
+                        oldExternalAccount,
+                        newExternalAccount,
+                        BigInteger.ZERO);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error request a vote of reset account: " + tr.getStatus());
@@ -55,9 +53,8 @@ public class SocialVoteManager extends BasicManager {
         System.out.println(
                 "before vote: "
                         + JacksonUtils.toJson(
-                                accountConfig
-                                        .getRequestInfo(
-                                                RequestEnum.OPER_CHANGE_CREDENTIAL.getType())));
+                                accountConfig.getRequestInfo(
+                                        RequestEnum.OPER_CHANGE_CREDENTIAL.getType())));
         TransactionReceipt tr =
                 accountConfig.vote(RequestEnum.OPER_CHANGE_CREDENTIAL.getType(), agreed);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
@@ -66,17 +63,15 @@ public class SocialVoteManager extends BasicManager {
         System.out.println(
                 "after vote: "
                         + JacksonUtils.toJson(
-                                accountConfig
-                                        .getRequestInfo(
-                                                RequestEnum.OPER_CHANGE_CREDENTIAL.getType())));
+                                accountConfig.getRequestInfo(
+                                        RequestEnum.OPER_CHANGE_CREDENTIAL.getType())));
         return tr;
     }
 
     public TransactionReceipt resetAccount(String newExternalAccount, String oldExternalAccount)
             throws Exception {
         TransactionReceipt tr =
-                accountManager
-                        .setExternalAccountBySocial(newExternalAccount, oldExternalAccount);
+                accountManager.setExternalAccountBySocial(newExternalAccount, oldExternalAccount);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException("Error reset account: " + tr.getStatus());
         }

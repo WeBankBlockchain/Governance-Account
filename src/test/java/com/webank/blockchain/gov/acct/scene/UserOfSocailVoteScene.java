@@ -23,7 +23,6 @@ import com.webank.blockchain.gov.acct.manager.SocialVoteManager;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,8 +53,7 @@ public class UserOfSocailVoteScene extends BaseTests {
         Assertions.assertNotNull(accountAddressP3);
         Assertions.assertTrue(accountManager.hasAccount(p3.getAddress()));
         AccountManager accountManagerP1 =
-                AccountManager.load(
-                        accountManager.getContractAddress(), client, p1);
+                AccountManager.load(accountManager.getContractAddress(), client, p1);
         List<String> list = new ArrayList<>();
         list.add(accountAddressP1);
         list.add(accountAddressP2);
@@ -79,13 +77,11 @@ public class UserOfSocailVoteScene extends BaseTests {
         socialVoteManager.vote(p1.getAddress(), false);
         socialVoteManager.changeCredentials(p1);
         Assertions.assertTrue(
-                userAccount
-                        .passed(
-                                RequestEnum.OPER_CHANGE_CREDENTIAL.getType(),
-                                p1.getAddress(),
-                                u1.getAddress(),
-                                BigInteger.ZERO)
-                        );
+                userAccount.passed(
+                        RequestEnum.OPER_CHANGE_CREDENTIAL.getType(),
+                        p1.getAddress(),
+                        u1.getAddress(),
+                        BigInteger.ZERO));
 
         tr = socialVoteManager.resetAccount(u1.getAddress(), p1.getAddress());
         System.out.println(accountManagerP1.getContractAddress());
@@ -93,8 +89,7 @@ public class UserOfSocailVoteScene extends BaseTests {
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertTrue(!accountManager.hasAccount(p1.getAddress()));
         Assertions.assertTrue(accountManager.hasAccount(u1.getAddress()));
-        Assertions.assertTrue(
-                !userAccount.passed(RequestEnum.OPER_CHANGE_CREDENTIAL.getType()));
+        Assertions.assertTrue(!userAccount.passed(RequestEnum.OPER_CHANGE_CREDENTIAL.getType()));
 
         // cancel
         endUserAdminManager.changeCredentials(p2);

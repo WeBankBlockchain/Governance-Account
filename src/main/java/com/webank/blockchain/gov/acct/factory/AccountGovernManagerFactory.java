@@ -40,31 +40,23 @@ public class AccountGovernManagerFactory {
     protected WEGovernance governance;
     protected AccountManager accountManager;
 
-    public AccountGovernManagerFactory(
-            Client client,
-            CryptoKeyPair credentials) {
+    public AccountGovernManagerFactory(Client client, CryptoKeyPair credentials) {
         this.client = client;
         this.credentials = credentials;
     }
 
     public AccountGovernManagerFactory(
-            Client client,
-            CryptoKeyPair credentials,
-            String governanceAddress)
-            throws Exception {
+            Client client, CryptoKeyPair credentials, String governanceAddress) throws Exception {
         this.client = client;
         this.credentials = credentials;
-        this.governance =
-                WEGovernance.load(governanceAddress, client, credentials);
+        this.governance = WEGovernance.load(governanceAddress, client, credentials);
         String acctManagerAddress = governance.getAccountManager();
-        this.accountManager =
-                AccountManager.load(acctManagerAddress, client, credentials);
+        this.accountManager = AccountManager.load(acctManagerAddress, client, credentials);
     }
 
     public GovernAccountInitializer newGovernAccountInitializer() {
         GovernAccountInitializer manager = new GovernAccountInitializer();
-        manager.setClient(client)
-                .setCredentials(credentials);
+        manager.setClient(client).setCredentials(credentials);
         return manager;
     }
 

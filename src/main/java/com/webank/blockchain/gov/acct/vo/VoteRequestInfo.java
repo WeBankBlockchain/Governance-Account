@@ -39,14 +39,14 @@ public class VoteRequestInfo {
 
     public VoteRequestInfo forward(
             Tuple8<
-                                        BigInteger,
-                                        String,
-                                        BigInteger,
-                                        BigInteger,
-                                        BigInteger,
-                                        BigInteger,
-                                        String,
-                                        BigInteger>
+                            BigInteger,
+                            String,
+                            BigInteger,
+                            BigInteger,
+                            BigInteger,
+                            BigInteger,
+                            String,
+                            BigInteger>
                     t) {
         this.requestId = t.getValue1();
         this.requestAddress = t.getValue2();

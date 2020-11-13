@@ -25,43 +25,31 @@ import org.junit.jupiter.api.Test;
  */
 public class BaseAccountTest extends BaseTests {
 
-     @Test
+    @Test
     public void deploy() throws Exception {
         BaseAccount account =
-                BaseAccount.deploy(
-                                client,
-                                u1,
-                                "0x9f4856c0d44415c5913ca8862cc30187f3b8c895");
+                BaseAccount.deploy(client, u1, "0x9f4856c0d44415c5913ca8862cc30187f3b8c895");
         System.out.println(account.getContractAddress());
     }
 
-     @Test
+    @Test
     public void freeze() throws Exception {
         BaseAccount accountP1 =
-                BaseAccount.load(
-                        "0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c",
-                        client,
-                        p1);
+                BaseAccount.load("0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c", client, p1);
         accountP1.freeze();
     }
 
     // @Test
     public void unfreeze() throws Exception {
         BaseAccount accountP1 =
-                BaseAccount.load(
-                        "0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c",
-                        client,
-                        p1);
+                BaseAccount.load("0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c", client, p1);
         accountP1.unfreeze();
     }
 
     // @Test
     public void cancel() throws Exception {
         BaseAccount accountP1 =
-                BaseAccount.load(
-                        "0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c",
-                        client,
-                        p1);
+                BaseAccount.load("0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c", client, p1);
         accountP1.cancel();
     }
 }

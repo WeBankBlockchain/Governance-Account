@@ -21,7 +21,6 @@ import com.webank.blockchain.gov.acct.contract.WeightVoteGovernBuilder;
 import com.webank.blockchain.gov.acct.exception.InvalidParamException;
 import java.math.BigInteger;
 import java.util.List;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
@@ -38,11 +37,9 @@ import org.springframework.stereotype.Service;
 public class GovernAccountInitializer extends BasicManager {
 
     public WEGovernance createGovernAccount(CryptoKeyPair credential) throws Exception {
-        AdminGovernBuilder Builder =
-                AdminGovernBuilder.deploy(client, credential);
+        AdminGovernBuilder Builder = AdminGovernBuilder.deploy(client, credential);
         String governanceAddress = Builder._governance();
-        WEGovernance governance =
-                WEGovernance.load(governanceAddress, client, credential);
+        WEGovernance governance = WEGovernance.load(governanceAddress, client, credential);
         log.info("Governance acct create succeed {} ", governance.getContractAddress());
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();
@@ -64,13 +61,9 @@ public class GovernAccountInitializer extends BasicManager {
         }
         VoteGovernBuilder Builder =
                 VoteGovernBuilder.deploy(
-                                client,
-                                credentials,
-                                externalAccountList,
-                                BigInteger.valueOf(threshold));
+                        client, credentials, externalAccountList, BigInteger.valueOf(threshold));
         String governanceAddress = Builder._governance();
-        WEGovernance governance =
-                WEGovernance.load(governanceAddress, client, credentials);
+        WEGovernance governance = WEGovernance.load(governanceAddress, client, credentials);
         log.info("Governance acct create succeed {} ", governance.getContractAddress());
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();
@@ -91,14 +84,13 @@ public class GovernAccountInitializer extends BasicManager {
         }
         WeightVoteGovernBuilder Builder =
                 WeightVoteGovernBuilder.deploy(
-                                client,
-                                credentials,
-                                externalAccountList,
-                                weights,
-                                BigInteger.valueOf(threshold));
+                        client,
+                        credentials,
+                        externalAccountList,
+                        weights,
+                        BigInteger.valueOf(threshold));
         String governanceAddress = Builder._governance();
-        WEGovernance governance =
-                WEGovernance.load(governanceAddress, client, credentials);
+        WEGovernance governance = WEGovernance.load(governanceAddress, client, credentials);
         log.info("Governance acct create succeed {} ", governance.getContractAddress());
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();

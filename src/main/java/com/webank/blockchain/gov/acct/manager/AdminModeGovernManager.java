@@ -31,32 +31,28 @@ public class AdminModeGovernManager extends BasicManager {
     }
 
     public TransactionReceipt resetAccount(String oldAccount, String newAccount) throws Exception {
-        return governance
-                .setExternalAccount(
-                        RequestEnum.OPER_CHANGE_CREDENTIAL.getType(), newAccount, oldAccount);
+        return governance.setExternalAccount(
+                RequestEnum.OPER_CHANGE_CREDENTIAL.getType(), newAccount, oldAccount);
     }
 
     public TransactionReceipt freezeAccount(String externalAccount) throws Exception {
-        return governance
-                .doOper(
-                        RequestEnum.OPER_FREEZE_ACCOUNT.getType(),
-                        externalAccount,
-                        RequestEnum.OPER_FREEZE_ACCOUNT.getType());
+        return governance.doOper(
+                RequestEnum.OPER_FREEZE_ACCOUNT.getType(),
+                externalAccount,
+                RequestEnum.OPER_FREEZE_ACCOUNT.getType());
     }
 
     public TransactionReceipt unfreezeAccount(String externalAccount) throws Exception {
-        return governance
-                .doOper(
-                        RequestEnum.OPER_UNFREEZE_ACCOUNT.getType(),
-                        externalAccount,
-                        RequestEnum.OPER_UNFREEZE_ACCOUNT.getType());
+        return governance.doOper(
+                RequestEnum.OPER_UNFREEZE_ACCOUNT.getType(),
+                externalAccount,
+                RequestEnum.OPER_UNFREEZE_ACCOUNT.getType());
     }
 
     public TransactionReceipt cancelAccount(String userAccount) throws Exception {
-        return governance
-                .doOper(
-                        RequestEnum.OPER_CANCEL_ACCOUNT.getType(),
-                        userAccount,
-                        RequestEnum.OPER_CANCEL_ACCOUNT.getType());
+        return governance.doOper(
+                RequestEnum.OPER_CANCEL_ACCOUNT.getType(),
+                userAccount,
+                RequestEnum.OPER_CANCEL_ACCOUNT.getType());
     }
 }

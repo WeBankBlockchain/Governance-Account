@@ -28,10 +28,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class BaseAccountService {
 
-    @Autowired
-    private Client client;
-    @Autowired
-    private CryptoKeyPair credentials;
+    @Autowired private Client client;
+    @Autowired private CryptoKeyPair credentials;
 
     public BaseAccount getBaseAccount(String contractAddress) {
         return BaseAccount.load(contractAddress, client, credentials);

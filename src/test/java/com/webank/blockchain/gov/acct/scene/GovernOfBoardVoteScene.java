@@ -24,7 +24,6 @@ import com.webank.blockchain.gov.acct.service.BaseAccountService;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
@@ -49,8 +48,7 @@ public class GovernOfBoardVoteScene extends BaseTests {
     // @Test
     // create govern account of admin by user, and set the address in application.properties
     public void createGovernAcct() throws Exception {
-        AccountGovernManagerFactory factory =
-                new AccountGovernManagerFactory(client, credentials);
+        AccountGovernManagerFactory factory = new AccountGovernManagerFactory(client, credentials);
         GovernAccountInitializer initializer = factory.newGovernAccountInitializer();
         List<String> list = new ArrayList<>();
         list.add(u.getAddress());
@@ -80,18 +78,15 @@ public class GovernOfBoardVoteScene extends BaseTests {
         System.out.println(govern.getContractAddress());
         Assertions.assertNotNull(govern);
         String acctMgrAddr = govern.getAccountManager();
-        AccountManager accountManager =
-                AccountManager.load(acctMgrAddr, client, u);
+        AccountManager accountManager = AccountManager.load(acctMgrAddr, client, u);
         Assertions.assertTrue(accountManager.hasAccount(u1.getAddress()));
         System.out.println("acctmanager address is " + acctMgrAddr);
         System.out.println("u1 address is " + u1.getAddress());
 
         Assertions.assertTrue(accountManager.hasAccount(u1.getAddress()));
         // prepare other govern acct
-        WEGovernance governanceU1 =
-                WEGovernance.load(govern.getContractAddress(), client, u1);
-        WEGovernance governanceU2 =
-                WEGovernance.load(govern.getContractAddress(), client, u2);
+        WEGovernance governanceU1 = WEGovernance.load(govern.getContractAddress(), client, u1);
+        WEGovernance governanceU2 = WEGovernance.load(govern.getContractAddress(), client, u2);
         governAccountInitializer.setGovernance(govern);
         governAccountInitializer.setAccountManager(accountManager);
         voteModeGovernManager.setGovernance(govern);
@@ -115,12 +110,11 @@ public class GovernOfBoardVoteScene extends BaseTests {
         Assertions.assertTrue(govern.passed(requestId));
         Assertions.assertTrue(
                 govern.requestReady(
-                                requestId,
-                                BigInteger.valueOf(2),
-                                p1.getAddress(),
-                                p2.getAddress(),
-                                BigInteger.ZERO)
-                        );
+                        requestId,
+                        BigInteger.valueOf(2),
+                        p1.getAddress(),
+                        p2.getAddress(),
+                        BigInteger.ZERO));
         TransactionReceipt tr =
                 voteModeGovernManager.resetAccount(requestId, p2.getAddress(), p1.getAddress());
         Assertions.assertTrue(tr.isStatusOK());
@@ -173,24 +167,18 @@ public class GovernOfBoardVoteScene extends BaseTests {
         Assertions.assertTrue(govern.passed(requestId));
         Assertions.assertTrue(
                 govern.requestReady(
-                                requestId,
-                                BigInteger.valueOf(11),
-                                u2.getAddress(),
-                                Address.DEFAULT.getValue(),
-                                BigInteger.ZERO)
-                        );
+                        requestId,
+                        BigInteger.valueOf(11),
+                        u2.getAddress(),
+                        Address.DEFAULT.getValue(),
+                        BigInteger.ZERO));
         tr = voteModeGovernManager.removeGovernAccount(requestId, u2.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
-                1,
-                govern.getVoteWeight(accountManager.getUserAccount(u.getAddress()))
+                1, govern.getVoteWeight(accountManager.getUserAccount(u.getAddress())).intValue());
 
-                        .intValue());
         Assertions.assertEquals(
-                0,
-                govern.getVoteWeight(accountManager.getUserAccount(u2.getAddress()))
-
-                        .intValue());
+                0, govern.getVoteWeight(accountManager.getUserAccount(u2.getAddress())).intValue());
 
         // add govern account
         requestId = voteModeGovernManager.requestAddGovernAccount(u2.getAddress(), 5);
@@ -199,14 +187,9 @@ public class GovernOfBoardVoteScene extends BaseTests {
         tr = voteModeGovernManager.addGovernAccount(requestId, u2.getAddress(), 5);
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
-                1,
-                govern.getVoteWeight(accountManager.getUserAccount(u.getAddress()))
+                1, govern.getVoteWeight(accountManager.getUserAccount(u.getAddress())).intValue());
 
-                        .intValue());
         Assertions.assertEquals(
-                5,
-                govern.getVoteWeight(accountManager.getUserAccount(u2.getAddress()))
-
-                        .intValue());
+                5, govern.getVoteWeight(accountManager.getUserAccount(u2.getAddress())).intValue());
     }
 }

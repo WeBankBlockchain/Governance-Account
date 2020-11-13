@@ -7,16 +7,13 @@ import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author wesleywang
- * @Description:
+ * @author wesleywang @Description:
  * @date 2020/11/9
  */
 @Data
 @Accessors(chain = true)
 public class JavaSDKBasicService {
 
-    @Autowired
-    protected Client client;
-    @Autowired
-    protected CryptoKeyPair credentials;
+    @Autowired protected Client client;
+    @Autowired protected CryptoKeyPair credentials;
 }

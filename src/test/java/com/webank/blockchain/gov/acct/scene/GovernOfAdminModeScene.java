@@ -74,7 +74,7 @@ public class GovernOfAdminModeScene extends BaseTests {
         // freeze
         tr = adminModeManager.freezeAccount(u1.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
-        Assertions.assertEquals(1, baseAccountService.getStatus( u1AccountAddress));
+        Assertions.assertEquals(1, baseAccountService.getStatus(u1AccountAddress));
 
         // transfer to abnormal
         tr = adminModeManager.transferAdminAuth(u1.getAddress());

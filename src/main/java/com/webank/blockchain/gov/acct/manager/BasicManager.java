@@ -66,9 +66,13 @@ public class BasicManager extends JavaSDKBasicService {
             throw new TransactionReceiptException("Error create account error");
         }
 
-        TransactionDecoderInterface decoder = new TransactionDecoderService(client.getCryptoSuite());
-        String addr = (String) decoder.decodeReceiptWithValues(AccountManager.ABI, "newAccount",tr)
-                .getValuesList().get(1);
+        TransactionDecoderInterface decoder =
+                new TransactionDecoderService(client.getCryptoSuite());
+        String addr =
+                (String)
+                        decoder.decodeReceiptWithValues(AccountManager.ABI, "newAccount", tr)
+                                .getValuesList()
+                                .get(1);
         log.info("new acct {}, created by {}", addr, externalAccount);
         return addr;
     }
@@ -112,14 +116,8 @@ public class BasicManager extends JavaSDKBasicService {
     public void changeCredentials(CryptoKeyPair credentials) throws Exception {
         this.credentials = credentials;
         this.governance =
-                WEGovernance.load(
-                        this.governance.getContractAddress(),
-                        client,
-                        credentials);
+                WEGovernance.load(this.governance.getContractAddress(), client, credentials);
         this.accountManager =
-                AccountManager.load(
-                        this.accountManager.getContractAddress(),
-                        client,
-                        credentials);
+                AccountManager.load(this.accountManager.getContractAddress(), client, credentials);
     }
 }

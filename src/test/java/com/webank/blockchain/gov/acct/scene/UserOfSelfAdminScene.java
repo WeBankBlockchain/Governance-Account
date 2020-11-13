@@ -41,10 +41,8 @@ public class UserOfSelfAdminScene extends BaseTests {
     @Test
     public void test() throws Exception {
         AccountManager accountManager =
-                AccountManager.load(
-                        accountManagerU.getContractAddress(), client, p1);
-        WEGovernance governance =
-                WEGovernance.load(governanceU.getContractAddress(), client, p1);
+                AccountManager.load(accountManagerU.getContractAddress(), client, p1);
+        WEGovernance governance = WEGovernance.load(governanceU.getContractAddress(), client, p1);
         endUserAdminManager.setAccountManager(accountManager);
         endUserAdminManager.setGovernance(governance);
         endUserAdminManager.setCredentials(p1);

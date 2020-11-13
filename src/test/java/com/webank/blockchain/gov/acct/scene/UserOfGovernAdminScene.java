@@ -94,12 +94,8 @@ public class UserOfGovernAdminScene extends BaseTests {
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
                 UserStaticsEnum.SOCIAL.getStatics(),
-                UserAccount.load(
-                                accountManager.getUserAccount(u1.getAddress()),
-                                client,
-                                u1)
+                UserAccount.load(accountManager.getUserAccount(u1.getAddress()), client, u1)
                         ._statics()
-
                         .intValue());
 
         // cancel

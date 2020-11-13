@@ -16,7 +16,6 @@ package com.webank.blockchain.gov.acct.config;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 
 /**
  * System Environment Config. @Description: SystemEnvironmentConfig

@@ -19,6 +19,9 @@ import com.webank.blockchain.gov.acct.exception.InvalidParamException;
 import com.webank.blockchain.gov.acct.exception.TransactionReceiptException;
 import com.webank.blockchain.gov.acct.vo.VoteRequestInfo;
 import com.webank.blockchain.gov.acct.vo.WeightInfo;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple3;
@@ -28,10 +31,6 @@ import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderInterface;
 import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderService;
 import org.fisco.bcos.sdk.transaction.model.exception.TransactionException;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.List;
 
 /**
  * GovernUserManager @Description: GovernUserManager
@@ -44,12 +43,11 @@ public class VoteModeGovernManager extends BasicManager {
 
     public BigInteger requestResetThreshold(int newThreshold) throws Exception {
         TransactionReceipt tr =
-                governance
-                        .register(
-                                RequestEnum.OPER_RESET_THRESHOLD.getType(),
-                                governance.getContractAddress(),
-                                Address.DEFAULT.getValue(),
-                                BigInteger.valueOf(newThreshold));
+                governance.register(
+                        RequestEnum.OPER_RESET_THRESHOLD.getType(),
+                        governance.getContractAddress(),
+                        Address.DEFAULT.getValue(),
+                        BigInteger.valueOf(newThreshold));
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error request a vote of reset threshold: " + tr.getStatus());
@@ -62,12 +60,11 @@ public class VoteModeGovernManager extends BasicManager {
             throw new InvalidParamException("Not an exsisted account: " + externalAccount);
         }
         TransactionReceipt tr =
-                governance
-                        .register(
-                                RequestEnum.OPER_RESET_WEIGHT.getType(),
-                                externalAccount,
-                                Address.DEFAULT.getValue(),
-                                BigInteger.ZERO);
+                governance.register(
+                        RequestEnum.OPER_RESET_WEIGHT.getType(),
+                        externalAccount,
+                        Address.DEFAULT.getValue(),
+                        BigInteger.ZERO);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error request a vote of remvoe govern account: " + tr.getStatus());
@@ -87,12 +84,11 @@ public class VoteModeGovernManager extends BasicManager {
                     "The external account is not a govern account: " + externalAccount);
         }
         TransactionReceipt tr =
-                governance
-                        .register(
-                                RequestEnum.OPER_RESET_WEIGHT.getType(),
-                                externalAccount,
-                                Address.DEFAULT.getValue(),
-                                BigInteger.valueOf(weight));
+                governance.register(
+                        RequestEnum.OPER_RESET_WEIGHT.getType(),
+                        externalAccount,
+                        Address.DEFAULT.getValue(),
+                        BigInteger.valueOf(weight));
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error request a vote of remvoe govern account: " + tr.getStatus());
@@ -105,12 +101,11 @@ public class VoteModeGovernManager extends BasicManager {
             throw new InvalidParamException("Not an exsisted account: " + externalAccount);
         }
         TransactionReceipt tr =
-                governance
-                        .register(
-                                RequestEnum.OPER_RESET_WEIGHT.getType(),
-                                externalAccount,
-                                Address.DEFAULT.getValue(),
-                                BigInteger.valueOf(weight));
+                governance.register(
+                        RequestEnum.OPER_RESET_WEIGHT.getType(),
+                        externalAccount,
+                        Address.DEFAULT.getValue(),
+                        BigInteger.valueOf(weight));
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error request a vote of add govern account: " + tr.getStatus());
@@ -125,12 +120,11 @@ public class VoteModeGovernManager extends BasicManager {
     public BigInteger requestResetAccount(String newExternalAccount, String oldExternalAccount)
             throws Exception {
         TransactionReceipt tr =
-                governance
-                        .register(
-                                RequestEnum.OPER_CHANGE_CREDENTIAL.getType(),
-                                oldExternalAccount,
-                                newExternalAccount,
-                                BigInteger.ZERO);
+                governance.register(
+                        RequestEnum.OPER_CHANGE_CREDENTIAL.getType(),
+                        oldExternalAccount,
+                        newExternalAccount,
+                        BigInteger.ZERO);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error request a vote of reset account: " + tr.getStatus());
@@ -140,12 +134,11 @@ public class VoteModeGovernManager extends BasicManager {
 
     public BigInteger requestFreezeAccount(String externalAccount) throws Exception {
         TransactionReceipt tr =
-                governance
-                        .register(
-                                RequestEnum.OPER_FREEZE_ACCOUNT.getType(),
-                                externalAccount,
-                                Address.DEFAULT.getValue(),
-                                BigInteger.ZERO);
+                governance.register(
+                        RequestEnum.OPER_FREEZE_ACCOUNT.getType(),
+                        externalAccount,
+                        Address.DEFAULT.getValue(),
+                        BigInteger.ZERO);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error request a vote of freeze account: " + tr.getStatus());
@@ -155,12 +148,11 @@ public class VoteModeGovernManager extends BasicManager {
 
     public BigInteger requestUnfreezeAccount(String externalAccount) throws Exception {
         TransactionReceipt tr =
-                governance
-                        .register(
-                                RequestEnum.OPER_UNFREEZE_ACCOUNT.getType(),
-                                externalAccount,
-                                Address.DEFAULT.getValue(),
-                                BigInteger.ZERO);
+                governance.register(
+                        RequestEnum.OPER_UNFREEZE_ACCOUNT.getType(),
+                        externalAccount,
+                        Address.DEFAULT.getValue(),
+                        BigInteger.ZERO);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error request a vote of unfreeze account: " + tr.getStatus());
@@ -170,12 +162,11 @@ public class VoteModeGovernManager extends BasicManager {
 
     public BigInteger requestCancelAccount(String externalAccount) throws Exception {
         TransactionReceipt tr =
-                governance
-                        .register(
-                                RequestEnum.OPER_CANCEL_ACCOUNT.getType(),
-                                externalAccount,
-                                Address.DEFAULT.getValue(),
-                                BigInteger.ZERO);
+                governance.register(
+                        RequestEnum.OPER_CANCEL_ACCOUNT.getType(),
+                        externalAccount,
+                        Address.DEFAULT.getValue(),
+                        BigInteger.ZERO);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error request a vote of cancel account: " + tr.getStatus());
@@ -195,8 +186,7 @@ public class VoteModeGovernManager extends BasicManager {
             BigInteger requestId, String newExternalAccount, String oldExternalAccount)
             throws Exception {
         TransactionReceipt tr =
-                governance
-                        .setExternalAccount(requestId, newExternalAccount, oldExternalAccount);
+                governance.setExternalAccount(requestId, newExternalAccount, oldExternalAccount);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException("Error reset account: " + tr.getStatus());
         }
@@ -206,11 +196,8 @@ public class VoteModeGovernManager extends BasicManager {
     public TransactionReceipt freezeAccount(BigInteger requestId, String externalAccount)
             throws Exception {
         TransactionReceipt tr =
-                governance
-                        .doOper(
-                                requestId,
-                                externalAccount,
-                                RequestEnum.OPER_FREEZE_ACCOUNT.getType());
+                governance.doOper(
+                        requestId, externalAccount, RequestEnum.OPER_FREEZE_ACCOUNT.getType());
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException("Error freeze account: " + tr.getStatus());
         }
@@ -220,11 +207,8 @@ public class VoteModeGovernManager extends BasicManager {
     public TransactionReceipt unfreezeAccount(BigInteger requestId, String externalAccount)
             throws Exception {
         TransactionReceipt tr =
-                governance
-                        .doOper(
-                                requestId,
-                                externalAccount,
-                                RequestEnum.OPER_UNFREEZE_ACCOUNT.getType());
+                governance.doOper(
+                        requestId, externalAccount, RequestEnum.OPER_UNFREEZE_ACCOUNT.getType());
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException("Error unfreeze account: " + tr.getStatus());
         }
@@ -234,11 +218,8 @@ public class VoteModeGovernManager extends BasicManager {
     public TransactionReceipt cancelAccount(BigInteger requestId, String externalAccount)
             throws Exception {
         TransactionReceipt tr =
-                governance
-                        .doOper(
-                                requestId,
-                                externalAccount,
-                                RequestEnum.OPER_CANCEL_ACCOUNT.getType());
+                governance.doOper(
+                        requestId, externalAccount, RequestEnum.OPER_CANCEL_ACCOUNT.getType());
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException("Error cancel account" + tr.getStatus());
         }
@@ -246,8 +227,7 @@ public class VoteModeGovernManager extends BasicManager {
     }
 
     public TransactionReceipt resetThreshold(BigInteger requestId, int threshold) throws Exception {
-        TransactionReceipt tr =
-                governance.setThreshold(requestId, BigInteger.valueOf(threshold));
+        TransactionReceipt tr = governance.setThreshold(requestId, BigInteger.valueOf(threshold));
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
                     "Error reset account threshold: " + tr.getStatus());
@@ -260,8 +240,7 @@ public class VoteModeGovernManager extends BasicManager {
         if (!hasAccount(externalAccount)) {
             throw new InvalidParamException("Not an exsisted account: " + externalAccount);
         }
-        TransactionReceipt tr =
-                governance.setWeight(requestId, externalAccount, BigInteger.ZERO);
+        TransactionReceipt tr = governance.setWeight(requestId, externalAccount, BigInteger.ZERO);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException("Error remove govern account" + tr.getStatus());
         }
@@ -299,32 +278,37 @@ public class VoteModeGovernManager extends BasicManager {
         return addGovernAccount(requestId, externalAccount, 1);
     }
 
-    public BigInteger getId(TransactionReceipt tr) throws TransactionException, IOException, ABICodecException {
-        TransactionDecoderInterface decoder = new TransactionDecoderService(client.getCryptoSuite());
-        BigInteger v = new BigInteger(decoder.decodeReceiptWithValues(WEGovernance.ABI,"register", tr)
-                .getValuesList().get(1).toString());
+    public BigInteger getId(TransactionReceipt tr)
+            throws TransactionException, IOException, ABICodecException {
+        TransactionDecoderInterface decoder =
+                new TransactionDecoderService(client.getCryptoSuite());
+        BigInteger v =
+                new BigInteger(
+                        decoder.decodeReceiptWithValues(WEGovernance.ABI, "register", tr)
+                                .getValuesList()
+                                .get(1)
+                                .toString());
         System.out.println("request id is " + v);
         return v;
     }
 
     public VoteRequestInfo getVoteRequestInfo(BigInteger requestId) throws Exception {
         Tuple8<
-                                BigInteger,
-                                String,
-                                BigInteger,
-                                BigInteger,
-                                BigInteger,
-                                BigInteger,
-                                String,
-                                BigInteger>
+                        BigInteger,
+                        String,
+                        BigInteger,
+                        BigInteger,
+                        BigInteger,
+                        BigInteger,
+                        String,
+                        BigInteger>
                 t = governance.getRequestInfo(requestId);
         VoteRequestInfo info = new VoteRequestInfo();
         return info.forward(t);
     }
 
     public WeightInfo getWeightInfo() throws Exception {
-        Tuple3<List<String>, List<BigInteger>, BigInteger> tuple =
-                governance.getWeightInfo();
+        Tuple3<List<String>, List<BigInteger>, BigInteger> tuple = governance.getWeightInfo();
         WeightInfo wi = new WeightInfo();
         wi.setAddressList(tuple.getValue1())
                 .setWeightList(tuple.getValue2())

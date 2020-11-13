@@ -22,7 +22,8 @@ public class CredentialUtils {
         try (InputStream stream = cdResource.getInputStream()) {
             ks.load(stream, keyStorePassword.toCharArray());
             Key key = ks.getKey("ec", keyPassword.toCharArray());
-            CryptoKeyPair credentials = new ECDSAKeyPair().createKeyPair(((ECPrivateKey) key).getS());
+            CryptoKeyPair credentials =
+                    new ECDSAKeyPair().createKeyPair(((ECPrivateKey) key).getS());
             if (credentials != null) {
                 return credentials;
             } else {

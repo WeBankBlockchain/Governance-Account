@@ -19,7 +19,6 @@ import com.webank.blockchain.gov.acct.BaseTests;
 import com.webank.blockchain.gov.acct.tool.JacksonUtils;
 import java.io.IOException;
 import java.math.BigInteger;
-
 import org.fisco.bcos.sdk.client.protocol.response.BcosBlock;
 import org.fisco.bcos.sdk.client.protocol.response.ConsensusStatus;
 import org.fisco.bcos.sdk.client.protocol.response.GroupList;
@@ -97,8 +96,7 @@ public class ChainInfoTest extends BaseTests {
 
     @Test
     public void getBlock() throws IOException {
-        BcosBlock bcosBlock =
-                client.getBlockByNumber(BigInteger.ZERO, true);
+        BcosBlock bcosBlock = client.getBlockByNumber(BigInteger.ZERO, true);
         System.out.println(JacksonUtils.toJson("bcosBlock: " + bcosBlock.getBlock()));
         assertNotNull(bcosBlock.getBlock());
     }

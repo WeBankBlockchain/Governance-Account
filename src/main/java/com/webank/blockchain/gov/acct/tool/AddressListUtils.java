@@ -1,11 +1,10 @@
 /** Copyright (C) 2018 WeBank, Inc. All Rights Reserved. */
 package com.webank.blockchain.gov.acct.tool;
 
-import org.fisco.bcos.sdk.abi.datatypes.Address;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.fisco.bcos.sdk.abi.datatypes.Address;
 
 /**
  * String2AddressListUtils @Description: String2AddressListUtils

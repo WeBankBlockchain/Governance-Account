@@ -20,7 +20,6 @@ import com.webank.blockchain.gov.acct.tool.JacksonUtils;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.springframework.stereotype.Service;
 
@@ -77,8 +76,7 @@ public class EndUserOperManager extends BasicManager {
                 voters.stream().map(c -> BigInteger.ONE).collect(Collectors.toList());
         System.out.println("ac owner is: " + userAccount._owner());
         System.out.println(credentials.getAddress());
-        TransactionReceipt tr =
-                userAccount.setVoteStatics(voters, value, BigInteger.valueOf(2));
+        TransactionReceipt tr = userAccount.setVoteStatics(voters, value, BigInteger.valueOf(2));
         System.out.println(tr.getStatus());
         System.out.println("Init vote: " + JacksonUtils.toJson(userAccount.getWeightInfo()));
         return tr;
