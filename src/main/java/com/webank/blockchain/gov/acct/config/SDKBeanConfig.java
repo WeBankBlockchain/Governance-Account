@@ -71,7 +71,7 @@ public class SDKBeanConfig {
             @Autowired Client client, @Autowired CryptoKeyPair cryptoKeyPair) throws Exception {
         WEGovernance governance =
                 WEGovernance.deploy(client, cryptoKeyPair, AccountConstants.ADMIN_MODE);
-        log.info("Governance acct create succeed {} ", governance.getContractAddress());
+        log.debug("Governance acct create succeed {} ", governance.getContractAddress());
         return governance;
     }
 
@@ -82,7 +82,7 @@ public class SDKBeanConfig {
             @Autowired CryptoKeyPair cryptoKeyPair)
             throws Exception {
         String address = weGovernance.getAccountManager();
-        log.info("AccountManager address is {}", address);
+        log.debug("AccountManager address is {}", address);
         return AccountManager.load(address, client, cryptoKeyPair);
     }
 }
