@@ -548,22 +548,16 @@ dependencies {
 #### 初始化AccountGovernManagerFactory对象
 
 <br />AccountGovernManagerFactory工厂对象是SDK配置的唯一对象，配置了链、用户私钥、gas配置、加密类型等核心配置信息。此外，所有的操作控制类Manager对象都通过本factory对象来产生。<br />
-<br />根据[web3j使用手册](https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/sdk/java_sdk.html#id5)获取web3j、credentials和StaticGasProvider对象。<br />
+<br />根据[JavaSDK使用手册](https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/sdk/java_sdk/quick_start.html)获取client、credentials对象。<br />
 
 ```java
-AccountGovernManagerFactory factory = new AccountGovernManagerFactory(web3j, credentials, staticGasProvider);
-```
-
-<br />如果搭建的链为国密版本，需要传入国密参数。<br />
-
-```java
-AccountGovernManagerFactory factory = new AccountGovernManagerFactory(web3j, credentials, 1, staticGasProvider);    //0-ecdsa,1-gm
+AccountGovernManagerFactory factory = new AccountGovernManagerFactory(client, credentials);
 ```
 
 <br />如果已通过其他方式预先部署了治理合约，则可以传入治理合约的地址。<br />
 
 ```java
-AccountGovernManagerFactory factory = new AccountGovernManagerFactory(web3j, credentials, 0, staticGasProvider, governanceAddress);
+AccountGovernManagerFactory factory = new AccountGovernManagerFactory(client, credentials, governanceAddress);
 ```
 
 #### 获得部署治理合约管理器
@@ -577,7 +571,6 @@ GovernAccountInitializer governAccountInitializer = factory.newGovernAccountInit
 <br />获得此对象后，即可以创建治理合约，其中部署3种治理模式下的合约的方法如下。<br />
 
 1. 创建超级管理员模式的治理合约
-
 
 
 ```java
