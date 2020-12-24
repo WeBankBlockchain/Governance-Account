@@ -19,6 +19,7 @@ public class BaseTests {
     protected CryptoKeyPair p2;
     protected CryptoKeyPair p3;
 
+
     @PostConstruct
     public void init() throws Exception {
         u = credentials.generateKeyPair();
