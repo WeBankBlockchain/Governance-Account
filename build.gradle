@@ -84,7 +84,7 @@ jar {
     archiveName project.name + version + '.jar'
     exclude '**/*.xml'
     exclude '**/*.properties'
-    exclude '**/spring.factories'
+    //exclude '**/spring.factories'
     doLast {
         copy {
             from file('src/main/resources/')
