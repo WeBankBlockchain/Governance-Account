@@ -71,7 +71,7 @@ public class SDKBeanConfig {
 
     public void setCertPath(ConfigProperty configProperty) {
         Map<String, Object> cryptoMaterial = Maps.newHashMapWithExpectedSize(1);
-        cryptoMaterial.put("certPath", "config");
+        cryptoMaterial.put("certPath", "conf");
         configProperty.setCryptoMaterial(cryptoMaterial);
     }
 
