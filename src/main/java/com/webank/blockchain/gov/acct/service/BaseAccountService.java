@@ -13,11 +13,9 @@
  */
 package com.webank.blockchain.gov.acct.service;
 
-import com.webank.blockchain.gov.acct.contract.BaseAccount;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.webank.blockchain.gov.acct.contract.BaseAccount;
 
 /**
  * BaseAccountManager @Description: BaseAccountManager
@@ -26,10 +24,7 @@ import org.springframework.stereotype.Service;
  * @data Mar 2, 2020 11:54:49 AM
  */
 @Service
-public class BaseAccountService {
-
-    @Autowired private Client client;
-    @Autowired private CryptoKeyPair credentials;
+public class BaseAccountService extends JavaSDKBasicService{
 
     public BaseAccount getBaseAccount(String contractAddress) {
         return BaseAccount.load(contractAddress, client, credentials);
