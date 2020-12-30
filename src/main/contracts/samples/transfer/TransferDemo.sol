@@ -13,7 +13,7 @@ contract TransferDemo {
     constructor(address accountManager, uint256 initBalance) public {
         // import accountManager
         _accountManager = AccountManager(accountManager);
-        address owner = _accountManager.getAccount(msg.sender);
+        address owner = _accountManager.getUserAccount(msg.sender);
         _balances[owner] = initBalance;
     }
 
@@ -36,7 +36,7 @@ contract TransferDemo {
 
     function balance(address owner) public view returns (uint256) {
         // 1.get account by external account, 2.get balace by account.
-        return _balances[_accountManager.getAccount(owner)];
+        return _balances[_accountManager.getUserAccount(owner)];
     }
 
     function transfer(address toAddress, uint256 value)
@@ -48,13 +48,13 @@ contract TransferDemo {
         returns (bool)
     {
         // 1. get source account
-        address fromAccount = _accountManager.getAccount(msg.sender);
+        address fromAccount = _accountManager.getUserAccount(msg.sender);
         // 2. sub the balance of source account
         uint256 balanceOfFrom = _balances[fromAccount].sub(value);
         // 3. modify the balance of source account
         _balances[fromAccount] = balanceOfFrom;
         // 4. get target account
-        address toAccount = _accountManager.getAccount(toAddress);
+        address toAccount = _accountManager.getUserAccount(toAddress);
         // 5. add balance of target account
         uint256 balanceOfTo = _balances[toAccount].add(value);
         // set the new balance of target account
