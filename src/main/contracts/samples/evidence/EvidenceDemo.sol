@@ -18,13 +18,13 @@ contract EvidenceDemo {
         // import accountManager
         _accountManager = AccountManager(accountManager);
         // set user account instead of external account
-        _owner = _accountManager.getAccount(msg.sender);
+        _owner = _accountManager.getUserAccount(msg.sender);
         require(_owner != 0x0, "Invalid account!");
     }
 
     modifier onlyOwner() {
         // get user account by external account
-        address userAccountAddress = _accountManager.getAccount(msg.sender);
+        address userAccountAddress = _accountManager.getUserAccount(msg.sender);
         require(userAccountAddress == _owner, "Not admin");
         _;
     }
