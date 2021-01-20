@@ -18,7 +18,7 @@ dist/
 .settings
 bin/
 out/
-conf/
+config/
 
 ## integration test files
 nodes/
@@ -70,3 +70,4 @@ build_chain.sh
 hs_err_pid*
 
 ### repo ###
+src/main/resources/application.properties

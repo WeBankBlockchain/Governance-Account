@@ -31,4 +31,6 @@ public class SystemEnvironmentConfig {
     private int groupId;
     private String configPath;
     private int encryptType = 0;
+    private String hexPrivateKey;
+    private boolean defaultGovernanceEnabled=false;
 }

@@ -16,6 +16,7 @@ import org.fisco.bcos.sdk.config.exceptions.ConfigException;
 import org.fisco.bcos.sdk.config.model.ConfigProperty;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,7 +33,15 @@ public class SDKBeanConfig {
     @Bean
     public CryptoKeyPair cryptoKeyPair() throws ConfigException {
         Client client = getClient();
-        return client.getCryptoSuite().createKeyPair();
+        if(StringUtils.isNotBlank(systemEnvironmentConfig.getHexPrivateKey())) {
+            log.info("Found hex private key in application.properties.");
+            return client.getCryptoSuite().createKeyPair(systemEnvironmentConfig.getHexPrivateKey());
+        }
+        log.info("Hex private key not found.");
+        CryptoKeyPair cryptoKeyPair = client.getCryptoSuite().createKeyPair();
+        log.info("Generate the default private key: {}", cryptoKeyPair.getHexPrivateKey());
+        log.info("The default address is {}", cryptoKeyPair.getAddress());
+        return cryptoKeyPair;
     }
 
     @Bean
@@ -67,22 +76,24 @@ public class SDKBeanConfig {
     }
 
     @Bean
+    @ConditionalOnProperty(name="system.defaultGovernanceEnabled", havingValue="true")
     public WEGovernance getGovernance(
             @Autowired Client client, @Autowired CryptoKeyPair cryptoKeyPair) throws Exception {
         WEGovernance governance =
                 WEGovernance.deploy(client, cryptoKeyPair, AccountConstants.ADMIN_MODE);
-        log.debug("Governance acct create succeed {} ", governance.getContractAddress());
+        log.info("Default governance acct create succeed {} ", governance.getContractAddress());
         return governance;
     }
 
     @Bean
+    @ConditionalOnProperty(name="system.defaultGovernanceEnabled", havingValue="true")
     public AccountManager getAccountManager(
             @Autowired WEGovernance weGovernance,
             @Autowired Client client,
             @Autowired CryptoKeyPair cryptoKeyPair)
             throws Exception {
         String address = weGovernance.getAccountManager();
-        log.debug("AccountManager address is {}", address);
+        log.info("Default accountManager address is {}", address);
         return AccountManager.load(address, client, cryptoKeyPair);
     }
 }
