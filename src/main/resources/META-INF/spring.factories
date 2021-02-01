@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.webank.blockchain.gov.acct.config.SystemEnvironmentConfig,\
+com.webank.blockchain.gov.acct.config.SDKBeanConfig,\
+com.webank.blockchain.gov.acct.service.BaseAccountService

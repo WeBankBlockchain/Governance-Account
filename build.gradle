@@ -1,0 +1,110 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.9.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'com.github.sherter.google-java-format' version '0.8'
+    id 'jacoco'
+}
+
+group = 'com.webank'
+version = '0.1.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "https://dl.bintray.com/ethereum/maven/" }
+    maven { url "https://oss.sonatype.org/service/local/staging/deploy/maven2"}
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:2.7.1') {
+        exclude group: 'org.slf4j'
+    }
+    compile group: 'com.google.guava', name: 'guava', version: '30.0-jre'
+    compile 'commons-codec:commons-codec:1.4'
+    compile group: 'org.apache.commons', name:"commons-pool2",version:"2.4.2"
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.2'
+
+}
+
+googleJavaFormat {
+    options style: 'AOSP'
+    source = sourceSets*.allJava
+    include '**/*.java'
+}
+
+verifyGoogleJavaFormat {
+    source = sourceSets*.allJava
+    include '**/*.java'
+}
+
+bootJar {
+    destinationDir file('dist')
+    archiveName project.name + version + '.jar'
+    exclude '**/*.xml'
+    exclude '**/*.properties'
+    exclude '**/*.yml'
+    doLast {
+        copy {
+            from file('src/main/resources/')
+            into 'dist/config'
+        }
+    }
+}
+
+jar {
+    enabled = true
+    destinationDir file('dist')
+    archiveName project.name + version + '.jar'
+    exclude '**/*.xml'
+    exclude '**/*.properties'
+    //exclude '**/spring.factories'
+    doLast {
+        copy {
+            from file('src/main/resources/')
+            into 'dist/config'
+        }
+        copy {
+            from configurations.runtime
+            into 'dist/lib'
+        }
+    }
+}
+
+clean {
+    println "delete ${projectDir}/dist"
+    delete "${projectDir}/dist"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+        xml.destination file("$buildDir/jacocoXml.xml")
+        html.destination file("$buildDir/jacocoHtml")
+    }
+}
+
+check.dependsOn jacocoTestReport
