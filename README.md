@@ -1,7 +1,5 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![Build Status](https://travis-ci.org/WeBankBlockchain/WeBankBlockchain-Governance-Account.svg?branch=dev)](https://travis-ci.org/WeBankBlockchain/WeBankBlockchain-Governance-Account)
-[![codecov](https://codecov.io/gh/WeBankBlockchain/WeBankBlockchain-Governance-Account/branch/dev/graph/badge.svg)](https://codecov.io/gh/WeBankBlockchain/WeBankBlockchain-Governance-Account)
-[![GitHub All Releases](https://img.shields.io/github/downloads/WeBankBlockchain/WeBankBlockchain-Governance-Account/total.svg)](https://github.com/WeBankBlockchain/WeBankBlockchain-Governance-Account)
+[![GitHub All Releases](https://img.shields.io/github/downloads/WeBankBlockchain/Governance-Account/total.svg)](https://github.com/WeBankBlockchain/Governance-Account)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/97cfccf07bb446a6b3b0be6d7a1a6fe2)](https://app.codacy.com/gh/WeBankBlockchain/WeBankBlockchain-Governance-Account?utm_source=github.com&utm_medium=referral&utm_content=WeBankBlockchain/WeBankBlockchain-Governance-Account&utm_campaign=Badge_Grade_Dashboard)
 
 # 组件介绍
