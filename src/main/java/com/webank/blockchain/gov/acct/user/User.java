@@ -11,15 +11,16 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webank.blockchain.gov.acct;
+package com.webank.blockchain.gov.acct.user;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+/**
+ * User
+ *
+ * @Description: User
+ * @author maojiayu
+ * @data Feb 8, 2021 3:37:06 PM
+ *
+ */
+public class User {
 
-@SpringBootApplication
-public class ScottApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ScottApplication.class, args);
-    }
 }
