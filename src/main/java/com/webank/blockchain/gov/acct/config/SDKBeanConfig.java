@@ -46,9 +46,10 @@ public class SDKBeanConfig {
     @Bean
     public CryptoKeyPair cryptoKeyPair() throws ConfigException {
         Client client = getClient();
-        if(StringUtils.isNotBlank(systemEnvironmentConfig.getHexPrivateKey())) {
+        if (StringUtils.isNotBlank(systemEnvironmentConfig.getHexPrivateKey())) {
             log.info("Found hex private key in application.properties.");
-            return client.getCryptoSuite().createKeyPair(systemEnvironmentConfig.getHexPrivateKey());
+            return client.getCryptoSuite()
+                    .createKeyPair(systemEnvironmentConfig.getHexPrivateKey());
         }
         log.info("Hex private key not found.");
         CryptoKeyPair cryptoKeyPair = client.getCryptoSuite().createKeyPair();
@@ -89,7 +90,7 @@ public class SDKBeanConfig {
     }
 
     @Bean
-    @ConditionalOnProperty(name="system.defaultGovernanceEnabled", havingValue="true")
+    @ConditionalOnProperty(name = "system.defaultGovernanceEnabled", havingValue = "true")
     public WEGovernance getGovernance(
             @Autowired Client client, @Autowired CryptoKeyPair cryptoKeyPair) throws Exception {
         WEGovernance governance =
@@ -99,7 +100,7 @@ public class SDKBeanConfig {
     }
 
     @Bean
-    @ConditionalOnProperty(name="system.defaultGovernanceEnabled", havingValue="true")
+    @ConditionalOnProperty(name = "system.defaultGovernanceEnabled", havingValue = "true")
     public AccountManager getAccountManager(
             @Autowired WEGovernance weGovernance,
             @Autowired Client client,

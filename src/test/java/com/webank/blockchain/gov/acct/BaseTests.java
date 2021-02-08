@@ -12,21 +12,20 @@ public class BaseTests {
     //    @Autowired private SystemEnvironmentConfig systemEnvironmentConfig;
     @Autowired protected CryptoKeyPair credentials;
 
-    protected CryptoKeyPair u;
-    protected CryptoKeyPair u1;
-    protected CryptoKeyPair u2;
-    protected CryptoKeyPair p1;
-    protected CryptoKeyPair p2;
-    protected CryptoKeyPair p3;
-
+    protected CryptoKeyPair governanceUser1Keypair;
+    protected CryptoKeyPair governanceUser2Keypair;
+    protected CryptoKeyPair governanceUser3Keypair;
+    protected CryptoKeyPair endUser1Keypair;
+    protected CryptoKeyPair endUser2Keypair;
+    protected CryptoKeyPair endUser3Keypair;
 
     @PostConstruct
     public void init() throws Exception {
-        u = credentials.generateKeyPair();
-        u1 = credentials.generateKeyPair();
-        u2 = credentials.generateKeyPair();
-        p1 = credentials.generateKeyPair();
-        p2 = credentials.generateKeyPair();
-        p3 = credentials.generateKeyPair();
+        governanceUser1Keypair = credentials.generateKeyPair();
+        governanceUser2Keypair = credentials.generateKeyPair();
+        governanceUser3Keypair = credentials.generateKeyPair();
+        endUser1Keypair = credentials.generateKeyPair();
+        endUser2Keypair = credentials.generateKeyPair();
+        endUser3Keypair = credentials.generateKeyPair();
     }
 }

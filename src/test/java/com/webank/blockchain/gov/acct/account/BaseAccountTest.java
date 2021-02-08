@@ -28,28 +28,34 @@ public class BaseAccountTest extends BaseTests {
     @Test
     public void deploy() throws Exception {
         BaseAccount account =
-                BaseAccount.deploy(client, u1, "0x9f4856c0d44415c5913ca8862cc30187f3b8c895");
+                BaseAccount.deploy(
+                        client,
+                        governanceUser2Keypair,
+                        "0x9f4856c0d44415c5913ca8862cc30187f3b8c895");
         System.out.println(account.getContractAddress());
     }
 
     @Test
     public void freeze() throws Exception {
         BaseAccount accountP1 =
-                BaseAccount.load("0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c", client, p1);
+                BaseAccount.load(
+                        "0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c", client, endUser1Keypair);
         accountP1.freeze();
     }
 
     // @Test
     public void unfreeze() throws Exception {
         BaseAccount accountP1 =
-                BaseAccount.load("0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c", client, p1);
+                BaseAccount.load(
+                        "0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c", client, endUser1Keypair);
         accountP1.unfreeze();
     }
 
     // @Test
     public void cancel() throws Exception {
         BaseAccount accountP1 =
-                BaseAccount.load("0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c", client, p1);
+                BaseAccount.load(
+                        "0x331c52cafb92cdc4df87d18b178edbfdb2f1c93c", client, endUser1Keypair);
         accountP1.cancel();
     }
 }

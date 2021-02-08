@@ -27,9 +27,9 @@ public class CredentailTest extends BaseTests {
 
     @Test
     public void testCredentials() {
-        System.out.println(u1);
-        Assert.notNull(u1, "credential must be not null");
-        System.out.println(p1);
-        Assert.notNull(p1, "credential must be not null");
+        System.out.println(governanceUser2Keypair);
+        Assert.notNull(governanceUser2Keypair, "credential must be not null");
+        System.out.println(endUser1Keypair);
+        Assert.notNull(endUser1Keypair, "credential must be not null");
     }
 }

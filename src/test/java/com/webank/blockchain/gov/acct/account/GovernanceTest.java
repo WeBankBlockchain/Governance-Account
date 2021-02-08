@@ -29,7 +29,8 @@ public class GovernanceTest extends BaseTests {
     @Test
     public void test() throws Exception {
         // deploy
-        WEGovernance governanceP1 = WEGovernance.deploy(client, p1, AccountConstants.VOTE_MODE);
+        WEGovernance governanceP1 =
+                WEGovernance.deploy(client, endUser1Keypair, AccountConstants.VOTE_MODE);
         System.out.println("Governance acct: " + governanceP1.getContractAddress());
         String acctManagerAddr = governanceP1.getAccountManager();
         System.out.println("acct manager addr: " + acctManagerAddr);
