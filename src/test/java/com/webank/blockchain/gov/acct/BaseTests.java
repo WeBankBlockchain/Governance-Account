@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class BaseTests {
     @Autowired protected Client client;
     //    @Autowired private SystemEnvironmentConfig systemEnvironmentConfig;
-    @Autowired protected CryptoKeyPair credentials;
+    @Autowired protected CryptoKeyPair cryptoKeyPair;
 
     protected CryptoKeyPair governanceUser1Keypair;
     protected CryptoKeyPair governanceUser2Keypair;
@@ -21,11 +21,11 @@ public class BaseTests {
 
     @PostConstruct
     public void init() throws Exception {
-        governanceUser1Keypair = credentials.generateKeyPair();
-        governanceUser2Keypair = credentials.generateKeyPair();
-        governanceUser3Keypair = credentials.generateKeyPair();
-        endUser1Keypair = credentials.generateKeyPair();
-        endUser2Keypair = credentials.generateKeyPair();
-        endUser3Keypair = credentials.generateKeyPair();
+        governanceUser1Keypair = cryptoKeyPair.generateKeyPair();
+        governanceUser2Keypair = cryptoKeyPair.generateKeyPair();
+        governanceUser3Keypair = cryptoKeyPair.generateKeyPair();
+        endUser1Keypair = cryptoKeyPair.generateKeyPair();
+        endUser2Keypair = cryptoKeyPair.generateKeyPair();
+        endUser3Keypair = cryptoKeyPair.generateKeyPair();
     }
 }
