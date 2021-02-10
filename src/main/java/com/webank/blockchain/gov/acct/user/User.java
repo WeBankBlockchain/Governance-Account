@@ -14,13 +14,9 @@
 package com.webank.blockchain.gov.acct.user;
 
 /**
- * User
+ * User @Description: User
  *
- * @Description: User
  * @author maojiayu
  * @data Feb 8, 2021 3:37:06 PM
- *
  */
-public class User {
-
-}
+public class User {}

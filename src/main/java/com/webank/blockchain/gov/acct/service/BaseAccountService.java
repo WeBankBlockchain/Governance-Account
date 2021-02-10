@@ -13,9 +13,8 @@
  */
 package com.webank.blockchain.gov.acct.service;
 
-import org.springframework.stereotype.Service;
-
 import com.webank.blockchain.gov.acct.contract.BaseAccount;
+import org.springframework.stereotype.Service;
 
 /**
  * BaseAccountManager @Description: BaseAccountManager
@@ -24,7 +23,7 @@ import com.webank.blockchain.gov.acct.contract.BaseAccount;
  * @data Mar 2, 2020 11:54:49 AM
  */
 @Service
-public class BaseAccountService extends JavaSDKBasicService{
+public class BaseAccountService extends JavaSDKBasicService {
 
     public BaseAccount getBaseAccount(String contractAddress) {
         return BaseAccount.load(contractAddress, client, credentials);

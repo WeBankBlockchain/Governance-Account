@@ -41,67 +41,69 @@ public class UserOfSelfAdminScene extends BaseTests {
     @Test
     public void test() throws Exception {
         AccountManager accountManager =
-                AccountManager.load(accountManagerU.getContractAddress(), client, p1);
-        WEGovernance governance = WEGovernance.load(governanceU.getContractAddress(), client, p1);
+                AccountManager.load(accountManagerU.getContractAddress(), client, endUser1Keypair);
+        WEGovernance governance =
+                WEGovernance.load(governanceU.getContractAddress(), client, endUser1Keypair);
         endUserAdminManager.setAccountManager(accountManager);
         endUserAdminManager.setGovernance(governance);
-        endUserAdminManager.setCredentials(p1);
+        endUserAdminManager.setCredentials(endUser1Keypair);
 
         // create account
         if (!endUserAdminManager.hasAccount()) {
-            endUserAdminManager.createAccount(p1.getAddress());
+            endUserAdminManager.createAccount(endUser1Keypair.getAddress());
         }
-        String accountAddress = endUserAdminManager.getBaseAccountAddress(p1.getAddress());
+        String accountAddress =
+                endUserAdminManager.getBaseAccountAddress(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddress);
-        System.out.println("p1: " + p1.getAddress());
-        Assertions.assertTrue(accountManager.hasAccount(p1.getAddress()));
+        System.out.println("endUser1Keypair: " + endUser1Keypair.getAddress());
+        Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
         Assertions.assertEquals(
                 UserStaticsEnum.NONE.getStatics(), endUserAdminManager.getUserStatics());
-        String p1AccountAddress = accountManager.getUserAccount(p1.getAddress());
+        String p1AccountAddress = accountManager.getUserAccount(endUser1Keypair.getAddress());
         Assertions.assertEquals(accountAddress, p1AccountAddress);
 
         // reset account
         endUserAdminManager.setAccountManager(accountManager);
-        TransactionReceipt tr = endUserAdminManager.resetAccount(p2.getAddress());
+        TransactionReceipt tr = endUserAdminManager.resetAccount(endUser2Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
-        Assertions.assertTrue(!accountManager.hasAccount(p1.getAddress()));
-        Assertions.assertTrue(accountManager.hasAccount(p2.getAddress()));
+        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
+        Assertions.assertTrue(accountManager.hasAccount(endUser2Keypair.getAddress()));
 
         // cancel account
-        endUserAdminManager.changeCredentials(p2);
+        endUserAdminManager.changeCredentials(endUser2Keypair);
         tr = endUserAdminManager.cancelAccount();
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(p1AccountAddress));
-        Assertions.assertTrue(!accountManager.hasAccount(p1.getAddress()));
-        endUserAdminManager.changeCredentials(p1);
+        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
+        endUserAdminManager.changeCredentials(endUser1Keypair);
 
         // create again
-        accountAddress = endUserAdminManager.createAccount(p1.getAddress());
+        accountAddress = endUserAdminManager.createAccount(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddress);
-        System.out.println("p1: " + p1.getAddress());
-        Assertions.assertTrue(accountManager.hasAccount(p1.getAddress()));
-        p1AccountAddress = accountManager.getUserAccount(p1.getAddress());
+        System.out.println("endUser1Keypair: " + endUser1Keypair.getAddress());
+        Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
+        p1AccountAddress = accountManager.getUserAccount(endUser1Keypair.getAddress());
 
         // cancel account
         tr = endUserAdminManager.cancelAccount();
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(p1AccountAddress));
-        Assertions.assertTrue(!accountManager.hasAccount(p1.getAddress()));
+        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
 
         // create again
-        accountAddress = endUserAdminManager.createAccount(p1.getAddress());
+        accountAddress = endUserAdminManager.createAccount(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddress);
-        System.out.println("p1: " + p1.getAddress());
-        Assertions.assertTrue(accountManager.hasAccount(p1.getAddress()));
-        p1AccountAddress = accountManager.getUserAccount(p1.getAddress());
+        System.out.println("endUser1Keypair: " + endUser1Keypair.getAddress());
+        Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
+        p1AccountAddress = accountManager.getUserAccount(endUser1Keypair.getAddress());
 
         // modify manager type
         Assertions.assertEquals(
                 UserStaticsEnum.NONE.getStatics(), endUserAdminManager.getUserStatics());
         List<String> voters = Lists.newArrayList();
-        voters.add(u.getAddress());
-        voters.add(u1.getAddress());
-        voters.add(u2.getAddress());
+        voters.add(governanceUser1Keypair.getAddress());
+        voters.add(governanceUser2Keypair.getAddress());
+        voters.add(governanceUser3Keypair.getAddress());
         tr = endUserAdminManager.modifyManagerType(voters);
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
@@ -111,6 +113,6 @@ public class UserOfSelfAdminScene extends BaseTests {
         tr = endUserAdminManager.cancelAccount();
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(p1AccountAddress));
-        Assertions.assertTrue(!accountManager.hasAccount(p1.getAddress()));
+        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
     }
 }

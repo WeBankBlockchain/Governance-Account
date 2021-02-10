@@ -45,7 +45,7 @@ public class UserOfGovernAdminScene extends BaseTests {
     // @Test
     // create govern account of admin by user, and set the address in application.properties
     public void testCreate() throws Exception {
-        WEGovernance govern = governAdminManager.createGovernAccount(u);
+        WEGovernance govern = governAdminManager.createGovernAccount(governanceUser1Keypair);
         System.out.println(govern.getContractAddress());
         Assertions.assertNotNull(govern);
     }
@@ -53,55 +53,63 @@ public class UserOfGovernAdminScene extends BaseTests {
     @Test
     public void testAdminScene() throws Exception {
         // create account by admin
-        if (!accountManager.hasAccount(u1.getAddress())) {
-            adminModeManager.createAccount(u1.getAddress());
+        if (!accountManager.hasAccount(governanceUser2Keypair.getAddress())) {
+            adminModeManager.createAccount(governanceUser2Keypair.getAddress());
         }
-        String u1Acct = adminModeManager.getBaseAccountAddress(u1.getAddress());
+        String u1Acct = adminModeManager.getBaseAccountAddress(governanceUser2Keypair.getAddress());
         Assertions.assertNotNull(u1Acct);
-        Assertions.assertTrue(accountManager.hasAccount(u1.getAddress()));
-        String u1AccountAddress = accountManager.getUserAccount(u1.getAddress());
+        Assertions.assertTrue(accountManager.hasAccount(governanceUser2Keypair.getAddress()));
+        String u1AccountAddress =
+                accountManager.getUserAccount(governanceUser2Keypair.getAddress());
         Assertions.assertEquals(u1Acct, u1AccountAddress);
 
         // reset acct
-        TransactionReceipt tr = adminModeManager.resetAccount(u1.getAddress(), u2.getAddress());
+        TransactionReceipt tr =
+                adminModeManager.resetAccount(
+                        governanceUser2Keypair.getAddress(), governanceUser3Keypair.getAddress());
         Assertions.assertTrue(tr.isStatusOK());
-        Assertions.assertTrue(!accountManager.hasAccount(u1.getAddress()));
-        Assertions.assertTrue(accountManager.hasAccount(u2.getAddress()));
+        Assertions.assertTrue(!accountManager.hasAccount(governanceUser2Keypair.getAddress()));
+        Assertions.assertTrue(accountManager.hasAccount(governanceUser3Keypair.getAddress()));
 
         // set back again
-        tr = adminModeManager.resetAccount(u2.getAddress(), u1.getAddress());
+        tr =
+                adminModeManager.resetAccount(
+                        governanceUser3Keypair.getAddress(), governanceUser2Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
 
         // cancel
-        tr = adminModeManager.cancelAccount(u1.getAddress());
+        tr = adminModeManager.cancelAccount(governanceUser2Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(u1Acct));
-        Assertions.assertTrue(!accountManager.hasAccount(u1.getAddress()));
+        Assertions.assertTrue(!accountManager.hasAccount(governanceUser2Keypair.getAddress()));
 
         // create again
-        Assertions.assertTrue(!accountManager.hasAccount(u1.getAddress()));
-        u1Acct = adminModeManager.createAccount(u1.getAddress());
+        Assertions.assertTrue(!accountManager.hasAccount(governanceUser2Keypair.getAddress()));
+        u1Acct = adminModeManager.createAccount(governanceUser2Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
-        Assertions.assertTrue(accountManager.hasAccount(u1.getAddress()));
+        Assertions.assertTrue(accountManager.hasAccount(governanceUser2Keypair.getAddress()));
 
         // modify manager type
         List<String> voters = Lists.newArrayList();
-        voters.add(u.getAddress());
-        voters.add(u1.getAddress());
-        voters.add(u2.getAddress());
-        endUserAdminManager.setCredentials(u1);
+        voters.add(governanceUser1Keypair.getAddress());
+        voters.add(governanceUser2Keypair.getAddress());
+        voters.add(governanceUser3Keypair.getAddress());
+        endUserAdminManager.setCredentials(governanceUser2Keypair);
         tr = endUserAdminManager.modifyManagerType(voters);
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
                 UserStaticsEnum.SOCIAL.getStatics(),
-                UserAccount.load(accountManager.getUserAccount(u1.getAddress()), client, u1)
+                UserAccount.load(
+                                accountManager.getUserAccount(governanceUser2Keypair.getAddress()),
+                                client,
+                                governanceUser2Keypair)
                         ._statics()
                         .intValue());
 
         // cancel
-        tr = adminModeManager.cancelAccount(u1.getAddress());
+        tr = adminModeManager.cancelAccount(governanceUser2Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(u1Acct));
-        Assertions.assertTrue(!accountManager.hasAccount(u1.getAddress()));
+        Assertions.assertTrue(!accountManager.hasAccount(governanceUser2Keypair.getAddress()));
     }
 }

@@ -43,56 +43,59 @@ public class UserOfSocailVoteScene extends BaseTests {
     public void test() throws Exception {
 
         // create account
-        String accountAddressP1 = endUserAdminManager.createAccount(p1.getAddress());
+        String accountAddressP1 = endUserAdminManager.createAccount(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddressP1);
-        Assertions.assertTrue(accountManager.hasAccount(p1.getAddress()));
-        String accountAddressP2 = endUserAdminManager.createAccount(p2.getAddress());
+        Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
+        String accountAddressP2 = endUserAdminManager.createAccount(endUser2Keypair.getAddress());
         Assertions.assertNotNull(accountAddressP2);
-        Assertions.assertTrue(accountManager.hasAccount(p2.getAddress()));
-        String accountAddressP3 = endUserAdminManager.createAccount(p3.getAddress());
+        Assertions.assertTrue(accountManager.hasAccount(endUser2Keypair.getAddress()));
+        String accountAddressP3 = endUserAdminManager.createAccount(endUser3Keypair.getAddress());
         Assertions.assertNotNull(accountAddressP3);
-        Assertions.assertTrue(accountManager.hasAccount(p3.getAddress()));
+        Assertions.assertTrue(accountManager.hasAccount(endUser3Keypair.getAddress()));
         AccountManager accountManagerP1 =
-                AccountManager.load(accountManager.getContractAddress(), client, p1);
+                AccountManager.load(accountManager.getContractAddress(), client, endUser1Keypair);
         List<String> list = new ArrayList<>();
         list.add(accountAddressP1);
         list.add(accountAddressP2);
         list.add(accountAddressP3);
-        endUserAdminManager.setCredentials(p1);
+        endUserAdminManager.setCredentials(endUser1Keypair);
         // set account reset type
         TransactionReceipt tr = endUserAdminManager.modifyManagerType(list);
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
                 UserStaticsEnum.SOCIAL.getStatics(), endUserAdminManager.getUserStatics());
-        socialVoteManager.changeCredentials(p1);
-        UserAccount userAccount = endUserAdminManager.getUserAccount(p1.getAddress());
+        socialVoteManager.changeCredentials(endUser1Keypair);
+        UserAccount userAccount = endUserAdminManager.getUserAccount(endUser1Keypair.getAddress());
 
         // reset account
-        socialVoteManager.requestResetAccount(u1.getAddress(), p1.getAddress());
-        socialVoteManager.vote(p1.getAddress(), true);
+        socialVoteManager.requestResetAccount(
+                governanceUser2Keypair.getAddress(), endUser1Keypair.getAddress());
+        socialVoteManager.vote(endUser1Keypair.getAddress(), true);
 
-        socialVoteManager.changeCredentials(p2);
-        socialVoteManager.vote(p1.getAddress(), true);
-        socialVoteManager.changeCredentials(p3);
-        socialVoteManager.vote(p1.getAddress(), false);
-        socialVoteManager.changeCredentials(p1);
+        socialVoteManager.changeCredentials(endUser2Keypair);
+        socialVoteManager.vote(endUser1Keypair.getAddress(), true);
+        socialVoteManager.changeCredentials(endUser3Keypair);
+        socialVoteManager.vote(endUser1Keypair.getAddress(), false);
+        socialVoteManager.changeCredentials(endUser1Keypair);
         Assertions.assertTrue(
                 userAccount.passed(
                         RequestEnum.OPER_CHANGE_CREDENTIAL.getType(),
-                        p1.getAddress(),
-                        u1.getAddress(),
+                        endUser1Keypair.getAddress(),
+                        governanceUser2Keypair.getAddress(),
                         BigInteger.ZERO));
 
-        tr = socialVoteManager.resetAccount(u1.getAddress(), p1.getAddress());
+        tr =
+                socialVoteManager.resetAccount(
+                        governanceUser2Keypair.getAddress(), endUser1Keypair.getAddress());
         System.out.println(accountManagerP1.getContractAddress());
         System.out.println(userAccount._accountManager());
         Assertions.assertEquals("0x0", tr.getStatus());
-        Assertions.assertTrue(!accountManager.hasAccount(p1.getAddress()));
-        Assertions.assertTrue(accountManager.hasAccount(u1.getAddress()));
+        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
+        Assertions.assertTrue(accountManager.hasAccount(governanceUser2Keypair.getAddress()));
         Assertions.assertTrue(!userAccount.passed(RequestEnum.OPER_CHANGE_CREDENTIAL.getType()));
 
         // cancel
-        endUserAdminManager.changeCredentials(p2);
+        endUserAdminManager.changeCredentials(endUser2Keypair);
         endUserAdminManager.cancelAccount();
     }
 }

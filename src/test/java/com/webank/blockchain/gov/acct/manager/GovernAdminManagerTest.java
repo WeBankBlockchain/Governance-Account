@@ -32,9 +32,9 @@ public class GovernAdminManagerTest extends BaseTests {
     @Test
     // create govern account of admin by user
     public void testCreate() throws Exception {
-        AdminGovernBuilder a = AdminGovernBuilder.deploy(client, u);
+        AdminGovernBuilder a = AdminGovernBuilder.deploy(client, governanceUser1Keypair);
         System.out.println("AdminGovernBuilder " + a.getContractAddress());
-        WEGovernance govern = manager.createGovernAccount(u);
+        WEGovernance govern = manager.createGovernAccount(governanceUser1Keypair);
         System.out.println(govern.getContractAddress());
         Assertions.assertNotNull(govern);
     }
