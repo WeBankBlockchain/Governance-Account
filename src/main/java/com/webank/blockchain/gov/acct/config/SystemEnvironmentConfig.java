@@ -30,7 +30,6 @@ public class SystemEnvironmentConfig {
     private String nodeStr;
     private int groupId;
     private String configPath;
-    private int encryptType = 0;
     private String hexPrivateKey;
     private boolean defaultGovernanceEnabled = false;
 }

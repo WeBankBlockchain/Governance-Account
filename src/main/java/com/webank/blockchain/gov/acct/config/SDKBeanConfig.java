@@ -69,9 +69,7 @@ public class SDKBeanConfig {
         ConfigProperty configProperty = new ConfigProperty();
         setPeers(configProperty);
         setCertPath(configProperty);
-        ConfigOption option =
-                new ConfigOption(configProperty, systemEnvironmentConfig.getEncryptType());
-        log.info("Is gm {}", systemEnvironmentConfig.getEncryptType() == 1);
+        ConfigOption option = new ConfigOption(configProperty);
         return new BcosSDK(option);
     }
 
