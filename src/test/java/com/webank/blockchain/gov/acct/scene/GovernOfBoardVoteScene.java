@@ -17,13 +17,12 @@ import com.webank.blockchain.gov.acct.BaseTests;
 import com.webank.blockchain.gov.acct.contract.AccountManager;
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.enums.AccountStatusEnum;
-import com.webank.blockchain.gov.acct.factory.AccountGovernManagerFactory;
 import com.webank.blockchain.gov.acct.manager.GovernAccountInitializer;
 import com.webank.blockchain.gov.acct.manager.VoteModeGovernManager;
 import com.webank.blockchain.gov.acct.service.BaseAccountService;
+import com.webank.blockchain.gov.acct.vo.GovernAccountGroup;
+import com.webank.blockchain.gov.acct.vo.GovernUser;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
@@ -45,36 +44,18 @@ public class GovernOfBoardVoteScene extends BaseTests {
     @Autowired protected Client client;
     @Autowired protected CryptoKeyPair credentials;
 
-    // @Test
-    // create govern account of admin by user, and set the address in application.properties
-    public void createGovernAcct() throws Exception {
-        AccountGovernManagerFactory factory = new AccountGovernManagerFactory(client, credentials);
-        GovernAccountInitializer initializer = factory.newGovernAccountInitializer();
-        List<String> list = new ArrayList<>();
-        list.add(governanceUser1Keypair.getAddress());
-        list.add(governanceUser2Keypair.getAddress());
-        list.add(governanceUser3Keypair.getAddress());
-        List<BigInteger> weights = new ArrayList<>();
-        weights.add(BigInteger.valueOf(1));
-        weights.add(BigInteger.valueOf(2));
-        weights.add(BigInteger.valueOf(3));
-        WEGovernance govern = initializer.createGovernAccount(list, weights, 4);
-        // WEGovernance govern = governAccountInitializer.createGovernAccount(list, weights, 4);
-        System.out.println(govern.getContractAddress());
-        Assertions.assertNotNull(govern);
-    }
-
     @Test
     public void testScene() throws Exception {
-        List<String> list = new ArrayList<>();
-        list.add(governanceUser1Keypair.getAddress());
-        list.add(governanceUser2Keypair.getAddress());
-        list.add(governanceUser3Keypair.getAddress());
-        List<BigInteger> weights = new ArrayList<>();
-        weights.add(BigInteger.valueOf(1));
-        weights.add(BigInteger.valueOf(2));
-        weights.add(BigInteger.valueOf(3));
-        WEGovernance govern = governAccountInitializer.createGovernAccount(list, weights, 4);
+        GovernAccountGroup governAccountGroup = new GovernAccountGroup();
+        governAccountGroup.setThreshold(4);
+        GovernUser governUser1 = new GovernUser("user1", governanceUser1Keypair.getAddress(), 1);
+        governAccountGroup.addGovernUser(governUser1);
+        GovernUser governUser2 = new GovernUser("user2", governanceUser2Keypair.getAddress(), 2);
+        governAccountGroup.addGovernUser(governUser2);
+        GovernUser governUser3 = new GovernUser("user3", governanceUser3Keypair.getAddress(), 3);
+        governAccountGroup.addGovernUser(governUser3);
+        WEGovernance govern = governAccountInitializer.createGovernAccount(governAccountGroup);
+
         System.out.println(govern.getContractAddress());
         Assertions.assertNotNull(govern);
         String acctMgrAddr = govern.getAccountManager();

@@ -19,8 +19,10 @@ import com.webank.blockchain.gov.acct.contract.VoteGovernBuilder;
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.contract.WeightVoteGovernBuilder;
 import com.webank.blockchain.gov.acct.exception.InvalidParamException;
+import com.webank.blockchain.gov.acct.vo.GovernAccountGroup;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
@@ -51,6 +53,34 @@ public class GovernAccountInitializer extends BasicManager {
         String userAddr = createAccount(credential.getAddress());
         log.info("User account is {}", userAddr);
         return governance;
+    }
+
+    public WEGovernance createGovernAccount(GovernAccountGroup governAccountGroup)
+            throws Exception {
+        if (CollectionUtils.isEmpty(governAccountGroup.getGovernUserList())) {
+            log.error("user list can't be empty.");
+            throw new InvalidParamException("user list can't be empty.");
+        }
+        List<String> externalAccountList =
+                governAccountGroup
+                        .getGovernUserList()
+                        .stream()
+                        .map(u -> u.getExternalAccount())
+                        .collect(Collectors.toList());
+        List<BigInteger> weights =
+                governAccountGroup
+                        .getGovernUserList()
+                        .stream()
+                        .map(u -> (long) u.getWeight())
+                        .map(i -> BigInteger.valueOf(i))
+                        .collect(Collectors.toList());
+        for (BigInteger b : weights) {
+            if (!b.equals(1)) {
+                return createGovernAccount(
+                        externalAccountList, weights, governAccountGroup.getThreshold());
+            }
+        }
+        return createGovernAccount(externalAccountList, governAccountGroup.getThreshold());
     }
 
     public WEGovernance createGovernAccount(List<String> externalAccountList, int threshold)

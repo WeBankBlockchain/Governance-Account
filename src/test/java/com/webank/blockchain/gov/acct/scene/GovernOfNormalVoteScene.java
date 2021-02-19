@@ -21,9 +21,9 @@ import com.webank.blockchain.gov.acct.manager.GovernAccountInitializer;
 import com.webank.blockchain.gov.acct.manager.VoteModeGovernManager;
 import com.webank.blockchain.gov.acct.service.BaseAccountService;
 import com.webank.blockchain.gov.acct.tool.JacksonUtils;
+import com.webank.blockchain.gov.acct.vo.GovernAccountGroup;
+import com.webank.blockchain.gov.acct.vo.GovernUser;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.junit.jupiter.api.Assertions;
@@ -37,29 +37,22 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @data Feb 22, 2020 4:36:34 PM
  */
 public class GovernOfNormalVoteScene extends BaseTests {
-    @Autowired private GovernAccountInitializer governAdminManager;
+    @Autowired private GovernAccountInitializer governAccountInitializer;
     @Autowired private BaseAccountService baseAccountService;
     @Autowired private VoteModeGovernManager voteModeGovernManager;
 
-    // @Test
-    // create govern account of admin by user, and set the address in application.properties
-    public void createGovernAcct() throws Exception {
-        List<String> list = new ArrayList<>();
-        list.add(governanceUser1Keypair.getAddress());
-        list.add(governanceUser2Keypair.getAddress());
-        list.add(governanceUser3Keypair.getAddress());
-        WEGovernance govern = governAdminManager.createGovernAccount(list, 2);
-        System.out.println(govern.getContractAddress());
-        Assertions.assertNotNull(govern);
-    }
-
     @Test
     public void testScene() throws Exception {
-        List<String> list = new ArrayList<>();
-        list.add(governanceUser1Keypair.getAddress());
-        list.add(governanceUser2Keypair.getAddress());
-        list.add(governanceUser3Keypair.getAddress());
-        WEGovernance govern = governAdminManager.createGovernAccount(list, 2);
+        GovernAccountGroup governAccountGroup = new GovernAccountGroup();
+        governAccountGroup.setThreshold(2);
+        GovernUser governUser1 = new GovernUser("user1", governanceUser1Keypair.getAddress());
+        governAccountGroup.addGovernUser(governUser1);
+        GovernUser governUser2 = new GovernUser("user2", governanceUser2Keypair.getAddress());
+        governAccountGroup.addGovernUser(governUser2);
+        GovernUser governUser3 = new GovernUser("user3", governanceUser3Keypair.getAddress());
+        governAccountGroup.addGovernUser(governUser3);
+        WEGovernance govern = governAccountInitializer.createGovernAccount(governAccountGroup);
+
         System.out.println(govern.getContractAddress());
         Assertions.assertNotNull(govern);
         String acctMgrAddr = govern.getAccountManager();
@@ -72,13 +65,13 @@ public class GovernOfNormalVoteScene extends BaseTests {
                 WEGovernance.load(govern.getContractAddress(), client, governanceUser2Keypair);
         WEGovernance governanceU2 =
                 WEGovernance.load(govern.getContractAddress(), client, governanceUser3Keypair);
-        governAdminManager.setGovernance(govern);
-        governAdminManager.setAccountManager(accountManager);
+        governAccountInitializer.setGovernance(govern);
+        governAccountInitializer.setAccountManager(accountManager);
         voteModeGovernManager.setGovernance(govern);
         voteModeGovernManager.setAccountManager(accountManager);
 
         // do create
-        String p1Address = governAdminManager.createAccount(endUser1Keypair.getAddress());
+        String p1Address = governAccountInitializer.createAccount(endUser1Keypair.getAddress());
         Assertions.assertNotNull(p1Address);
         Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
 

@@ -33,21 +33,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GovernOfAdminModeScene extends BaseTests {
     @Autowired private GovernAccountInitializer manager;
     @Autowired private AdminModeGovernManager adminModeManager;
-    @Autowired private AccountManager accountManager;
     @Autowired private BaseAccountService baseAccountService;
-    @Autowired private WEGovernance govern;
-
-    // @Test
-    // create govern account of admin by user, and set the address in application.properties
-    public void testCreate() throws Exception {
-        WEGovernance govern = manager.createGovernAccount(governanceUser1Keypair);
-        System.out.println(govern.getContractAddress());
-        Assertions.assertNotNull(govern);
-    }
 
     @Test
     public void testAdminScene() throws Exception {
-        // set in super admin mode.
+        WEGovernance govern = manager.createGovernAccount(governanceUser1Keypair);
+        System.out.println(govern.getContractAddress());
+        Assertions.assertNotNull(govern);
+        adminModeManager.setGovernance(govern);
+        AccountManager accountManager =
+                AccountManager.load(govern.getAccountManager(), client, governanceUser1Keypair);
+        adminModeManager.setAccountManager(accountManager);
         adminModeManager.setCredentials(governanceUser1Keypair);
         Assertions.assertEquals(0, govern._mode().intValue());
 
