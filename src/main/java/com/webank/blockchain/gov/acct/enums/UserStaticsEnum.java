@@ -27,8 +27,19 @@ import lombok.Getter;
 public enum UserStaticsEnum {
     // 0-none, 1- social vote, 2-governance, 3-both 1 or 2;
 
-    NONE(0),
-    SOCIAL(1);
+    NONE(0, "default"),
+    SOCIAL(1, "social");
 
     private int statics;
+    private String name;
+
+    public static String getNameByStatics(int statics) {
+        UserStaticsEnum[] enums = values();
+        for (UserStaticsEnum e : enums) {
+            if (e.statics == statics) {
+                return e.getName();
+            }
+        }
+        return "undefined";
+    }
 }

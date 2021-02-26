@@ -18,7 +18,7 @@ import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.exception.InvalidParamException;
 import com.webank.blockchain.gov.acct.manager.AdminModeGovernManager;
 import com.webank.blockchain.gov.acct.manager.EndUserOperManager;
-import com.webank.blockchain.gov.acct.manager.GovernAccountInitializer;
+import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
 import com.webank.blockchain.gov.acct.manager.SocialVoteManager;
 import com.webank.blockchain.gov.acct.manager.VoteModeGovernManager;
 import lombok.Data;
@@ -54,8 +54,8 @@ public class AccountGovernManagerFactory {
         this.accountManager = AccountManager.load(acctManagerAddress, client, credentials);
     }
 
-    public GovernAccountInitializer newGovernAccountInitializer() {
-        GovernAccountInitializer manager = new GovernAccountInitializer();
+    public GovernContractInitializer newGovernAccountInitializer() {
+        GovernContractInitializer manager = new GovernContractInitializer();
         manager.setClient(client).setCredentials(credentials);
         return manager;
     }

@@ -38,6 +38,16 @@ public class GovernAccountGroup {
         log.info("After add governUser: " + toString());
     }
 
+    public void addGovernUser(String name, String externalAccount) {
+        GovernUser governUser = new GovernUser(name, externalAccount);
+        addGovernUser(governUser);
+    }
+
+    public void addGovernUser(String name, String externalAccount, int weight) {
+        GovernUser governUser = new GovernUser(name, externalAccount, weight);
+        addGovernUser(governUser);
+    }
+
     public void removeGovernUser(GovernUser governUser) {
         governUserList.removeIf(
                 g -> g.getExternalAccount().equals(governUser.getExternalAccount()));

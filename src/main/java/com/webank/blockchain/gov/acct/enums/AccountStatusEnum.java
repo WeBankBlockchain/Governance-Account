@@ -25,9 +25,20 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum AccountStatusEnum {
-    NORMAL(0),
-    FROZEN(1),
-    CLOSED(2);
+    NORMAL(0, "normal"),
+    FROZEN(1, "frozen"),
+    CLOSED(2, "closed");
 
     private int status;
+    private String name;
+
+    public static String getNameByStatics(int status) {
+        AccountStatusEnum[] enums = values();
+        for (AccountStatusEnum e : enums) {
+            if (e.status == status) {
+                return e.getName();
+            }
+        }
+        return "undefined";
+    }
 }

@@ -22,6 +22,7 @@ import com.webank.blockchain.gov.acct.vo.WeightInfo;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple3;
@@ -39,6 +40,7 @@ import org.springframework.stereotype.Service;
  * @data Feb 21, 2020 5:27:17 PM
  */
 @Service
+@Slf4j
 public class VoteModeGovernManager extends BasicManager {
 
     public BigInteger requestResetThreshold(int newThreshold) throws Exception {
@@ -288,7 +290,7 @@ public class VoteModeGovernManager extends BasicManager {
                                 .getValuesList()
                                 .get(1)
                                 .toString());
-        System.out.println("request id is " + v);
+        log.info("Vote request id is {}", v);
         return v;
     }
 

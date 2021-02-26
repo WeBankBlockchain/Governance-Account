@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class GovernAccountInitializer extends BasicManager {
+public class GovernContractInitializer extends BasicManager {
 
     public WEGovernance createGovernAccount(CryptoKeyPair credential) throws Exception {
         AdminGovernBuilder Builder = AdminGovernBuilder.deploy(client, credential);

@@ -16,11 +16,12 @@ package com.webank.blockchain.gov.acct.manager;
 import com.webank.blockchain.gov.acct.contract.UserAccount;
 import com.webank.blockchain.gov.acct.enums.UserStaticsEnum;
 import com.webank.blockchain.gov.acct.exception.InvalidParamException;
-import com.webank.blockchain.gov.acct.tool.JacksonUtils;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Service;
  * @data Feb 20, 2020 4:53:02 PM
  */
 @Service
+@Slf4j
 public class EndUserOperManager extends BasicManager {
 
     public TransactionReceipt setRelatedAccount(String account, int value) throws Exception {
@@ -59,6 +61,7 @@ public class EndUserOperManager extends BasicManager {
         if (statics.intValue() == UserStaticsEnum.NONE.getStatics()) {
             throw new InvalidParamException("Modify the same type.");
         }
+        log.info("Set Account {} to default reset mode.\n ", credentials.getAddress());
         return userAccount.setStatics();
     }
 
@@ -74,19 +77,25 @@ public class EndUserOperManager extends BasicManager {
         }
         List<BigInteger> value =
                 voters.stream().map(c -> BigInteger.ONE).collect(Collectors.toList());
-        System.out.println("ac owner is: " + userAccount._owner());
-        System.out.println(credentials.getAddress());
         TransactionReceipt tr = userAccount.setVoteStatics(voters, value, BigInteger.valueOf(2));
-        System.out.println(tr.getStatus());
-        System.out.println("Init vote: " + JacksonUtils.toJson(userAccount.getWeightInfo()));
+        log.info(
+                "\n Set Account [ {} ] to social reset mode.\n --------------------------------------  \n threshold is {} \n Voters: {} \n  ",
+                credentials.getAddress(),
+                2,
+                JsonUtils.toJson(userAccount.getWeightInfo().getValue1()));
         return tr;
     }
 
     public TransactionReceipt resetAccount(String newCredential) throws Exception {
+        log.info(
+                "External account [ {} ] reset by self to new external account [ {} ] ",
+                credentials.getAddress(),
+                newCredential);
         return accountManager.setExternalAccountByUser(newCredential);
     }
 
     public TransactionReceipt cancelAccount() throws Exception {
+        log.info("External account canceled by self: [ {} ] ", credentials.getAddress());
         return accountManager.cancelByUser();
     }
 

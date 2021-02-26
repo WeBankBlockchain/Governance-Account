@@ -16,7 +16,6 @@ package com.webank.blockchain.gov.acct.chain;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.webank.blockchain.gov.acct.BaseTests;
-import com.webank.blockchain.gov.acct.tool.JacksonUtils;
 import java.io.IOException;
 import java.math.BigInteger;
 import org.fisco.bcos.sdk.client.protocol.response.BcosBlock;
@@ -28,6 +27,7 @@ import org.fisco.bcos.sdk.client.protocol.response.ObserverList;
 import org.fisco.bcos.sdk.client.protocol.response.Peers;
 import org.fisco.bcos.sdk.client.protocol.response.SealerList;
 import org.fisco.bcos.sdk.client.protocol.response.SyncStatus;
+import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -97,7 +97,7 @@ public class ChainInfoTest extends BaseTests {
     @Test
     public void getBlock() throws IOException {
         BcosBlock bcosBlock = client.getBlockByNumber(BigInteger.ZERO, true);
-        System.out.println(JacksonUtils.toJson("bcosBlock: " + bcosBlock.getBlock()));
+        System.out.println(JsonUtils.toJson("bcosBlock: " + bcosBlock.getBlock()));
         assertNotNull(bcosBlock.getBlock());
     }
 }

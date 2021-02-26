@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @data Feb 21, 2020 8:49:25 PM
  */
 public class GovernAdminManagerTest extends BaseTests {
-    @Autowired private GovernAccountInitializer manager;
+    @Autowired private GovernContractInitializer manager;
 
     @Test
     // create govern account of admin by user

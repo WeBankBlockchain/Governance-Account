@@ -18,7 +18,6 @@ import com.webank.blockchain.gov.acct.contract.UserAccount;
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.exception.TransactionReceiptException;
 import com.webank.blockchain.gov.acct.service.JavaSDKBasicService;
-import com.webank.blockchain.gov.acct.tool.JacksonUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -27,6 +26,7 @@ import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderInterface;
 import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderService;
+import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -58,11 +58,12 @@ public class BasicManager extends JavaSDKBasicService {
     public String createAccount(AccountManager accountManager, String externalAccount)
             throws Exception {
         if (hasAccount(externalAccount)) {
+            log.info("Account [ {} ] already created.", externalAccount);
             return getBaseAccountAddress(externalAccount);
         }
         TransactionReceipt tr = accountManager.newAccount(externalAccount);
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
-            log.error("create new Account error: {}", JacksonUtils.toJson(tr));
+            log.error("create new Account error: {}", JsonUtils.toJson(tr));
             throw new TransactionReceiptException("Error create account error");
         }
 
@@ -73,20 +74,20 @@ public class BasicManager extends JavaSDKBasicService {
                         decoder.decodeReceiptWithValues(AccountManager.ABI, "newAccount", tr)
                                 .getValuesList()
                                 .get(1);
-        log.info("new acct {}, created by {}", addr, externalAccount);
+        log.info("new account created: [ {} ], created by [ {} ]", addr, externalAccount);
         return addr;
     }
 
     public String getExternalAccount(String userAccount) throws Exception {
         String externalAddress = accountManager.getExternalAccount(userAccount);
-        log.info("external address is {}, userAccount is {}", externalAddress, userAccount);
+        log.info("external address is [ {} ], userAccount is [ {} ]", externalAddress, userAccount);
         return externalAddress;
     }
 
     public UserAccount getUserAccount(String externalAccount) throws Exception {
         String configAddress = accountManager.getUserAccount(externalAccount);
         log.info(
-                "Account config address is {}, cryptoKeyPair is {}",
+                "User account config address is [ {} ], cryptoKeyPair is [ {} ]",
                 configAddress,
                 credentials.getAddress());
         return UserAccount.load(configAddress, client, credentials);
@@ -114,6 +115,10 @@ public class BasicManager extends JavaSDKBasicService {
     }
 
     public void changeCredentials(CryptoKeyPair credentials) throws Exception {
+        log.info(
+                "credentials change to [ {} ] from [ {} ]",
+                credentials.getAddress(),
+                this.credentials.getAddress());
         this.credentials = credentials;
         this.governance =
                 WEGovernance.load(this.governance.getContractAddress(), client, credentials);
