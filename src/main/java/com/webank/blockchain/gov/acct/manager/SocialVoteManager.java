@@ -49,6 +49,7 @@ public class SocialVoteManager extends BasicManager {
             throw new TransactionReceiptException(
                     "Error request a vote of reset account: " + tr.getStatus());
         }
+        log.info("Request reset account [ {} ] to new account [ {} ]", oldExternalAccount, newExternalAccount);
         return tr;
     }
 
@@ -76,6 +77,7 @@ public class SocialVoteManager extends BasicManager {
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException("Error reset account: " + tr.getStatus());
         }
+        log.info("External account reset to [ {} ] from [ {} ] ", newExternalAccount, oldExternalAccount);
         return tr;
     }
 }

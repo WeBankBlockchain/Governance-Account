@@ -91,7 +91,6 @@ public class UserOfSelfAdminScene extends BaseTests {
         // 5. 自助重新创建普通用户账户 end user1
         accountAddress = endUserAdminManager.createAccount(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddress);
-        System.out.println("endUser1Keypair: " + endUser1Keypair.getAddress());
         Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
         p1AccountAddress = accountManager.getUserAccount(endUser1Keypair.getAddress());
 

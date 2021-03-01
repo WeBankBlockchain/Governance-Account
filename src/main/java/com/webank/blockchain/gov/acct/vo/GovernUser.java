@@ -48,9 +48,9 @@ public class GovernUser extends User {
     }
 
     public String toString() {
-        return "GovernUser["
+        return "GovernUser:["
                 + name
-                + "]: "
+                + "] "
                 + "weight is ["
                 + weight
                 + "] external account is ["

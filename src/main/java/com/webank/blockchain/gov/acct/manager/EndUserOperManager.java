@@ -41,6 +41,7 @@ public class EndUserOperManager extends BasicManager {
             if (accountConfig.getWeightInfo().getValue1().size() >= 3 && value > 0) {
                 throw new InvalidParamException("Already too many voters.");
             }
+            log.info("External account [{}] set related account: [ {} ], weight: [ {} ]");
             return accountConfig.setWeight(account, BigInteger.valueOf(value));
         } else {
             throw new InvalidParamException("error account types.");
@@ -61,7 +62,7 @@ public class EndUserOperManager extends BasicManager {
         if (statics.intValue() == UserStaticsEnum.NONE.getStatics()) {
             throw new InvalidParamException("Modify the same type.");
         }
-        log.info("Set Account {} to default reset mode.\n ", credentials.getAddress());
+        log.info("Set External account {} to default reset mode.\n ", credentials.getAddress());
         return userAccount.setStatics();
     }
 

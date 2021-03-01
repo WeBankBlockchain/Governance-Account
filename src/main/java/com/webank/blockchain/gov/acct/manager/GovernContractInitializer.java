@@ -42,16 +42,15 @@ public class GovernContractInitializer extends BasicManager {
         AdminGovernBuilder Builder = AdminGovernBuilder.deploy(client, credential);
         String governanceAddress = Builder._governance();
         WEGovernance governance = WEGovernance.load(governanceAddress, client, credential);
-        log.info("Governance acct create succeed {} ", governance.getContractAddress());
+        log.info("Governance acct create succeed [ {} ] ", governance.getContractAddress());
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();
-        log.info("Account manager address is {}", accountManagerAddress);
         AccountManager accountManager =
                 AccountManager.load(accountManagerAddress, client, credentials);
-        log.info("Account manager created: {}", accountManager.getContractAddress());
+        log.info("Account manager created: [ {} ]", accountManager.getContractAddress());
         this.accountManager = accountManager;
         String userAddr = createAccount(credential.getAddress());
-        log.info("User account is {}", userAddr);
+        log.info("User account created is [ {} ]", userAddr);
         return governance;
     }
 
@@ -94,13 +93,13 @@ public class GovernContractInitializer extends BasicManager {
                         client, credentials, externalAccountList, BigInteger.valueOf(threshold));
         String governanceAddress = Builder._governance();
         WEGovernance governance = WEGovernance.load(governanceAddress, client, credentials);
-        log.info("Governance acct create succeed {} ", governance.getContractAddress());
+        log.info("Governance acct create succeed [ {} ] ", governance.getContractAddress());
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();
-        log.info("Account manager address is {}", accountManagerAddress);
+        log.info("Account manager address is [ {} ]", accountManagerAddress);
         AccountManager accountManager =
                 AccountManager.load(accountManagerAddress, client, credentials);
-        log.info("Account manager created: {}", accountManager.getContractAddress());
+        log.info("Account manager created: [ {} ]", accountManager.getContractAddress());
         this.accountManager = accountManager;
         return governance;
     }

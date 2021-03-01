@@ -53,7 +53,6 @@ public class GovernOfAdminModeScene extends BaseTests {
     public void testAdminScene() throws Exception {
         // 1. 创建治理合约
         WEGovernance govern = governContractInitializer.createGovernAccount(governanceUser1Keypair);
-        System.out.println(govern.getContractAddress());
         Assertions.assertNotNull(govern);
         adminModeManager.setGovernance(govern);
         AccountManager accountManager =
@@ -123,7 +122,7 @@ public class GovernOfAdminModeScene extends BaseTests {
         Assertions.assertEquals(2, baseAccountService.getStatus(u1AccountAddress));
         Assertions.assertTrue(!accountManager.hasAccount(governanceUser2Keypair.getAddress()));
 
-        // 12. 先创建governance user3 账户， 然后移交管理员权限
+        // 12. 先创建governance user3 账户， 然后将管理员权限移交给新创建的合约
         adminModeManager.createAccount(governanceUser3Keypair.getAddress());
         tr = adminModeManager.transferAdminAuth(governanceUser3Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
