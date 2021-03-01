@@ -121,13 +121,12 @@ public class GovernContractInitializer extends BasicManager {
                         BigInteger.valueOf(threshold));
         String governanceAddress = Builder._governance();
         WEGovernance governance = WEGovernance.load(governanceAddress, client, credentials);
-        log.info("Governance acct create succeed {} ", governance.getContractAddress());
+        log.info("Governance acct create succeed [ {} ] ", governance.getContractAddress());
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();
-        log.info("Account manager address is {}", accountManagerAddress);
+        log.info("Account manager address is [ {} ]", accountManagerAddress);
         AccountManager accountManager =
                 AccountManager.load(accountManagerAddress, client, credentials);
-        log.info("Account manager created: {}", accountManager.getContractAddress());
         this.accountManager = accountManager;
         return governance;
     }

@@ -13,14 +13,17 @@
  */
 package com.webank.blockchain.gov.acct.manager;
 
+import java.math.BigInteger;
+
+import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.springframework.stereotype.Service;
+
 import com.webank.blockchain.gov.acct.contract.UserAccount;
 import com.webank.blockchain.gov.acct.enums.RequestEnum;
 import com.webank.blockchain.gov.acct.exception.TransactionReceiptException;
-import java.math.BigInteger;
+import com.webank.blockchain.gov.acct.vo.VoteRequestInfo;
+
 import lombok.extern.slf4j.Slf4j;
-import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple8;
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.springframework.stereotype.Service;
 
 /**
  * SocialVoteManager @Description: SocialVoteManager
@@ -51,19 +54,8 @@ public class SocialVoteManager extends BasicManager {
 
     public TransactionReceipt vote(String oldExternalAccount, boolean agreed) throws Exception {
         UserAccount accountConfig = getUserAccount(oldExternalAccount);
-        Tuple8<
-                        BigInteger,
-                        String,
-                        BigInteger,
-                        BigInteger,
-                        BigInteger,
-                        BigInteger,
-                        String,
-                        BigInteger>
-                requestInfo =
-                        accountConfig.getRequestInfo(RequestEnum.OPER_CHANGE_CREDENTIAL.getType());
         log.info(
-                "\n start vote of account config: {} \n --------------------------------------  \n voter: [ {} ] \n agreed: [ {} ] \n",
+                "\n start vote of account config: [ {} ] \n --------------------------------------  \n voter: [ {} ] \n agreed: [ {} ] \n",
                 accountConfig.getContractAddress(),
                 this.credentials.getAddress(),
                 agreed);
@@ -72,14 +64,8 @@ public class SocialVoteManager extends BasicManager {
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException("Error vote: " + tr.getStatus());
         }
-        requestInfo = accountConfig.getRequestInfo(RequestEnum.OPER_CHANGE_CREDENTIAL.getType());
-        log.info(
-                "\n vote status of account config: {} \n -------------------------------------- \n vote type: [ {} ] \n threshod is {} \n weight is {} \n vote passed? [ {} ] \n",
-                accountConfig.getContractAddress(),
-                RequestEnum.getNameByStatics(requestInfo.getValue5().intValue()),
-                requestInfo.getValue3(),
-                requestInfo.getValue4(),
-                requestInfo.getValue6().intValue() == 1);
+        VoteRequestInfo voteRequestInfo = new VoteRequestInfo();
+        voteRequestInfo.forward(accountConfig.getRequestInfo(RequestEnum.OPER_CHANGE_CREDENTIAL.getType())).print();
         return tr;
     }
 

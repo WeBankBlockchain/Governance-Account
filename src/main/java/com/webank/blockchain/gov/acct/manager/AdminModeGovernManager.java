@@ -14,6 +14,9 @@
 package com.webank.blockchain.gov.acct.manager;
 
 import com.webank.blockchain.gov.acct.enums.RequestEnum;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.springframework.stereotype.Service;
 
@@ -24,18 +27,22 @@ import org.springframework.stereotype.Service;
  * @data Feb 22, 2020 11:20:09 AM
  */
 @Service
+@Slf4j
 public class AdminModeGovernManager extends BasicManager {
 
     public TransactionReceipt transferAdminAuth(String newAdminAddr) throws Exception {
+        log.info("Contract [ {} ] transfer owner to address [ {} ]", governance.getContractAddress(), newAdminAddr);
         return governance.transferOwner(newAdminAddr);
     }
 
     public TransactionReceipt resetAccount(String oldAccount, String newAccount) throws Exception {
+        log.info("reset account to [ {} ] from [ {} ]", newAccount, oldAccount);
         return governance.setExternalAccount(
                 RequestEnum.OPER_CHANGE_CREDENTIAL.getType(), newAccount, oldAccount);
     }
 
     public TransactionReceipt freezeAccount(String externalAccount) throws Exception {
+        log.info("freeze account [ {} ]", externalAccount);
         return governance.doOper(
                 RequestEnum.OPER_FREEZE_ACCOUNT.getType(),
                 externalAccount,
@@ -43,6 +50,7 @@ public class AdminModeGovernManager extends BasicManager {
     }
 
     public TransactionReceipt unfreezeAccount(String externalAccount) throws Exception {
+        log.info("unfreeze account [ {} ]", externalAccount);
         return governance.doOper(
                 RequestEnum.OPER_UNFREEZE_ACCOUNT.getType(),
                 externalAccount,
@@ -50,6 +58,7 @@ public class AdminModeGovernManager extends BasicManager {
     }
 
     public TransactionReceipt cancelAccount(String userAccount) throws Exception {
+        log.info("cancel account [ {} ]", userAccount);
         return governance.doOper(
                 RequestEnum.OPER_CANCEL_ACCOUNT.getType(),
                 userAccount,

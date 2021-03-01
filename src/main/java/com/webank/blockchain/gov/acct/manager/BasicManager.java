@@ -86,7 +86,7 @@ public class BasicManager extends JavaSDKBasicService {
 
     public UserAccount getUserAccount(String externalAccount) throws Exception {
         String configAddress = accountManager.getUserAccount(externalAccount);
-        log.info(
+        log.debug(
                 "User account config address is [ {} ], cryptoKeyPair is [ {} ]",
                 configAddress,
                 credentials.getAddress());

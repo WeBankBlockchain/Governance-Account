@@ -54,7 +54,7 @@ public class GovernAccountGroup {
     }
 
     public String toString() {
-        String tmp = "GovernAccountGroup " + name + " info: \n";
+        String tmp = "\n GovernAccountGroup [" + name + "] info: \n";
         int totalWeight = 0;
         for (GovernUser u : governUserList) {
             tmp += u.toString() + "\n";

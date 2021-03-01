@@ -31,4 +31,13 @@ public class WeightInfo {
     private List<BigInteger> weightList;
     private int threshold;
     private int acctType;
+    
+    public String toString() {
+        String tmp = "account type is [ " + acctType +" ]\n";
+        tmp += "threshold is [ " + threshold + " ] \n";
+        for(int i = 0; i< addressList.size(); i++) {
+            tmp+= "address: [" + addressList.get(i) +"]  weight: [" + weightList.get(i) +"]";
+        }
+        return tmp;
+    }
 }

@@ -29,8 +29,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * GovernOfNormalVoteScene @Description: 这是多签制模式的样例 测试过程： 1. 配置治理账户信息 2. 创建治理合约 3. 创建普通用户账户 4.
- * 重置普通用户账户私钥 5. 冻结普通用户账户 6. 解冻普通用户账户 7. 注销普通用户账户 8. 重置治理合约的投票阈值 9. 删除治理账户 10. 添加治理账户
+ * GovernOfNormalVoteScene 
+ * @Description: 这是多签制模式的样例 
+ * 测试过程： 
+ * 1. 配置治理账户信息 
+ * 2. 创建治理合约 
+ * 3. 创建普通用户账户 
+ * 4. 重置普通用户账户私钥 
+ * 5. 冻结普通用户账户 
+ * 6. 解冻普通用户账户 
+ * 7. 注销普通用户账户 
+ * 8. 重置治理合约的投票阈值 
+ * 9. 删除治理账户 
+ * 10. 添加治理账户
  *
  * @author maojiayu
  * @data Feb 22, 2020 4:36:34 PM
@@ -58,11 +69,6 @@ public class GovernOfNormalVoteScene extends BaseTests {
         AccountManager accountManager =
                 AccountManager.load(acctMgrAddr, client, governanceUser1Keypair);
         Assertions.assertTrue(accountManager.hasAccount(governanceUser2Keypair.getAddress()));
-        // prepare other govern account
-        WEGovernance governanceU1 =
-                WEGovernance.load(govern.getContractAddress(), client, governanceUser2Keypair);
-        WEGovernance governanceU2 =
-                WEGovernance.load(govern.getContractAddress(), client, governanceUser3Keypair);
         // set voteModeGovernManager
         voteModeGovernManager.setGovernance(govern);
         voteModeGovernManager.setAccountManager(accountManager);
@@ -103,8 +109,10 @@ public class GovernOfNormalVoteScene extends BaseTests {
 
         // 5. 冻结普通用户账户: end user 2
         requestId = voteModeGovernManager.requestFreezeAccount(endUser2Keypair.getAddress());
-        governanceU1.vote(requestId, true);
-        governanceU2.vote(requestId, true);
+        voteModeGovernManager.changeCredentials(governanceUser1Keypair);
+        voteModeGovernManager.vote(requestId, true);
+        voteModeGovernManager.changeCredentials(governanceUser2Keypair);
+        voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(govern.passed(requestId));
         tr = voteModeGovernManager.freezeAccount(requestId, endUser2Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
@@ -113,8 +121,10 @@ public class GovernOfNormalVoteScene extends BaseTests {
 
         // 6. 解冻普通用户账户: end user 2
         requestId = voteModeGovernManager.requestUnfreezeAccount(endUser2Keypair.getAddress());
-        governanceU1.vote(requestId, true);
-        governanceU2.vote(requestId, true);
+        voteModeGovernManager.changeCredentials(governanceUser1Keypair);
+        voteModeGovernManager.vote(requestId, true);
+        voteModeGovernManager.changeCredentials(governanceUser2Keypair);
+        voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(govern.passed(requestId));
         tr = voteModeGovernManager.unfreezeAccount(requestId, endUser2Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
@@ -124,8 +134,10 @@ public class GovernOfNormalVoteScene extends BaseTests {
 
         // 7. 注销普通用户账户: end user2
         requestId = voteModeGovernManager.requestCancelAccount(endUser2Keypair.getAddress());
-        governanceU1.vote(requestId, true);
-        governanceU2.vote(requestId, true);
+        voteModeGovernManager.changeCredentials(governanceUser1Keypair);
+        voteModeGovernManager.vote(requestId, true);
+        voteModeGovernManager.changeCredentials(governanceUser2Keypair);
+        voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(govern.passed(requestId));
         tr = voteModeGovernManager.cancelAccount(requestId, endUser2Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
@@ -135,8 +147,10 @@ public class GovernOfNormalVoteScene extends BaseTests {
 
         // 8. 重置治理合约的投票阈值
         requestId = voteModeGovernManager.requestResetThreshold(1);
-        governanceU1.vote(requestId, true);
-        governanceU2.vote(requestId, true);
+        voteModeGovernManager.changeCredentials(governanceUser1Keypair);
+        voteModeGovernManager.vote(requestId, true);
+        voteModeGovernManager.changeCredentials(governanceUser2Keypair);
+        voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(govern.passed(requestId));
         tr = voteModeGovernManager.resetThreshold(requestId, 1);
         Assertions.assertEquals("0x0", tr.getStatus());
@@ -146,7 +160,8 @@ public class GovernOfNormalVoteScene extends BaseTests {
         requestId =
                 voteModeGovernManager.requestRemoveGovernAccount(
                         governanceUser3Keypair.getAddress());
-        governanceU1.vote(requestId, true);
+        voteModeGovernManager.changeCredentials(governanceUser1Keypair);
+        voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(govern.passed(requestId));
         Assertions.assertTrue(
                 govern.requestReady(
@@ -168,7 +183,7 @@ public class GovernOfNormalVoteScene extends BaseTests {
         // 10. 添加治理账户: governance user 3
         requestId =
                 voteModeGovernManager.requestAddGovernAccount(governanceUser3Keypair.getAddress());
-        governanceU1.vote(requestId, true);
+        voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(govern.passed(requestId));
         tr = voteModeGovernManager.addGovernAccount(requestId, governanceUser3Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());

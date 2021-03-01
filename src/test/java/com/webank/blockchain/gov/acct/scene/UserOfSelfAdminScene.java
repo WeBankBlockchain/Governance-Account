@@ -28,8 +28,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * UserOfSelfAdminScene @Description: 这是普通用户操作相关的样例 测试过程： 1. 创建治理合约和初始化初始化endUserAdminManager 2.
- * 自助创建普通用户账户 3. 自助重置普通用户账户私钥 4. 自助注销普通用户账户 5. 自助重新创建普通用户账户 6. 修改普通用户账户私钥重置方式 7. 自助注销普通用户账户
+ * UserOfSelfAdminScene 
+ * @Description: 这是普通用户操作相关的样例 
+ * 测试过程： 
+ * 1. 创建治理合约和初始化初始化endUserAdminManager 
+ * 2.自助创建普通用户账户 
+ * 3. 自助重置普通用户账户私钥 
+ * 4. 自助注销普通用户账户 
+ * 5. 自助重新创建普通用户账户 
+ * 6. 修改普通用户账户私钥重置方式 
+ * 7. 自助注销普通用户账户
  *
  * @author maojiayu
  * @data Feb 24, 2020 11:28:38 AM
