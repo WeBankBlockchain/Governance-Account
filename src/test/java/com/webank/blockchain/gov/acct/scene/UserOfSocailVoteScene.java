@@ -53,30 +53,30 @@ public class UserOfSocailVoteScene extends BaseTests {
         //  1. 创建治理合约
         WEGovernance governance = gvernContractInitializer.createGovernAccount(endUser1Keypair);
         // 初始化endUserAdminManager 和 socialVoteManager
-        EndUserOperManager endUserAdminManager = new EndUserOperManager(governance, client, endUser1Keypair);
+        EndUserOperManager endUserOperManager = new EndUserOperManager(governance, client, endUser1Keypair);
         SocialVoteManager socialVoteManager = new SocialVoteManager(governance, client, endUser1Keypair);
 
         // 2. 自助创建普通用户账户， end user 1,2&3
-        String accountAddressP1 = endUserAdminManager.createAccount(endUser1Keypair.getAddress());
+        String accountAddressP1 = endUserOperManager.createAccount(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddressP1);
-        Assertions.assertTrue(endUserAdminManager.hasAccount(endUser1Keypair.getAddress()));
-        String accountAddressP2 = endUserAdminManager.createAccount(endUser2Keypair.getAddress());
+        Assertions.assertTrue(endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
+        String accountAddressP2 = endUserOperManager.createAccount(endUser2Keypair.getAddress());
         Assertions.assertNotNull(accountAddressP2);
-        Assertions.assertTrue(endUserAdminManager.hasAccount(endUser2Keypair.getAddress()));
-        String accountAddressP3 = endUserAdminManager.createAccount(endUser3Keypair.getAddress());
+        Assertions.assertTrue(endUserOperManager.hasAccount(endUser2Keypair.getAddress()));
+        String accountAddressP3 = endUserOperManager.createAccount(endUser3Keypair.getAddress());
         Assertions.assertNotNull(accountAddressP3);
-        Assertions.assertTrue(endUserAdminManager.hasAccount(endUser3Keypair.getAddress()));
+        Assertions.assertTrue(endUserOperManager.hasAccount(endUser3Keypair.getAddress()));
 
         // 3. 自助修改普通用户账户私钥重置方式
         // 注意：此处传入的是内部账户的地址，而非用户外部地址。
         List<String> list =
                 Lists.newArrayList(accountAddressP1, accountAddressP2, accountAddressP3);
         // set account reset type
-        TransactionReceipt tr = endUserAdminManager.modifyManagerType(list);
+        TransactionReceipt tr = endUserOperManager.modifyManagerType(list);
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
-                UserStaticsEnum.SOCIAL.getStatics(), endUserAdminManager.getUserStatics());
-        UserAccount userAccount = endUserAdminManager.getUserAccount(endUser1Keypair.getAddress());
+                UserStaticsEnum.SOCIAL.getStatics(), endUserOperManager.getUserStatics());
+        UserAccount userAccount = endUserOperManager.getUserAccount(endUser1Keypair.getAddress());   
 
         // 4. 发起社交好友重置私钥
         socialVoteManager.requestResetAccount(
@@ -96,12 +96,12 @@ public class UserOfSocailVoteScene extends BaseTests {
                 socialVoteManager.resetAccount(
                         governanceUser2Keypair.getAddress(), endUser1Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
-        Assertions.assertTrue(!endUserAdminManager.hasAccount(endUser1Keypair.getAddress()));
-        Assertions.assertTrue(endUserAdminManager.hasAccount(governanceUser2Keypair.getAddress()));
+        Assertions.assertTrue(!endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
+        Assertions.assertTrue(endUserOperManager.hasAccount(governanceUser2Keypair.getAddress()));
         Assertions.assertTrue(!userAccount.passed(RequestEnum.OPER_CHANGE_CREDENTIAL.getType()));
 
         // 5. 自助注销普通用户账户
-        endUserAdminManager.changeCredentials(endUser2Keypair);
-        endUserAdminManager.cancelAccount();
+        endUserOperManager.changeCredentials(endUser2Keypair);
+        endUserOperManager.cancelAccount();
     }
 }

@@ -56,7 +56,7 @@ public class EndUserOperManager extends BasicManager {
             if (accountConfig.getWeightInfo().getValue1().size() >= 3 && value > 0) {
                 throw new InvalidParamException("Already too many voters.");
             }
-            log.info("External account [{}] set related account: [ {} ], weight: [ {} ]");
+            log.info("External account [{}] set related account: [ {} ], weight: [ {} ]", credentials.getAddress(), account, value);
             return accountConfig.setWeight(account, BigInteger.valueOf(value));
         } else {
             throw new InvalidParamException("error account types.");

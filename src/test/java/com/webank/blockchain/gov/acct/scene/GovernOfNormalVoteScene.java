@@ -77,8 +77,7 @@ public class GovernOfNormalVoteScene extends BaseTests {
         voteModeGovernManager.changeCredentials(governanceUser1Keypair);
         // request vote: user1 and user2 approve.
         BigInteger requestId =
-                voteModeGovernManager.requestResetAccount(
-                        endUser2Keypair.getAddress(), endUser1Keypair.getAddress());
+                voteModeGovernManager.requestResetAccount(endUser2Keypair.getAddress(), endUser1Keypair.getAddress());
         // user1 approve
         voteModeGovernManager.vote(requestId, true);
         voteModeGovernManager.changeCredentials(governanceUser2Keypair);
@@ -87,16 +86,10 @@ public class GovernOfNormalVoteScene extends BaseTests {
         voteModeGovernManager.changeCredentials(governanceUser1Keypair);
         // threshold is 2, vote passed.
         Assertions.assertTrue(governance.passed(requestId));
-        Assertions.assertTrue(
-                governance.requestReady(
-                        requestId,
-                        BigInteger.valueOf(2),
-                        endUser1Keypair.getAddress(),
-                        endUser2Keypair.getAddress(),
-                        BigInteger.ZERO));
-        TransactionReceipt tr =
-                voteModeGovernManager.resetAccount(
-                        requestId, endUser2Keypair.getAddress(), endUser1Keypair.getAddress());
+        Assertions.assertTrue(governance.requestReady(requestId, BigInteger.valueOf(2), endUser1Keypair.getAddress(),
+                endUser2Keypair.getAddress(), BigInteger.ZERO));
+        TransactionReceipt tr = voteModeGovernManager.resetAccount(requestId, endUser2Keypair.getAddress(),
+                endUser1Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertTrue(!voteModeGovernManager.hasAccount(endUser1Keypair.getAddress()));
         Assertions.assertTrue(voteModeGovernManager.hasAccount(endUser2Keypair.getAddress()));
