@@ -13,9 +13,16 @@
  */
 package com.webank.blockchain.gov.acct.scene;
 
+import java.math.BigInteger;
+import java.util.List;
+
+import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.common.collect.Lists;
 import com.webank.blockchain.gov.acct.BaseTests;
-import com.webank.blockchain.gov.acct.contract.AccountManager;
 import com.webank.blockchain.gov.acct.contract.UserAccount;
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.enums.RequestEnum;
@@ -23,12 +30,6 @@ import com.webank.blockchain.gov.acct.enums.UserStaticsEnum;
 import com.webank.blockchain.gov.acct.manager.EndUserOperManager;
 import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
 import com.webank.blockchain.gov.acct.manager.SocialVoteManager;
-import java.math.BigInteger;
-import java.util.List;
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * UserOfSelfAdminScene 
@@ -45,37 +46,26 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class UserOfSocailVoteScene extends BaseTests {
     @Autowired private GovernContractInitializer gvernContractInitializer;
-    @Autowired private EndUserOperManager endUserAdminManager;
-    @Autowired private SocialVoteManager socialVoteManager;
 
     @Test
     public void test() throws Exception {
 
         //  1. 创建治理合约
         WEGovernance governance = gvernContractInitializer.createGovernAccount(endUser1Keypair);
-        // load AccountManager
-        AccountManager accountManager =
-                AccountManager.load(governance.getAccountManager(), client, endUser1Keypair);
-        // 初始化endUserAdminManager
-        endUserAdminManager
-                .setAccountManager(accountManager)
-                .setGovernance(governance)
-                .setCredentials(endUser1Keypair);
-        socialVoteManager
-                .setAccountManager(accountManager)
-                .setGovernance(governance)
-                .setCredentials(endUser1Keypair);
+        // 初始化endUserAdminManager 和 socialVoteManager
+        EndUserOperManager endUserAdminManager = new EndUserOperManager(governance, client, endUser1Keypair);
+        SocialVoteManager socialVoteManager = new SocialVoteManager(governance, client, endUser1Keypair);
 
         // 2. 自助创建普通用户账户， end user 1,2&3
         String accountAddressP1 = endUserAdminManager.createAccount(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddressP1);
-        Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
+        Assertions.assertTrue(endUserAdminManager.hasAccount(endUser1Keypair.getAddress()));
         String accountAddressP2 = endUserAdminManager.createAccount(endUser2Keypair.getAddress());
         Assertions.assertNotNull(accountAddressP2);
-        Assertions.assertTrue(accountManager.hasAccount(endUser2Keypair.getAddress()));
+        Assertions.assertTrue(endUserAdminManager.hasAccount(endUser2Keypair.getAddress()));
         String accountAddressP3 = endUserAdminManager.createAccount(endUser3Keypair.getAddress());
         Assertions.assertNotNull(accountAddressP3);
-        Assertions.assertTrue(accountManager.hasAccount(endUser3Keypair.getAddress()));
+        Assertions.assertTrue(endUserAdminManager.hasAccount(endUser3Keypair.getAddress()));
 
         // 3. 自助修改普通用户账户私钥重置方式
         // 注意：此处传入的是内部账户的地址，而非用户外部地址。
@@ -106,8 +96,8 @@ public class UserOfSocailVoteScene extends BaseTests {
                 socialVoteManager.resetAccount(
                         governanceUser2Keypair.getAddress(), endUser1Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
-        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
-        Assertions.assertTrue(accountManager.hasAccount(governanceUser2Keypair.getAddress()));
+        Assertions.assertTrue(!endUserAdminManager.hasAccount(endUser1Keypair.getAddress()));
+        Assertions.assertTrue(endUserAdminManager.hasAccount(governanceUser2Keypair.getAddress()));
         Assertions.assertTrue(!userAccount.passed(RequestEnum.OPER_CHANGE_CREDENTIAL.getType()));
 
         // 5. 自助注销普通用户账户

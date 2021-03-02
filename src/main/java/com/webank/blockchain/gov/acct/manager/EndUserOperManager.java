@@ -14,13 +14,18 @@
 package com.webank.blockchain.gov.acct.manager;
 
 import com.webank.blockchain.gov.acct.contract.UserAccount;
+import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.enums.UserStaticsEnum;
 import com.webank.blockchain.gov.acct.exception.InvalidParamException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+
+import org.fisco.bcos.sdk.client.Client;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +38,16 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class EndUserOperManager extends BasicManager {
+    
+    public EndUserOperManager() {
+        super();
+    }
+
+    public EndUserOperManager(WEGovernance governance, Client client, CryptoKeyPair credentials)
+            throws ContractException {
+        super(governance, client, credentials);
+    }
+
 
     public TransactionReceipt setRelatedAccount(String account, int value) throws Exception {
         UserAccount accountConfig = getUserAccount(credentials.getAddress());

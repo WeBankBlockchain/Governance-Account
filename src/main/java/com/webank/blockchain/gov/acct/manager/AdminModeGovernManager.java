@@ -13,12 +13,16 @@
  */
 package com.webank.blockchain.gov.acct.manager;
 
+import org.fisco.bcos.sdk.client.Client;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
+import org.springframework.stereotype.Service;
+
+import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.enums.RequestEnum;
 
 import lombok.extern.slf4j.Slf4j;
-
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.springframework.stereotype.Service;
 
 /**
  * AdminModeManager @Description: AdminModeManager
@@ -29,6 +33,15 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class AdminModeGovernManager extends BasicManager {
+    
+    public AdminModeGovernManager() {
+        super();
+    }
+
+    public AdminModeGovernManager(WEGovernance governance, Client client, CryptoKeyPair credentials)
+            throws ContractException {
+        super(governance, client, credentials);
+    }
 
     public TransactionReceipt transferAdminAuth(String newAdminAddr) throws Exception {
         log.info("Contract [ {} ] transfer owner to address [ {} ]", governance.getContractAddress(), newAdminAddr);

@@ -22,10 +22,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+
+import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderInterface;
 import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderService;
+import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,6 +49,17 @@ public class BasicManager extends JavaSDKBasicService {
 
     @Autowired(required = false)
     protected AccountManager accountManager;
+    
+    public BasicManager() {
+    }
+
+    public BasicManager(WEGovernance governance, Client client, CryptoKeyPair credentials) throws ContractException {
+        super.client = client;
+        super.credentials = credentials;
+        this.governance = governance;
+        this.accountManager = AccountManager.load(governance.getAccountManager(), client, credentials);
+    }
+    
 
     public String getAccountAddress() throws Exception {
         return accountManager.getUserAccount(credentials.getAddress());

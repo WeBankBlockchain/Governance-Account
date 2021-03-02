@@ -21,9 +21,12 @@ import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple3;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple8;
+import org.fisco.bcos.sdk.client.Client;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderInterface;
 import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderService;
+import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.transaction.model.exception.TransactionException;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +48,15 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class VoteModeGovernManager extends BasicManager {
+    
+    public VoteModeGovernManager() {
+        super();
+    }
+
+    public VoteModeGovernManager(WEGovernance governance, Client client, CryptoKeyPair credentials)
+            throws ContractException {
+        super(governance, client, credentials);
+    }
 
     public BigInteger requestResetThreshold(int newThreshold) throws Exception {
         TransactionReceipt tr = governance.register(RequestEnum.OPER_RESET_THRESHOLD.getType(),
