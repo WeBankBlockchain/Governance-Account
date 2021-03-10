@@ -13,106 +13,98 @@
  */
 package com.webank.blockchain.gov.acct.scene;
 
-import com.webank.blockchain.gov.acct.BaseTests;
-import com.webank.blockchain.gov.acct.contract.AccountManager;
-import com.webank.blockchain.gov.acct.contract.WEGovernance;
-import com.webank.blockchain.gov.acct.enums.UserStaticsEnum;
-import com.webank.blockchain.gov.acct.manager.EndUserOperManager;
-import com.webank.blockchain.gov.acct.service.BaseAccountService;
 import java.util.List;
+
 import org.assertj.core.util.Lists;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.webank.blockchain.gov.acct.BaseTests;
+import com.webank.blockchain.gov.acct.contract.WEGovernance;
+import com.webank.blockchain.gov.acct.enums.UserStaticsEnum;
+import com.webank.blockchain.gov.acct.manager.EndUserOperManager;
+import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
+import com.webank.blockchain.gov.acct.service.BaseAccountService;
+
 /**
- * UserOfSelfAdminScene @Description: UserOfSelfAdminScene
+ * UserOfSelfAdminScene 
+ * @Description: 这是普通用户操作相关的样例 
+ * 测试过程： 
+ * 1. 创建治理合约和初始化初始化endUserAdminManager 
+ * 2.自助创建普通用户账户 
+ * 3. 自助重置普通用户账户私钥 
+ * 4. 自助注销普通用户账户 
+ * 5. 自助重新创建普通用户账户 
+ * 6. 修改普通用户账户私钥重置方式 
+ * 7. 自助注销普通用户账户
  *
  * @author maojiayu
  * @data Feb 24, 2020 11:28:38 AM
  */
 public class UserOfSelfAdminScene extends BaseTests {
-    @Autowired private EndUserOperManager endUserAdminManager;
-    @Autowired private WEGovernance governanceU;
-    @Autowired private AccountManager accountManagerU;
+    @Autowired private GovernContractInitializer gvernContractInitializer;
     @Autowired private BaseAccountService baseAccountService;
 
     @Test
     public void test() throws Exception {
-        AccountManager accountManager =
-                AccountManager.load(accountManagerU.getContractAddress(), client, endUser1Keypair);
+        //  1. 创建治理合约
         WEGovernance governance =
-                WEGovernance.load(governanceU.getContractAddress(), client, endUser1Keypair);
-        endUserAdminManager.setAccountManager(accountManager);
-        endUserAdminManager.setGovernance(governance);
-        endUserAdminManager.setCredentials(endUser1Keypair);
+                gvernContractInitializer.createGovernAccount(governanceUser1Keypair);
+        // 初始化endUserAdminManager
+        EndUserOperManager endUserOperManager = new EndUserOperManager(governance, client, endUser1Keypair);
 
-        // create account
-        if (!endUserAdminManager.hasAccount()) {
-            endUserAdminManager.createAccount(endUser1Keypair.getAddress());
+        // 2. 自助创建普通用户账户： end user1
+        if (!endUserOperManager.hasAccount()) {
+            endUserOperManager.createAccount(endUser1Keypair.getAddress());
         }
         String accountAddress =
-                endUserAdminManager.getBaseAccountAddress(endUser1Keypair.getAddress());
+                endUserOperManager.getBaseAccountAddress(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddress);
-        System.out.println("endUser1Keypair: " + endUser1Keypair.getAddress());
-        Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
+        Assertions.assertTrue(endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
         Assertions.assertEquals(
-                UserStaticsEnum.NONE.getStatics(), endUserAdminManager.getUserStatics());
-        String p1AccountAddress = accountManager.getUserAccount(endUser1Keypair.getAddress());
+                UserStaticsEnum.NONE.getStatics(), endUserOperManager.getUserStatics());
+        String p1AccountAddress = endUserOperManager.getUserAccount(endUser1Keypair.getAddress()).getContractAddress();
         Assertions.assertEquals(accountAddress, p1AccountAddress);
 
-        // reset account
-        endUserAdminManager.setAccountManager(accountManager);
-        TransactionReceipt tr = endUserAdminManager.resetAccount(endUser2Keypair.getAddress());
+        // 3. 自助重置普通用户账户私钥: end user1 -> end user2
+        TransactionReceipt tr = endUserOperManager.resetAccount(endUser2Keypair.getAddress());
         Assertions.assertEquals("0x0", tr.getStatus());
-        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
-        Assertions.assertTrue(accountManager.hasAccount(endUser2Keypair.getAddress()));
+        Assertions.assertTrue(!endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
+        Assertions.assertTrue(endUserOperManager.hasAccount(endUser2Keypair.getAddress()));
 
-        // cancel account
-        endUserAdminManager.changeCredentials(endUser2Keypair);
-        tr = endUserAdminManager.cancelAccount();
-        Assertions.assertEquals("0x0", tr.getStatus());
-        Assertions.assertEquals(2, baseAccountService.getStatus(p1AccountAddress));
-        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
-        endUserAdminManager.changeCredentials(endUser1Keypair);
-
-        // create again
-        accountAddress = endUserAdminManager.createAccount(endUser1Keypair.getAddress());
-        Assertions.assertNotNull(accountAddress);
-        System.out.println("endUser1Keypair: " + endUser1Keypair.getAddress());
-        Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
-        p1AccountAddress = accountManager.getUserAccount(endUser1Keypair.getAddress());
-
-        // cancel account
-        tr = endUserAdminManager.cancelAccount();
+        // 4. 自助注销普通用户账户: end user2
+        endUserOperManager.changeCredentials(endUser2Keypair);
+        tr = endUserOperManager.cancelAccount();
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(p1AccountAddress));
-        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
+        Assertions.assertTrue(!endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
+        endUserOperManager.changeCredentials(endUser1Keypair);
 
-        // create again
-        accountAddress = endUserAdminManager.createAccount(endUser1Keypair.getAddress());
+        // 5. 自助重新创建普通用户账户 end user1
+        accountAddress = endUserOperManager.createAccount(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddress);
-        System.out.println("endUser1Keypair: " + endUser1Keypair.getAddress());
-        Assertions.assertTrue(accountManager.hasAccount(endUser1Keypair.getAddress()));
-        p1AccountAddress = accountManager.getUserAccount(endUser1Keypair.getAddress());
+        Assertions.assertTrue(endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
+        p1AccountAddress = endUserOperManager.getUserAccount(endUser1Keypair.getAddress()).getContractAddress();
 
-        // modify manager type
+        // 6. 修改普通用户账户私钥重置方式： 增加配置支持社交好友投票重置私钥
         Assertions.assertEquals(
-                UserStaticsEnum.NONE.getStatics(), endUserAdminManager.getUserStatics());
-        List<String> voters = Lists.newArrayList();
-        voters.add(governanceUser1Keypair.getAddress());
-        voters.add(governanceUser2Keypair.getAddress());
-        voters.add(governanceUser3Keypair.getAddress());
-        tr = endUserAdminManager.modifyManagerType(voters);
+                UserStaticsEnum.NONE.getStatics(), endUserOperManager.getUserStatics());
+        List<String> voters =
+                Lists.newArrayList(
+                        governanceUser1Keypair.getAddress(),
+                        governanceUser2Keypair.getAddress(),
+                        governanceUser3Keypair.getAddress());
+        tr = endUserOperManager.modifyManagerType(voters);
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
-                UserStaticsEnum.SOCIAL.getStatics(), endUserAdminManager.getUserStatics());
+                UserStaticsEnum.SOCIAL.getStatics(), endUserOperManager.getUserStatics());
 
-        // cancel account
-        tr = endUserAdminManager.cancelAccount();
+        // 7. 自助注销普通用户账户
+        tr = endUserOperManager.cancelAccount();
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(p1AccountAddress));
-        Assertions.assertTrue(!accountManager.hasAccount(endUser1Keypair.getAddress()));
+        Assertions.assertTrue(!endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
     }
 }

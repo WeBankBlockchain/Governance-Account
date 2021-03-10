@@ -13,18 +13,24 @@
  */
 package com.webank.blockchain.gov.acct.manager;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.fisco.bcos.sdk.client.Client;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.springframework.stereotype.Service;
+
 import com.webank.blockchain.gov.acct.contract.AccountManager;
 import com.webank.blockchain.gov.acct.contract.AdminGovernBuilder;
 import com.webank.blockchain.gov.acct.contract.VoteGovernBuilder;
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.contract.WeightVoteGovernBuilder;
 import com.webank.blockchain.gov.acct.exception.InvalidParamException;
-import java.math.BigInteger;
-import java.util.List;
+import com.webank.blockchain.gov.acct.vo.GovernAccountGroup;
+
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.springframework.stereotype.Service;
 
 /**
  * GovernAdminManager @Description: GovernAdminManager
@@ -34,23 +40,59 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class GovernAccountInitializer extends BasicManager {
+public class GovernContractInitializer extends BasicManager {
+    
+    public GovernContractInitializer() {
+        super();
+    }
+
+    public GovernContractInitializer(Client client, CryptoKeyPair credentials) {
+        super.client = client;
+        super.credentials = credentials;
+    }
 
     public WEGovernance createGovernAccount(CryptoKeyPair credential) throws Exception {
         AdminGovernBuilder Builder = AdminGovernBuilder.deploy(client, credential);
         String governanceAddress = Builder._governance();
         WEGovernance governance = WEGovernance.load(governanceAddress, client, credential);
-        log.info("Governance acct create succeed {} ", governance.getContractAddress());
+        log.info("Governance account create succeed [ {} ] ", governance.getContractAddress());
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();
-        log.info("Account manager address is {}", accountManagerAddress);
         AccountManager accountManager =
                 AccountManager.load(accountManagerAddress, client, credentials);
-        log.info("Account manager created: {}", accountManager.getContractAddress());
+        log.info("Account manager created: [ {} ]", accountManager.getContractAddress());
         this.accountManager = accountManager;
         String userAddr = createAccount(credential.getAddress());
-        log.info("User account is {}", userAddr);
+        log.info("User account created is [ {} ]", userAddr);
         return governance;
+    }
+
+    public WEGovernance createGovernAccount(GovernAccountGroup governAccountGroup)
+            throws Exception {
+        if (CollectionUtils.isEmpty(governAccountGroup.getGovernUserList())) {
+            log.error("user list can't be empty.");
+            throw new InvalidParamException("user list can't be empty.");
+        }
+        List<String> externalAccountList =
+                governAccountGroup
+                        .getGovernUserList()
+                        .stream()
+                        .map(u -> u.getExternalAccount())
+                        .collect(Collectors.toList());
+        List<BigInteger> weights =
+                governAccountGroup
+                        .getGovernUserList()
+                        .stream()
+                        .map(u -> (long) u.getWeight())
+                        .map(i -> BigInteger.valueOf(i))
+                        .collect(Collectors.toList());
+        for (BigInteger b : weights) {
+            if (!b.equals(1)) {
+                return createGovernAccount(
+                        externalAccountList, weights, governAccountGroup.getThreshold());
+            }
+        }
+        return createGovernAccount(externalAccountList, governAccountGroup.getThreshold());
     }
 
     public WEGovernance createGovernAccount(List<String> externalAccountList, int threshold)
@@ -64,13 +106,13 @@ public class GovernAccountInitializer extends BasicManager {
                         client, credentials, externalAccountList, BigInteger.valueOf(threshold));
         String governanceAddress = Builder._governance();
         WEGovernance governance = WEGovernance.load(governanceAddress, client, credentials);
-        log.info("Governance acct create succeed {} ", governance.getContractAddress());
+        log.info("Governance account create succeed [ {} ] ", governance.getContractAddress());
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();
-        log.info("Account manager address is {}", accountManagerAddress);
+        log.info("Account manager address is [ {} ]", accountManagerAddress);
         AccountManager accountManager =
                 AccountManager.load(accountManagerAddress, client, credentials);
-        log.info("Account manager created: {}", accountManager.getContractAddress());
+        log.info("Account manager created: [ {} ]", accountManager.getContractAddress());
         this.accountManager = accountManager;
         return governance;
     }
@@ -91,13 +133,12 @@ public class GovernAccountInitializer extends BasicManager {
                         BigInteger.valueOf(threshold));
         String governanceAddress = Builder._governance();
         WEGovernance governance = WEGovernance.load(governanceAddress, client, credentials);
-        log.info("Governance acct create succeed {} ", governance.getContractAddress());
+        log.info("Governance account create succeed [ {} ] ", governance.getContractAddress());
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();
-        log.info("Account manager address is {}", accountManagerAddress);
+        log.info("Account manager address is [ {} ]", accountManagerAddress);
         AccountManager accountManager =
                 AccountManager.load(accountManagerAddress, client, credentials);
-        log.info("Account manager created: {}", accountManager.getContractAddress());
         this.accountManager = accountManager;
         return governance;
     }
