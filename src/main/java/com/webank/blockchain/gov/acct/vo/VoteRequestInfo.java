@@ -13,14 +13,12 @@
  */
 package com.webank.blockchain.gov.acct.vo;
 
+import com.webank.blockchain.gov.acct.enums.RequestEnum;
 import java.math.BigInteger;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple8;
-
-import com.webank.blockchain.gov.acct.enums.RequestEnum;
 
 /**
  * VoteRequestInfo @Description: VoteRequestInfo
@@ -62,9 +60,8 @@ public class VoteRequestInfo {
         this.newValue = t.getValue8().intValue();
         return this;
     }
-    
-    
-    public void print() {        
+
+    public void print() {
         log.info(
                 "the current vote info: \n -------------------------------------- \n request id [ {} ] \n request address is [ {} ] \n vote type: [ {} ] \n threshod is [ {} ] \n weight is [ {} ] \n vote passed? [ {} ] \n",
                 requestId,
@@ -72,6 +69,6 @@ public class VoteRequestInfo {
                 RequestEnum.getNameByStatics(txType),
                 threshold,
                 weight,
-                status == 1);        
+                status == 1);
     }
 }

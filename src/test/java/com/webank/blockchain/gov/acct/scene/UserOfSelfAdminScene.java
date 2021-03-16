@@ -13,32 +13,22 @@
  */
 package com.webank.blockchain.gov.acct.scene;
 
-import java.util.List;
-
-import org.assertj.core.util.Lists;
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.webank.blockchain.gov.acct.BaseTests;
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.enums.UserStaticsEnum;
 import com.webank.blockchain.gov.acct.manager.EndUserOperManager;
 import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
 import com.webank.blockchain.gov.acct.service.BaseAccountService;
+import java.util.List;
+import org.assertj.core.util.Lists;
+import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * UserOfSelfAdminScene 
- * @Description: 这是普通用户操作相关的样例 
- * 测试过程： 
- * 1. 创建治理合约和初始化初始化endUserAdminManager 
- * 2.自助创建普通用户账户 
- * 3. 自助重置普通用户账户私钥 
- * 4. 自助注销普通用户账户 
- * 5. 自助重新创建普通用户账户 
- * 6. 修改普通用户账户私钥重置方式 
- * 7. 自助注销普通用户账户
+ * UserOfSelfAdminScene @Description: 这是普通用户操作相关的样例 测试过程： 1. 创建治理合约和初始化初始化endUserAdminManager
+ * 2.自助创建普通用户账户 3. 自助重置普通用户账户私钥 4. 自助注销普通用户账户 5. 自助重新创建普通用户账户 6. 修改普通用户账户私钥重置方式 7. 自助注销普通用户账户
  *
  * @author maojiayu
  * @data Feb 24, 2020 11:28:38 AM
@@ -53,7 +43,8 @@ public class UserOfSelfAdminScene extends BaseTests {
         WEGovernance governance =
                 gvernContractInitializer.createGovernAccount(governanceUser1Keypair);
         // 初始化endUserAdminManager
-        EndUserOperManager endUserOperManager = new EndUserOperManager(governance, client, endUser1Keypair);
+        EndUserOperManager endUserOperManager =
+                new EndUserOperManager(governance, client, endUser1Keypair);
 
         // 2. 自助创建普通用户账户： end user1
         if (!endUserOperManager.hasAccount()) {
@@ -65,7 +56,10 @@ public class UserOfSelfAdminScene extends BaseTests {
         Assertions.assertTrue(endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
         Assertions.assertEquals(
                 UserStaticsEnum.NONE.getStatics(), endUserOperManager.getUserStatics());
-        String p1AccountAddress = endUserOperManager.getUserAccount(endUser1Keypair.getAddress()).getContractAddress();
+        String p1AccountAddress =
+                endUserOperManager
+                        .getUserAccount(endUser1Keypair.getAddress())
+                        .getContractAddress();
         Assertions.assertEquals(accountAddress, p1AccountAddress);
 
         // 3. 自助重置普通用户账户私钥: end user1 -> end user2
@@ -86,7 +80,10 @@ public class UserOfSelfAdminScene extends BaseTests {
         accountAddress = endUserOperManager.createAccount(endUser1Keypair.getAddress());
         Assertions.assertNotNull(accountAddress);
         Assertions.assertTrue(endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
-        p1AccountAddress = endUserOperManager.getUserAccount(endUser1Keypair.getAddress()).getContractAddress();
+        p1AccountAddress =
+                endUserOperManager
+                        .getUserAccount(endUser1Keypair.getAddress())
+                        .getContractAddress();
 
         // 6. 修改普通用户账户私钥重置方式： 增加配置支持社交好友投票重置私钥
         Assertions.assertEquals(

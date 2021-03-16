@@ -13,8 +13,14 @@
  */
 package com.webank.blockchain.gov.acct.scene;
 
+import com.webank.blockchain.gov.acct.BaseTests;
+import com.webank.blockchain.gov.acct.contract.WEGovernance;
+import com.webank.blockchain.gov.acct.enums.AccountStatusEnum;
+import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
+import com.webank.blockchain.gov.acct.manager.VoteModeGovernManager;
+import com.webank.blockchain.gov.acct.service.BaseAccountService;
+import com.webank.blockchain.gov.acct.vo.GovernAccountGroup;
 import java.math.BigInteger;
-
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
@@ -23,28 +29,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.webank.blockchain.gov.acct.BaseTests;
-import com.webank.blockchain.gov.acct.contract.WEGovernance;
-import com.webank.blockchain.gov.acct.enums.AccountStatusEnum;
-import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
-import com.webank.blockchain.gov.acct.manager.VoteModeGovernManager;
-import com.webank.blockchain.gov.acct.service.BaseAccountService;
-import com.webank.blockchain.gov.acct.vo.GovernAccountGroup;
-
 /**
- * GovernOfBoardVoteScene 
- * @Description: 这是权重投票模式的样例 
- * 测试过程： 
- * 1. 创建账户和权重列表 
- * 2. 创建治理合约 
- * 3. 创建普通用户账户 
- * 4. 重置普通用户账户私钥 
- * 5. 冻结普通用户账户 
- * 6. 解冻普通用户账户 
- * 7. 注销普通用户账户 
- * 8. 重置治理合约的投票阈值 
- * 9. 删除治理账户 
- * 10. 添加治理账户
+ * GovernOfBoardVoteScene @Description: 这是权重投票模式的样例 测试过程： 1. 创建账户和权重列表 2. 创建治理合约 3. 创建普通用户账户 4.
+ * 重置普通用户账户私钥 5. 冻结普通用户账户 6. 解冻普通用户账户 7. 注销普通用户账户 8. 重置治理合约的投票阈值 9. 删除治理账户 10. 添加治理账户
  *
  * @author maojiayu
  * @data Feb 22, 2020 4:36:34 PM
@@ -68,7 +55,8 @@ public class GovernOfBoardVoteScene extends BaseTests {
         // 2. 创建治理合约
         WEGovernance governance = governAccountInitializer.createGovernAccount(governAccountGroup);
         Assertions.assertNotNull(governance);
-        VoteModeGovernManager voteModeGovernManager = new VoteModeGovernManager(governance, client, governanceUser1Keypair);
+        VoteModeGovernManager voteModeGovernManager =
+                new VoteModeGovernManager(governance, client, governanceUser1Keypair);
 
         // 3. 创建普通用户账户
         String p1Address = governAccountInitializer.createAccount(endUser1Keypair.getAddress());
@@ -178,8 +166,11 @@ public class GovernOfBoardVoteScene extends BaseTests {
         // after removed, weight should be 0.
         Assertions.assertEquals(
                 0,
-                governance.getVoteWeight(
-                        voteModeGovernManager.getUserAccount(governanceUser3Keypair.getAddress()).getContractAddress())
+                governance
+                        .getVoteWeight(
+                                voteModeGovernManager
+                                        .getUserAccount(governanceUser3Keypair.getAddress())
+                                        .getContractAddress())
                         .intValue());
 
         // 10. 添加治理账户
@@ -195,8 +186,11 @@ public class GovernOfBoardVoteScene extends BaseTests {
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
                 5,
-                governance.getVoteWeight(
-                        voteModeGovernManager.getUserAccount(governanceUser3Keypair.getAddress()).getContractAddress())
+                governance
+                        .getVoteWeight(
+                                voteModeGovernManager
+                                        .getUserAccount(governanceUser3Keypair.getAddress())
+                                        .getContractAddress())
                         .intValue());
     }
 }

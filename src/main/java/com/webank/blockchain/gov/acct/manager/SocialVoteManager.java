@@ -13,21 +13,18 @@
  */
 package com.webank.blockchain.gov.acct.manager;
 
-import java.math.BigInteger;
-
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
-import org.springframework.stereotype.Service;
-
 import com.webank.blockchain.gov.acct.contract.UserAccount;
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.enums.RequestEnum;
 import com.webank.blockchain.gov.acct.exception.TransactionReceiptException;
 import com.webank.blockchain.gov.acct.vo.VoteRequestInfo;
-
+import java.math.BigInteger;
 import lombok.extern.slf4j.Slf4j;
+import org.fisco.bcos.sdk.client.Client;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
+import org.springframework.stereotype.Service;
 
 /**
  * SocialVoteManager @Description: SocialVoteManager
@@ -38,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class SocialVoteManager extends BasicManager {
-    
+
     public SocialVoteManager() {
         super();
     }
@@ -62,7 +59,10 @@ public class SocialVoteManager extends BasicManager {
             throw new TransactionReceiptException(
                     "Error request a vote of reset account: " + tr.getStatus());
         }
-        log.info("Request reset account [ {} ] to new account [ {} ]", oldExternalAccount, newExternalAccount);
+        log.info(
+                "Request reset account [ {} ] to new account [ {} ]",
+                oldExternalAccount,
+                newExternalAccount);
         return tr;
     }
 
@@ -79,7 +79,9 @@ public class SocialVoteManager extends BasicManager {
             throw new TransactionReceiptException("Error vote: " + tr.getStatus());
         }
         VoteRequestInfo voteRequestInfo = new VoteRequestInfo();
-        voteRequestInfo.forward(accountConfig.getRequestInfo(RequestEnum.OPER_CHANGE_CREDENTIAL.getType())).print();
+        voteRequestInfo
+                .forward(accountConfig.getRequestInfo(RequestEnum.OPER_CHANGE_CREDENTIAL.getType()))
+                .print();
         return tr;
     }
 
@@ -90,7 +92,10 @@ public class SocialVoteManager extends BasicManager {
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException("Error reset account: " + tr.getStatus());
         }
-        log.info("External account reset to [ {} ] from [ {} ] ", newExternalAccount, oldExternalAccount);
+        log.info(
+                "External account reset to [ {} ] from [ {} ] ",
+                newExternalAccount,
+                oldExternalAccount);
         return tr;
     }
 }

@@ -13,14 +13,6 @@
  */
 package com.webank.blockchain.gov.acct.scene;
 
-import java.math.BigInteger;
-import java.util.List;
-
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.google.common.collect.Lists;
 import com.webank.blockchain.gov.acct.BaseTests;
 import com.webank.blockchain.gov.acct.contract.UserAccount;
@@ -30,16 +22,16 @@ import com.webank.blockchain.gov.acct.enums.UserStaticsEnum;
 import com.webank.blockchain.gov.acct.manager.EndUserOperManager;
 import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
 import com.webank.blockchain.gov.acct.manager.SocialVoteManager;
+import java.math.BigInteger;
+import java.util.List;
+import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * UserOfSelfAdminScene 
- * @Description: 这是普通用户操作相关的样例 
- * 测试过程： 
- * 1. 创建治理合约和初始化endUserAdminManager 
- * 2.自助创建普通用户账户 
- * 3. 自助修改普通用户账户私钥重置方式 
- * 4. 发起社交好友重置私钥 
- * 5. 自助注销普通用户账户
+ * UserOfSelfAdminScene @Description: 这是普通用户操作相关的样例 测试过程： 1. 创建治理合约和初始化endUserAdminManager
+ * 2.自助创建普通用户账户 3. 自助修改普通用户账户私钥重置方式 4. 发起社交好友重置私钥 5. 自助注销普通用户账户
  *
  * @author maojiayu
  * @data Feb 24, 2020 11:28:38 AM
@@ -53,8 +45,10 @@ public class UserOfSocailVoteScene extends BaseTests {
         //  1. 创建治理合约
         WEGovernance governance = gvernContractInitializer.createGovernAccount(endUser1Keypair);
         // 初始化endUserAdminManager 和 socialVoteManager
-        EndUserOperManager endUserOperManager = new EndUserOperManager(governance, client, endUser1Keypair);
-        SocialVoteManager socialVoteManager = new SocialVoteManager(governance, client, endUser1Keypair);
+        EndUserOperManager endUserOperManager =
+                new EndUserOperManager(governance, client, endUser1Keypair);
+        SocialVoteManager socialVoteManager =
+                new SocialVoteManager(governance, client, endUser1Keypair);
 
         // 2. 自助创建普通用户账户， end user 1,2&3
         String accountAddressP1 = endUserOperManager.createAccount(endUser1Keypair.getAddress());
@@ -76,7 +70,7 @@ public class UserOfSocailVoteScene extends BaseTests {
         Assertions.assertEquals("0x0", tr.getStatus());
         Assertions.assertEquals(
                 UserStaticsEnum.SOCIAL.getStatics(), endUserOperManager.getUserStatics());
-        UserAccount userAccount = endUserOperManager.getUserAccount(endUser1Keypair.getAddress());   
+        UserAccount userAccount = endUserOperManager.getUserAccount(endUser1Keypair.getAddress());
 
         // 4. 发起社交好友重置私钥
         socialVoteManager.requestResetAccount(

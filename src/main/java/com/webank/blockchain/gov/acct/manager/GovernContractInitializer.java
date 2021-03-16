@@ -13,15 +13,6 @@
  */
 package com.webank.blockchain.gov.acct.manager;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.springframework.stereotype.Service;
-
 import com.webank.blockchain.gov.acct.contract.AccountManager;
 import com.webank.blockchain.gov.acct.contract.AdminGovernBuilder;
 import com.webank.blockchain.gov.acct.contract.VoteGovernBuilder;
@@ -29,8 +20,14 @@ import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.contract.WeightVoteGovernBuilder;
 import com.webank.blockchain.gov.acct.exception.InvalidParamException;
 import com.webank.blockchain.gov.acct.vo.GovernAccountGroup;
-
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.fisco.bcos.sdk.client.Client;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.springframework.stereotype.Service;
 
 /**
  * GovernAdminManager @Description: GovernAdminManager
@@ -41,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class GovernContractInitializer extends BasicManager {
-    
+
     public GovernContractInitializer() {
         super();
     }

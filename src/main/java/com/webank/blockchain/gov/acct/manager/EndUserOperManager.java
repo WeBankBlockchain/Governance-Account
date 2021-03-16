@@ -21,7 +21,6 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
@@ -38,7 +37,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class EndUserOperManager extends BasicManager {
-    
+
     public EndUserOperManager() {
         super();
     }
@@ -48,7 +47,6 @@ public class EndUserOperManager extends BasicManager {
         super(governance, client, credentials);
     }
 
-
     public TransactionReceipt setRelatedAccount(String account, int value) throws Exception {
         UserAccount accountConfig = getUserAccount(credentials.getAddress());
         int type = accountConfig._statics().intValue();
@@ -56,7 +54,11 @@ public class EndUserOperManager extends BasicManager {
             if (accountConfig.getWeightInfo().getValue1().size() >= 3 && value > 0) {
                 throw new InvalidParamException("Already too many voters.");
             }
-            log.info("External account [{}] set related account: [ {} ], weight: [ {} ]", credentials.getAddress(), account, value);
+            log.info(
+                    "External account [{}] set related account: [ {} ], weight: [ {} ]",
+                    credentials.getAddress(),
+                    account,
+                    value);
             return accountConfig.setWeight(account, BigInteger.valueOf(value));
         } else {
             throw new InvalidParamException("error account types.");

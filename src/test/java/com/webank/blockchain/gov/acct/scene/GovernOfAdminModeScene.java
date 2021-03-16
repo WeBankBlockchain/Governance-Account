@@ -13,33 +13,20 @@
  */
 package com.webank.blockchain.gov.acct.scene;
 
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.webank.blockchain.gov.acct.BaseTests;
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.manager.AdminModeGovernManager;
 import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
 import com.webank.blockchain.gov.acct.service.BaseAccountService;
+import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * GovernOfAdminModeScene 
- * @Description: 这是管理员投票模式的样例 
- * 测试过程： 
- * 1. 创建治理合约 
- * 2. 创建普通用户账户 
- * 3. 重置普通用户账户私钥 
- * 4.重置回普通用户账户私钥，便于后续测试 
- * 5. 冻结普通用户账户 
- * 6. 移交管理员权限给冻结账户 
- * 7. 移交管理员权限给未注册的账户 
- * 8. 解冻普通用户账户 
- * 9. 注销普通用户账户 
- * 10.重新创建普通用户账户 
- * 11. 再次注销普通用户账户 
- * 12. 先创建新账户，然后移交管理员权限给该账户
+ * GovernOfAdminModeScene @Description: 这是管理员投票模式的样例 测试过程： 1. 创建治理合约 2. 创建普通用户账户 3. 重置普通用户账户私钥
+ * 4.重置回普通用户账户私钥，便于后续测试 5. 冻结普通用户账户 6. 移交管理员权限给冻结账户 7. 移交管理员权限给未注册的账户 8. 解冻普通用户账户 9. 注销普通用户账户
+ * 10.重新创建普通用户账户 11. 再次注销普通用户账户 12. 先创建新账户，然后移交管理员权限给该账户
  *
  * @author maojiayu
  * @data Feb 22, 2020 3:11:09 PM
@@ -51,9 +38,11 @@ public class GovernOfAdminModeScene extends BaseTests {
     @Test
     public void testAdminScene() throws Exception {
         // 1. 创建治理合约
-        WEGovernance governance = governContractInitializer.createGovernAccount(governanceUser1Keypair);
+        WEGovernance governance =
+                governContractInitializer.createGovernAccount(governanceUser1Keypair);
         Assertions.assertEquals(0, governance._mode().intValue());
-        AdminModeGovernManager adminModeManager = new AdminModeGovernManager(governance, client, governanceUser1Keypair);
+        AdminModeGovernManager adminModeManager =
+                new AdminModeGovernManager(governance, client, governanceUser1Keypair);
 
         // 2. 创建普通用户账户: governance user2
         if (!adminModeManager.hasAccount(governanceUser2Keypair.getAddress())) {
