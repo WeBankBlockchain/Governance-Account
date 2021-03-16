@@ -54,7 +54,7 @@ public class AccountGovernManagerFactory {
         this.accountManager = AccountManager.load(acctManagerAddress, client, credentials);
     }
 
-    public GovernContractInitializer newGovernAccountInitializer() {
+    public GovernContractInitializer newGovernContractInitializer() {
         GovernContractInitializer manager = new GovernContractInitializer();
         manager.setClient(client).setCredentials(credentials);
         return manager;
