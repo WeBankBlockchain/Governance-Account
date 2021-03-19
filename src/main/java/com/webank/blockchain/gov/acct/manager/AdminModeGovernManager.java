@@ -15,7 +15,9 @@ package com.webank.blockchain.gov.acct.manager;
 
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.enums.RequestEnum;
+import com.webank.blockchain.gov.acct.exception.InvalidParamException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
@@ -50,6 +52,9 @@ public class AdminModeGovernManager extends BasicManager {
     }
 
     public TransactionReceipt resetAccount(String oldAccount, String newAccount) throws Exception {
+        if (StringUtils.equalsAnyIgnoreCase(oldAccount, newAccount)) {
+            throw new InvalidParamException("The oldAccount is equal to new Account");
+        }
         log.info("reset account to [ {} ] from [ {} ]", newAccount, oldAccount);
         return governance.setExternalAccount(
                 RequestEnum.OPER_CHANGE_CREDENTIAL.getType(), newAccount, oldAccount);

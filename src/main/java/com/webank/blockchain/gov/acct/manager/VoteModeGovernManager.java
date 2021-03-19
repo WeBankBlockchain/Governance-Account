@@ -56,6 +56,9 @@ public class VoteModeGovernManager extends BasicManager {
     }
 
     public BigInteger requestResetThreshold(int newThreshold) throws Exception {
+        if (newThreshold >= 65536 || newThreshold < 0) {
+            throw new InvalidParamException("The threshold should be [0, 65535]");
+        }
         TransactionReceipt tr =
                 governance.register(
                         RequestEnum.OPER_RESET_THRESHOLD.getType(),
@@ -294,6 +297,9 @@ public class VoteModeGovernManager extends BasicManager {
     }
 
     public TransactionReceipt resetThreshold(BigInteger requestId, int threshold) throws Exception {
+        if (threshold >= 65536 || threshold < 0) {
+            throw new InvalidParamException("The threshold should be [0, 65535]");
+        }
         TransactionReceipt tr = governance.setThreshold(requestId, BigInteger.valueOf(threshold));
         if (!tr.getStatus().equalsIgnoreCase("0x0")) {
             throw new TransactionReceiptException(
