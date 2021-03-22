@@ -21,6 +21,7 @@ public class BaseTests {
 
     @PostConstruct
     public void init() throws Exception {
+        // prepare 3 governance users & 3 end users.
         governanceUser1Keypair = cryptoKeyPair.generateKeyPair();
         governanceUser2Keypair = cryptoKeyPair.generateKeyPair();
         governanceUser3Keypair = cryptoKeyPair.generateKeyPair();

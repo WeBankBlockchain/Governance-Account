@@ -13,9 +13,11 @@
  */
 package com.webank.blockchain.gov.acct.vo;
 
+import com.webank.blockchain.gov.acct.enums.RequestEnum;
 import java.math.BigInteger;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple8;
 
 /**
@@ -26,14 +28,15 @@ import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple8;
  */
 @Data
 @Accessors(chain = true)
+@Slf4j
 public class VoteRequestInfo {
     private BigInteger requestId;
-    private String requestAddress;
+    private String requestAddress = "";
     private int threshold;
     private int weight;
     private int txType;
     private int status;
-    private String newAddress;
+    private String newAddress = "";
     private int newValue;
 
     public VoteRequestInfo forward(
@@ -56,5 +59,16 @@ public class VoteRequestInfo {
         this.newAddress = t.getValue7();
         this.newValue = t.getValue8().intValue();
         return this;
+    }
+
+    public void print() {
+        log.info(
+                "the current vote info: \n -------------------------------------- \n request id [ {} ] \n request address is [ {} ] \n vote type: [ {} ] \n threshod is [ {} ] \n weight is [ {} ] \n vote passed? [ {} ] \n",
+                requestId,
+                requestAddress,
+                RequestEnum.getNameByStatics(txType),
+                threshold,
+                weight,
+                status == 1);
     }
 }

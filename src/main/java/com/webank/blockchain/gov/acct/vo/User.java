@@ -13,31 +13,36 @@
  */
 package com.webank.blockchain.gov.acct.vo;
 
-import java.math.BigInteger;
+import com.google.common.collect.Lists;
 import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * WeightInfo @Description: WeightInfo
+ * User @Description: User
  *
  * @author maojiayu
- * @data Aug 6, 2020 11:46:15 AM
+ * @data Feb 8, 2021 3:37:06 PM
  */
 @Data
 @Accessors(chain = true)
-public class WeightInfo {
-    private List<String> addressList;
-    private List<BigInteger> weightList;
-    private int threshold;
-    private int acctType;
+public class User {
+    protected String name = "uname";
+    protected String externalAccount;
+    protected List<User> friends = Lists.newArrayList();
 
-    public String toString() {
-        String tmp = "account type is [ " + acctType + " ]\n";
-        tmp += "threshold is [ " + threshold + " ] \n";
-        for (int i = 0; i < addressList.size(); i++) {
-            tmp += "address: [" + addressList.get(i) + "]  weight: [" + weightList.get(i) + "]";
-        }
-        return tmp;
+    public User(String externalAccount) {
+        this.externalAccount = externalAccount;
+    }
+
+    public User(String name, String externalAccount) {
+        this.name = name;
+        this.externalAccount = externalAccount;
+    }
+
+    public User(String name, String externalAccount, List<User> friends) {
+        this.name = name;
+        this.externalAccount = externalAccount;
+        this.friends = friends;
     }
 }

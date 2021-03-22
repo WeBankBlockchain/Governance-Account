@@ -13,8 +13,15 @@
  */
 package com.webank.blockchain.gov.acct.manager;
 
+import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.enums.RequestEnum;
+import com.webank.blockchain.gov.acct.exception.InvalidParamException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.fisco.bcos.sdk.client.Client;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,18 +31,37 @@ import org.springframework.stereotype.Service;
  * @data Feb 22, 2020 11:20:09 AM
  */
 @Service
+@Slf4j
 public class AdminModeGovernManager extends BasicManager {
 
+    public AdminModeGovernManager() {
+        super();
+    }
+
+    public AdminModeGovernManager(WEGovernance governance, Client client, CryptoKeyPair credentials)
+            throws ContractException {
+        super(governance, client, credentials);
+    }
+
     public TransactionReceipt transferAdminAuth(String newAdminAddr) throws Exception {
+        log.info(
+                "Contract [ {} ] transfer owner to address [ {} ]",
+                governance.getContractAddress(),
+                newAdminAddr);
         return governance.transferOwner(newAdminAddr);
     }
 
     public TransactionReceipt resetAccount(String oldAccount, String newAccount) throws Exception {
+        if (StringUtils.equalsAnyIgnoreCase(oldAccount, newAccount)) {
+            throw new InvalidParamException("The oldAccount is equal to new Account");
+        }
+        log.info("reset account to [ {} ] from [ {} ]", newAccount, oldAccount);
         return governance.setExternalAccount(
                 RequestEnum.OPER_CHANGE_CREDENTIAL.getType(), newAccount, oldAccount);
     }
 
     public TransactionReceipt freezeAccount(String externalAccount) throws Exception {
+        log.info("freeze account [ {} ]", externalAccount);
         return governance.doOper(
                 RequestEnum.OPER_FREEZE_ACCOUNT.getType(),
                 externalAccount,
@@ -43,6 +69,7 @@ public class AdminModeGovernManager extends BasicManager {
     }
 
     public TransactionReceipt unfreezeAccount(String externalAccount) throws Exception {
+        log.info("unfreeze account [ {} ]", externalAccount);
         return governance.doOper(
                 RequestEnum.OPER_UNFREEZE_ACCOUNT.getType(),
                 externalAccount,
@@ -50,6 +77,7 @@ public class AdminModeGovernManager extends BasicManager {
     }
 
     public TransactionReceipt cancelAccount(String userAccount) throws Exception {
+        log.info("cancel account [ {} ]", userAccount);
         return governance.doOper(
                 RequestEnum.OPER_CANCEL_ACCOUNT.getType(),
                 userAccount,

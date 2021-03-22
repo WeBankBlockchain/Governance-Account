@@ -26,16 +26,28 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum RequestEnum {
-    OPER_CREATE_ACCOUNT(BigInteger.valueOf(1)),
-    OPER_CHANGE_CREDENTIAL(BigInteger.valueOf(2)),
-    OPER_FREEZE_ACCOUNT(BigInteger.valueOf(3)),
-    OPER_UNFREEZE_ACCOUNT(BigInteger.valueOf(4)),
-    OPER_CANCEL_ACCOUNT(BigInteger.valueOf(5)),
-    OPER_RESET_MANAGER_TYPE(BigInteger.valueOf(6)),
-    OPER_RESET_THRESHOLD(BigInteger.valueOf(10)),
-    OPER_RESET_WEIGHT(BigInteger.valueOf(11)),
-    OPER_ADD_WEIGHT(BigInteger.valueOf(12)),
-    OPER_RM_WEIGHT(BigInteger.valueOf(13)),
-    OPER_RESET_ACCOUNT_MANAGER(BigInteger.valueOf(50));
+    OPER_CREATE_ACCOUNT(BigInteger.valueOf(1), "create account"),
+    OPER_CHANGE_CREDENTIAL(BigInteger.valueOf(2), "change credential"),
+    OPER_FREEZE_ACCOUNT(BigInteger.valueOf(3), "freeze account"),
+    OPER_UNFREEZE_ACCOUNT(BigInteger.valueOf(4), "unfreeze account"),
+    OPER_CANCEL_ACCOUNT(BigInteger.valueOf(5), "cancel account"),
+    OPER_RESET_MANAGER_TYPE(BigInteger.valueOf(6), "reset manager type"),
+    OPER_RESET_THRESHOLD(BigInteger.valueOf(10), "reset threshold"),
+    OPER_RESET_WEIGHT(BigInteger.valueOf(11), "reset weight"),
+    OPER_ADD_WEIGHT(BigInteger.valueOf(12), "add weight"),
+    OPER_RM_WEIGHT(BigInteger.valueOf(13), "remove weight"),
+    OPER_RESET_ACCOUNT_MANAGER(BigInteger.valueOf(50), "reset account manager");
+
     private BigInteger type;
+    private String name;
+
+    public static String getNameByStatics(int type) {
+        RequestEnum[] enums = values();
+        for (RequestEnum e : enums) {
+            if (e.type.intValue() == type) {
+                return e.getName();
+            }
+        }
+        return "undefined";
+    }
 }
