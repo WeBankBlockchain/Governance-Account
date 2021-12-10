@@ -32,7 +32,14 @@ test {
     useJUnitPlatform()
 }
 
+def log4j_version="2.15.0"
+List logger = [
+        "org.apache.logging.log4j:log4j-api:$log4j_version",
+        "org.apache.logging.log4j:log4j-to-slf4j:$log4j_version",
+]
+
 dependencies {
+    compile logger
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
