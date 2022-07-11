@@ -1,6 +1,6 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.9.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'org.springframework.boot' version '2.7.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'eclipse'
     id 'idea'
@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.webank'
-version = '0.1.2-SNAPSHOT'
+version = '1.0.0'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -21,11 +21,10 @@ configurations {
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    maven { url "https://dl.bintray.com/ethereum/maven/" }
-    maven { url "https://oss.sonatype.org/service/local/staging/deploy/maven2"}
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven {
+        allowInsecureProtocol = true
+        url "http://maven.aliyun.com/nexus/content/groups/public/"
+    }
 }
 
 test {
@@ -39,21 +38,18 @@ List logger = [
 ]
 
 dependencies {
-    compile logger
+    implementation logger
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:2.7.1') {
+    implementation ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:2.9.0') {
         exclude group: 'org.slf4j'
     }
-    compile group: 'com.google.guava', name: 'guava', version: '30.0-jre'
-    compile 'commons-codec:commons-codec:1.4'
-    compile group: 'org.apache.commons', name:"commons-pool2",version:"2.4.2"
-    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.2'
-
+    implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
+    implementation 'commons-codec:commons-codec:1.15'
 }
 
 googleJavaFormat {
