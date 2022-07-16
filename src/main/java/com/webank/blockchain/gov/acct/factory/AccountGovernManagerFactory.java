@@ -16,15 +16,11 @@ package com.webank.blockchain.gov.acct.factory;
 import com.webank.blockchain.gov.acct.contract.AccountManager;
 import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.exception.InvalidParamException;
-import com.webank.blockchain.gov.acct.manager.AdminModeGovernManager;
-import com.webank.blockchain.gov.acct.manager.EndUserOperManager;
-import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
-import com.webank.blockchain.gov.acct.manager.SocialVoteManager;
-import com.webank.blockchain.gov.acct.manager.VoteModeGovernManager;
+import com.webank.blockchain.gov.acct.manager.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.v3.client.Client;
+import org.fisco.bcos.sdk.v3.crypto.keypair.CryptoKeyPair;
 
 /**
  * AccountGovernManagerFactory @Description: AccountGovernManagerFactory

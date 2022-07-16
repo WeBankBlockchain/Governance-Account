@@ -22,13 +22,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderInterface;
-import org.fisco.bcos.sdk.transaction.codec.decode.TransactionDecoderService;
-import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
-import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
+import org.fisco.bcos.sdk.v3.client.Client;
+import org.fisco.bcos.sdk.v3.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.v3.model.TransactionReceipt;
+import org.fisco.bcos.sdk.v3.transaction.model.exception.ContractException;
+import org.fisco.bcos.sdk.v3.transaction.tools.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -75,18 +73,11 @@ public class BasicManager extends JavaSDKBasicService {
             return getBaseAccountAddress(externalAccount);
         }
         TransactionReceipt tr = accountManager.newAccount(externalAccount);
-        if (!tr.getStatus().equalsIgnoreCase("0x0")) {
+        if (tr.getStatus() != 0) {
             log.error("create new Account error: {}", JsonUtils.toJson(tr));
             throw new TransactionReceiptException("Error create account error");
         }
-
-        TransactionDecoderInterface decoder =
-                new TransactionDecoderService(client.getCryptoSuite());
-        String addr =
-                (String)
-                        decoder.decodeReceiptWithValues(AccountManager.ABI, "newAccount", tr)
-                                .getValuesList()
-                                .get(1);
+        String addr = accountManager.getUserAccount(externalAccount);
         log.info("new account created: [ {} ], created by [ {} ]", addr, externalAccount);
         return addr;
     }

@@ -14,9 +14,9 @@
 package com.webank.blockchain.gov.acct.tool;
 
 import org.apache.commons.codec.binary.StringUtils;
-import org.fisco.bcos.sdk.abi.datatypes.generated.Bytes16;
-import org.fisco.bcos.sdk.abi.datatypes.generated.Bytes2;
-import org.fisco.bcos.sdk.abi.datatypes.generated.Bytes32;
+import org.fisco.bcos.sdk.v3.codec.datatypes.generated.Bytes16;
+import org.fisco.bcos.sdk.v3.codec.datatypes.generated.Bytes2;
+import org.fisco.bcos.sdk.v3.codec.datatypes.generated.Bytes32;
 
 public class BytesUtils {
 

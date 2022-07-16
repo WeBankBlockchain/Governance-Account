@@ -18,7 +18,7 @@ import java.math.BigInteger;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple8;
+import org.fisco.bcos.sdk.v3.codec.datatypes.generated.tuples.generated.Tuple8;
 
 /**
  * VoteRequestInfo @Description: VoteRequestInfo

@@ -20,10 +20,10 @@ import com.webank.blockchain.gov.acct.exception.TransactionReceiptException;
 import com.webank.blockchain.gov.acct.vo.VoteRequestInfo;
 import java.math.BigInteger;
 import lombok.extern.slf4j.Slf4j;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
+import org.fisco.bcos.sdk.v3.client.Client;
+import org.fisco.bcos.sdk.v3.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.v3.model.TransactionReceipt;
+import org.fisco.bcos.sdk.v3.transaction.model.exception.ContractException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -55,7 +55,7 @@ public class SocialVoteManager extends BasicManager {
                         oldExternalAccount,
                         newExternalAccount,
                         BigInteger.ZERO);
-        if (!tr.getStatus().equalsIgnoreCase("0x0")) {
+        if (tr.getStatus() != 0) {
             throw new TransactionReceiptException(
                     "Error request a vote of reset account: " + tr.getStatus());
         }
@@ -75,7 +75,7 @@ public class SocialVoteManager extends BasicManager {
                 agreed);
         TransactionReceipt tr =
                 accountConfig.vote(RequestEnum.OPER_CHANGE_CREDENTIAL.getType(), agreed);
-        if (!tr.getStatus().equalsIgnoreCase("0x0")) {
+        if (tr.getStatus() != 0) {
             throw new TransactionReceiptException("Error vote: " + tr.getStatus());
         }
         VoteRequestInfo voteRequestInfo = new VoteRequestInfo();
@@ -89,7 +89,7 @@ public class SocialVoteManager extends BasicManager {
             throws Exception {
         TransactionReceipt tr =
                 accountManager.setExternalAccountBySocial(newExternalAccount, oldExternalAccount);
-        if (!tr.getStatus().equalsIgnoreCase("0x0")) {
+        if (tr.getStatus() != 0) {
             throw new TransactionReceiptException("Error reset account: " + tr.getStatus());
         }
         log.info(

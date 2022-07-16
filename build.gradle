@@ -45,7 +45,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    implementation ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:2.9.0') {
+    implementation ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0-rc4') {
         exclude group: 'org.slf4j'
     }
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'

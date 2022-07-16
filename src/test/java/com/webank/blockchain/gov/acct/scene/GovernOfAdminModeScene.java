@@ -18,7 +18,7 @@ import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.manager.AdminModeGovernManager;
 import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
 import com.webank.blockchain.gov.acct.service.BaseAccountService;
-import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.fisco.bcos.sdk.v3.model.TransactionReceipt;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,30 +65,30 @@ public class GovernOfAdminModeScene extends BaseTests {
         tr =
                 adminModeManager.resetAccount(
                         governanceUser3Keypair.getAddress(), governanceUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
 
         // 5. 冻结普通用户账户: governance user2
         tr = adminModeManager.freezeAccount(governanceUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(1, baseAccountService.getStatus(u1AccountAddress));
 
         // 6. 移交管理员权限给冻结账户
         // in step 5, governance user2 is frozen.
         tr = adminModeManager.transferAdminAuth(governanceUser2Keypair.getAddress());
-        Assertions.assertNotEquals("0x0", tr.getStatus());
+        Assertions.assertNotEquals(0, tr.getStatus());
 
         // 7. 移交管理员权限给未注册的账户: end user1
         tr = adminModeManager.transferAdminAuth(endUser1Keypair.getAddress());
-        Assertions.assertNotEquals("0x0", tr.getStatus());
+        Assertions.assertNotEquals(0, tr.getStatus());
 
         // 8. 解冻普通用户账户: governance user2
         tr = adminModeManager.unfreezeAccount(governanceUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(0, baseAccountService.getStatus(u1AccountAddress));
 
         //  9. 注销普通用户账户: governance user2
         tr = adminModeManager.cancelAccount(governanceUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(u1AccountAddress));
         Assertions.assertTrue(!adminModeManager.hasAccount(governanceUser2Keypair.getAddress()));
 
@@ -100,14 +100,14 @@ public class GovernOfAdminModeScene extends BaseTests {
 
         // 11. 再次注销普通用户账户: governance user2
         tr = adminModeManager.cancelAccount(governanceUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(u1AccountAddress));
         Assertions.assertTrue(!adminModeManager.hasAccount(governanceUser2Keypair.getAddress()));
 
         // 12. 先创建governance user3 账户， 然后将管理员权限移交给新创建的合约
         adminModeManager.createAccount(governanceUser3Keypair.getAddress());
         tr = adminModeManager.transferAdminAuth(governanceUser3Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         String owner = governance._owner();
         Assertions.assertEquals(governanceUser3Keypair.getAddress(), owner);
     }

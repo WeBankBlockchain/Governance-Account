@@ -21,8 +21,8 @@ import com.webank.blockchain.gov.acct.manager.VoteModeGovernManager;
 import com.webank.blockchain.gov.acct.service.BaseAccountService;
 import com.webank.blockchain.gov.acct.vo.GovernAccountGroup;
 import java.math.BigInteger;
-import org.fisco.bcos.sdk.abi.datatypes.Address;
-import org.fisco.bcos.sdk.model.TransactionReceipt;
+import org.fisco.bcos.sdk.v3.codec.datatypes.Address;
+import org.fisco.bcos.sdk.v3.model.TransactionReceipt;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,7 +171,7 @@ public class GovernOfNormalVoteScene extends BaseTests {
         voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(governance.passed(requestId));
         tr = voteModeGovernManager.addGovernAccount(requestId, governanceUser3Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(
                 1,
                 governance

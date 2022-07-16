@@ -28,7 +28,6 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class SystemEnvironmentConfig {
     private String nodeStr;
-    private int groupId;
     private String configPath;
     private String hexPrivateKey;
     private boolean defaultGovernanceEnabled = false;

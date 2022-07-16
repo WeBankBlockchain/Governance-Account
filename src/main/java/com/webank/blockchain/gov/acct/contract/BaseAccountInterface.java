@@ -1,56 +1,43 @@
-/**
- * Copyright 2020 Webank.
- *
- * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
- *
- * <p>http://www.apache.org/licenses/LICENSE-2.0
- *
- * <p>Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.webank.blockchain.gov.acct.contract;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.fisco.bcos.sdk.abi.FunctionReturnDecoder;
-import org.fisco.bcos.sdk.abi.TypeReference;
-import org.fisco.bcos.sdk.abi.datatypes.Address;
-import org.fisco.bcos.sdk.abi.datatypes.Bool;
-import org.fisco.bcos.sdk.abi.datatypes.Event;
-import org.fisco.bcos.sdk.abi.datatypes.Function;
-import org.fisco.bcos.sdk.abi.datatypes.Type;
-import org.fisco.bcos.sdk.abi.datatypes.generated.Bytes32;
-import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple1;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.contract.Contract;
-import org.fisco.bcos.sdk.crypto.CryptoSuite;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.fisco.bcos.sdk.eventsub.EventCallback;
-import org.fisco.bcos.sdk.model.CryptoType;
-import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.fisco.bcos.sdk.model.callback.TransactionCallback;
-import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
+import org.fisco.bcos.sdk.v3.client.Client;
+import org.fisco.bcos.sdk.v3.codec.datatypes.Address;
+import org.fisco.bcos.sdk.v3.codec.datatypes.Bool;
+import org.fisco.bcos.sdk.v3.codec.datatypes.Event;
+import org.fisco.bcos.sdk.v3.codec.datatypes.Function;
+import org.fisco.bcos.sdk.v3.codec.datatypes.Type;
+import org.fisco.bcos.sdk.v3.codec.datatypes.TypeReference;
+import org.fisco.bcos.sdk.v3.codec.datatypes.generated.Bytes32;
+import org.fisco.bcos.sdk.v3.codec.datatypes.generated.tuples.generated.Tuple1;
+import org.fisco.bcos.sdk.v3.contract.Contract;
+import org.fisco.bcos.sdk.v3.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.v3.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.v3.model.CryptoType;
+import org.fisco.bcos.sdk.v3.model.TransactionReceipt;
+import org.fisco.bcos.sdk.v3.model.callback.TransactionCallback;
+import org.fisco.bcos.sdk.v3.transaction.model.exception.ContractException;
 
 @SuppressWarnings("unchecked")
 public class BaseAccountInterface extends Contract {
     public static final String[] BINARY_ARRAY = {};
 
-    public static final String BINARY = String.join("", BINARY_ARRAY);
+    public static final String BINARY =
+            org.fisco.bcos.sdk.v3.utils.StringUtils.joinAll("", BINARY_ARRAY);
 
     public static final String[] SM_BINARY_ARRAY = {};
 
-    public static final String SM_BINARY = String.join("", SM_BINARY_ARRAY);
+    public static final String SM_BINARY =
+            org.fisco.bcos.sdk.v3.utils.StringUtils.joinAll("", SM_BINARY_ARRAY);
 
     public static final String[] ABI_ARRAY = {
-        "[{\"constant\":false,\"inputs\":[],\"name\":\"freeze\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"unfreeze\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"isNormal\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"cancel\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"eventType\",\"type\":\"bytes32\"},{\"indexed\":false,\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"LogBaseAccount\",\"type\":\"event\"}]"
+        "[{\"constant\":false,\"inputs\":[],\"name\":\"freeze\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"selector\":[1655025467,2404770341],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"unfreeze\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"selector\":[1781067776,135683286],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"isNormal\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"selector\":[2288446188,899059304],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"cancel\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"selector\":[3934919408,3744551082],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"eventType\",\"type\":\"bytes32\"},{\"indexed\":false,\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"LogBaseAccount\",\"type\":\"event\"}]"
     };
 
-    public static final String ABI = String.join("", ABI_ARRAY);
+    public static final String ABI = org.fisco.bcos.sdk.v3.utils.StringUtils.joinAll("", ABI_ARRAY);
 
     public static final String FUNC_FREEZE = "freeze";
 
@@ -75,22 +62,28 @@ public class BaseAccountInterface extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
+    public static String getABI() {
+        return ABI;
+    }
+
     public TransactionReceipt freeze() {
         final Function function =
                 new Function(
                         FUNC_FREEZE,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
         return executeTransaction(function);
     }
 
-    public void freeze(TransactionCallback callback) {
+    public String freeze(TransactionCallback callback) {
         final Function function =
                 new Function(
                         FUNC_FREEZE,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
-        asyncExecuteTransaction(function, callback);
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
+        return asyncExecuteTransaction(function, callback);
     }
 
     public String getSignedTransactionForFreeze() {
@@ -98,7 +91,8 @@ public class BaseAccountInterface extends Contract {
                 new Function(
                         FUNC_FREEZE,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
         return createSignedTransaction(function);
     }
 
@@ -109,7 +103,8 @@ public class BaseAccountInterface extends Contract {
                         FUNC_FREEZE,
                         Arrays.<Type>asList(),
                         Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
-        List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
+        List<Type> results =
+                this.functionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<Boolean>((Boolean) results.get(0).getValue());
     }
 
@@ -118,17 +113,19 @@ public class BaseAccountInterface extends Contract {
                 new Function(
                         FUNC_UNFREEZE,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
         return executeTransaction(function);
     }
 
-    public void unfreeze(TransactionCallback callback) {
+    public String unfreeze(TransactionCallback callback) {
         final Function function =
                 new Function(
                         FUNC_UNFREEZE,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
-        asyncExecuteTransaction(function, callback);
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
+        return asyncExecuteTransaction(function, callback);
     }
 
     public String getSignedTransactionForUnfreeze() {
@@ -136,7 +133,8 @@ public class BaseAccountInterface extends Contract {
                 new Function(
                         FUNC_UNFREEZE,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
         return createSignedTransaction(function);
     }
 
@@ -147,7 +145,8 @@ public class BaseAccountInterface extends Contract {
                         FUNC_UNFREEZE,
                         Arrays.<Type>asList(),
                         Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
-        List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
+        List<Type> results =
+                this.functionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<Boolean>((Boolean) results.get(0).getValue());
     }
 
@@ -156,17 +155,19 @@ public class BaseAccountInterface extends Contract {
                 new Function(
                         FUNC_ISNORMAL,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
         return executeTransaction(function);
     }
 
-    public void isNormal(TransactionCallback callback) {
+    public String isNormal(TransactionCallback callback) {
         final Function function =
                 new Function(
                         FUNC_ISNORMAL,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
-        asyncExecuteTransaction(function, callback);
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
+        return asyncExecuteTransaction(function, callback);
     }
 
     public String getSignedTransactionForIsNormal() {
@@ -174,7 +175,8 @@ public class BaseAccountInterface extends Contract {
                 new Function(
                         FUNC_ISNORMAL,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
         return createSignedTransaction(function);
     }
 
@@ -185,7 +187,8 @@ public class BaseAccountInterface extends Contract {
                         FUNC_ISNORMAL,
                         Arrays.<Type>asList(),
                         Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
-        List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
+        List<Type> results =
+                this.functionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<Boolean>((Boolean) results.get(0).getValue());
     }
 
@@ -194,17 +197,19 @@ public class BaseAccountInterface extends Contract {
                 new Function(
                         FUNC_CANCEL,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
         return executeTransaction(function);
     }
 
-    public void cancel(TransactionCallback callback) {
+    public String cancel(TransactionCallback callback) {
         final Function function =
                 new Function(
                         FUNC_CANCEL,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
-        asyncExecuteTransaction(function, callback);
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
+        return asyncExecuteTransaction(function, callback);
     }
 
     public String getSignedTransactionForCancel() {
@@ -212,7 +217,8 @@ public class BaseAccountInterface extends Contract {
                 new Function(
                         FUNC_CANCEL,
                         Arrays.<Type>asList(),
-                        Collections.<TypeReference<?>>emptyList());
+                        Collections.<TypeReference<?>>emptyList(),
+                        0);
         return createSignedTransaction(function);
     }
 
@@ -223,7 +229,8 @@ public class BaseAccountInterface extends Contract {
                         FUNC_CANCEL,
                         Arrays.<Type>asList(),
                         Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
-        List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
+        List<Type> results =
+                this.functionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<Boolean>((Boolean) results.get(0).getValue());
     }
 
@@ -244,17 +251,6 @@ public class BaseAccountInterface extends Contract {
         return responses;
     }
 
-    public void subscribeLogBaseAccountEvent(
-            String fromBlock, String toBlock, List<String> otherTopics, EventCallback callback) {
-        String topic0 = eventEncoder.encode(LOGBASEACCOUNT_EVENT);
-        subscribeEvent(ABI, BINARY, topic0, fromBlock, toBlock, otherTopics, callback);
-    }
-
-    public void subscribeLogBaseAccountEvent(EventCallback callback) {
-        String topic0 = eventEncoder.encode(LOGBASEACCOUNT_EVENT);
-        subscribeEvent(ABI, BINARY, topic0, callback);
-    }
-
     public static BaseAccountInterface load(
             String contractAddress, Client client, CryptoKeyPair credential) {
         return new BaseAccountInterface(contractAddress, client, credential);
@@ -267,7 +263,9 @@ public class BaseAccountInterface extends Contract {
                 client,
                 credential,
                 getBinary(client.getCryptoSuite()),
-                "");
+                getABI(),
+                null,
+                null);
     }
 
     public static class LogBaseAccountEventResponse {

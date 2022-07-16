@@ -16,7 +16,7 @@ package com.webank.blockchain.gov.acct.tool;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.fisco.bcos.sdk.abi.datatypes.Address;
+import org.fisco.bcos.sdk.v3.codec.datatypes.Address;
 
 /**
  * String2AddressListUtils @Description: String2AddressListUtils
