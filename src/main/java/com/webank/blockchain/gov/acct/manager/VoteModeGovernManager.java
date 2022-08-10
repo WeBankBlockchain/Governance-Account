@@ -34,6 +34,7 @@ import org.fisco.bcos.sdk.v3.transaction.codec.decode.TransactionDecoderInterfac
 import org.fisco.bcos.sdk.v3.transaction.codec.decode.TransactionDecoderService;
 import org.fisco.bcos.sdk.v3.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.v3.transaction.model.exception.TransactionException;
+import org.fisco.bcos.sdk.v3.transaction.tools.JsonUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -362,12 +363,16 @@ public class VoteModeGovernManager extends BasicManager {
             throws TransactionException, IOException, ContractCodecException {
         TransactionDecoderInterface decoder =
                 new TransactionDecoderService(client.getCryptoSuite(), false);
+        System.out.println(
+                JsonUtils.toJson(
+                        decoder.decodeReceiptWithValues(WEGovernance.ABI, "register", tr)));
         BigInteger v =
                 new BigInteger(
-                        decoder.decodeReceiptWithValues(WEGovernance.ABI, "register", tr)
-                                .getValuesList()
-                                .get(1)
-                                .toString());
+                        String.valueOf(
+                                decoder.decodeReceiptWithValues(WEGovernance.ABI, "register", tr)
+                                        .getResults()
+                                        .get(1)
+                                        .getValue()));
         log.info("Vote request id is [ {} ]", v);
         return v;
     }

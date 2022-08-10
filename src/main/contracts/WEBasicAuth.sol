@@ -14,6 +14,10 @@ contract WEBasicAuth {
         emit LogSetOwner(owner, this);
     }
 
+    function getOwner() public view returns (address) {
+        return _owner;
+    }
+
     modifier onlyOwner() {
         require(msg.sender == _owner, "WEBasicAuth: only owner is authorized.");
         _;

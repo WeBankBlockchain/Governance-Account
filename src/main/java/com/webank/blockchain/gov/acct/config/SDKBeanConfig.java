@@ -61,7 +61,7 @@ public class SDKBeanConfig {
         return BcosSDK.build(systemEnvironmentConfig.getConfigPath());
     }
 
-    @Bean
+    // @Bean
     @ConditionalOnProperty(name = "system.defaultGovernanceEnabled", havingValue = "true")
     public WEGovernance getGovernance(
             @Autowired Client client, @Autowired CryptoKeyPair cryptoKeyPair) throws Exception {
@@ -71,7 +71,7 @@ public class SDKBeanConfig {
         return governance;
     }
 
-    @Bean
+    // @Bean
     @ConditionalOnProperty(name = "system.defaultGovernanceEnabled", havingValue = "true")
     public AccountManager getAccountManager(
             @Autowired WEGovernance weGovernance,

@@ -45,10 +45,14 @@ public class GovernContractInitializer extends BasicManager {
     }
 
     public WEGovernance createGovernAccount(CryptoKeyPair credential) throws Exception {
+        log.info("client address is {}", client.getCryptoSuite().getCryptoKeyPair().getAddress());
         AdminGovernBuilder Builder = AdminGovernBuilder.deploy(client, credential);
+        System.out.println("builder address " + Builder.getContractAddress());
         String governanceAddress = Builder._governance();
         WEGovernance governance = WEGovernance.load(governanceAddress, client, credential);
         log.info("Governance account create succeed [ {} ] ", governance.getContractAddress());
+        String owner = governance._owner();
+        System.out.println("governance owner is " + owner);
         this.governance = governance;
         String accountManagerAddress = governance.getAccountManager();
         AccountManager accountManager =

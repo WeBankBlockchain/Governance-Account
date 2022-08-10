@@ -64,14 +64,14 @@ public class UserOfSelfAdminScene extends BaseTests {
 
         // 3. 自助重置普通用户账户私钥: end user1 -> end user2
         TransactionReceipt tr = endUserOperManager.resetAccount(endUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertTrue(!endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
         Assertions.assertTrue(endUserOperManager.hasAccount(endUser2Keypair.getAddress()));
 
         // 4. 自助注销普通用户账户: end user2
         endUserOperManager.changeCredentials(endUser2Keypair);
         tr = endUserOperManager.cancelAccount();
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(p1AccountAddress));
         Assertions.assertTrue(!endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
         endUserOperManager.changeCredentials(endUser1Keypair);
@@ -94,13 +94,13 @@ public class UserOfSelfAdminScene extends BaseTests {
                         governanceUser2Keypair.getAddress(),
                         governanceUser3Keypair.getAddress());
         tr = endUserOperManager.modifyManagerType(voters);
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(
                 UserStaticsEnum.SOCIAL.getStatics(), endUserOperManager.getUserStatics());
 
         // 7. 自助注销普通用户账户
         tr = endUserOperManager.cancelAccount();
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(2, baseAccountService.getStatus(p1AccountAddress));
         Assertions.assertTrue(!endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
     }

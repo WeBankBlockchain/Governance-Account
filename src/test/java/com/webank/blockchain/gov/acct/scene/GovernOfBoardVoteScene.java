@@ -115,7 +115,7 @@ public class GovernOfBoardVoteScene extends BaseTests {
         voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(governance.passed(requestId));
         tr = voteModeGovernManager.unfreezeAccount(requestId, endUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(
                 AccountStatusEnum.NORMAL.getStatus(), baseAccountService.getStatus(p1Address));
 
@@ -127,7 +127,7 @@ public class GovernOfBoardVoteScene extends BaseTests {
         voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(governance.passed(requestId));
         tr = voteModeGovernManager.cancelAccount(requestId, endUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(
                 AccountStatusEnum.CLOSED.getStatus(), baseAccountService.getStatus(p1Address));
         Assertions.assertTrue(!voteModeGovernManager.hasAccount(endUser2Keypair.getAddress()));
@@ -141,7 +141,7 @@ public class GovernOfBoardVoteScene extends BaseTests {
         Assertions.assertTrue(governance.passed(requestId));
         // threshold: 4->1
         tr = voteModeGovernManager.resetThreshold(requestId, 1);
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(1, governance.getWeightInfo().getValue3().intValue());
 
         // 9. 删除治理账户
@@ -162,7 +162,7 @@ public class GovernOfBoardVoteScene extends BaseTests {
         tr =
                 voteModeGovernManager.removeGovernAccount(
                         requestId, governanceUser3Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         // after removed, weight should be 0.
         Assertions.assertEquals(
                 0,
@@ -183,7 +183,7 @@ public class GovernOfBoardVoteScene extends BaseTests {
         tr =
                 voteModeGovernManager.addGovernAccount(
                         requestId, governanceUser3Keypair.getAddress(), 5);
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(
                 5,
                 governance

@@ -67,7 +67,7 @@ public class UserOfSocailVoteScene extends BaseTests {
                 Lists.newArrayList(accountAddressP1, accountAddressP2, accountAddressP3);
         // set account reset type
         TransactionReceipt tr = endUserOperManager.modifyManagerType(list);
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(
                 UserStaticsEnum.SOCIAL.getStatics(), endUserOperManager.getUserStatics());
         UserAccount userAccount = endUserOperManager.getUserAccount(endUser1Keypair.getAddress());
@@ -89,7 +89,7 @@ public class UserOfSocailVoteScene extends BaseTests {
         tr =
                 socialVoteManager.resetAccount(
                         governanceUser2Keypair.getAddress(), endUser1Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertTrue(!endUserOperManager.hasAccount(endUser1Keypair.getAddress()));
         Assertions.assertTrue(endUserOperManager.hasAccount(governanceUser2Keypair.getAddress()));
         Assertions.assertTrue(!userAccount.passed(RequestEnum.OPER_CHANGE_CREDENTIAL.getType()));

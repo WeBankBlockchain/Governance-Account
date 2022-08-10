@@ -18,6 +18,7 @@ import com.webank.blockchain.gov.acct.contract.WEGovernance;
 import com.webank.blockchain.gov.acct.manager.AdminModeGovernManager;
 import com.webank.blockchain.gov.acct.manager.GovernContractInitializer;
 import com.webank.blockchain.gov.acct.service.BaseAccountService;
+import org.fisco.bcos.sdk.v3.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.v3.model.TransactionReceipt;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,12 +35,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GovernOfAdminModeScene extends BaseTests {
     @Autowired private GovernContractInitializer governContractInitializer;
     @Autowired private BaseAccountService baseAccountService;
+    @Autowired private CryptoKeyPair cryptoKeyPair;
 
     @Test
     public void testAdminScene() throws Exception {
         // 1. 创建治理合约
+        System.out.println("autowired is " + cryptoKeyPair.getAddress());
+        governContractInitializer.setCredentials(governanceUser1Keypair);
         WEGovernance governance =
                 governContractInitializer.createGovernAccount(governanceUser1Keypair);
+        String owner = governance._owner();
+        System.out.println("owner before is " + owner);
         Assertions.assertEquals(0, governance._mode().intValue());
         AdminModeGovernManager adminModeManager =
                 new AdminModeGovernManager(governance, client, governanceUser1Keypair);
@@ -105,10 +111,30 @@ public class GovernOfAdminModeScene extends BaseTests {
         Assertions.assertTrue(!adminModeManager.hasAccount(governanceUser2Keypair.getAddress()));
 
         // 12. 先创建governance user3 账户， 然后将管理员权限移交给新创建的合约
+        adminModeManager.changeCredentials(governanceUser1Keypair);
         adminModeManager.createAccount(governanceUser3Keypair.getAddress());
+        boolean success =
+                adminModeManager.isExternalAccountNormal(governanceUser3Keypair.getAddress());
+        System.out.println(success);
+        System.out.println("governanceUser1Keypair " + governanceUser1Keypair.getAddress());
+        System.out.println("governanceUser2Keypair " + governanceUser2Keypair.getAddress());
+        System.out.println("governanceUser3Keypair " + governanceUser3Keypair.getAddress());
+        System.out.println(
+                "governanceUser1Keypair account "
+                        + adminModeManager.getBaseAccountAddress(
+                                governanceUser1Keypair.getAddress()));
+        System.out.println(
+                "governanceUser2Keypair account "
+                        + adminModeManager.getBaseAccountAddress(
+                                governanceUser2Keypair.getAddress()));
+        System.out.println(
+                "governanceUser3Keypair account "
+                        + adminModeManager.getBaseAccountAddress(
+                                governanceUser3Keypair.getAddress()));
+
         tr = adminModeManager.transferAdminAuth(governanceUser3Keypair.getAddress());
         Assertions.assertEquals(0, tr.getStatus());
-        String owner = governance._owner();
+        owner = governance._owner();
         Assertions.assertEquals(governanceUser3Keypair.getAddress(), owner);
     }
 }

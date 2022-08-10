@@ -85,7 +85,7 @@ public class GovernOfNormalVoteScene extends BaseTests {
         TransactionReceipt tr =
                 voteModeGovernManager.resetAccount(
                         requestId, endUser2Keypair.getAddress(), endUser1Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertTrue(!voteModeGovernManager.hasAccount(endUser1Keypair.getAddress()));
         Assertions.assertTrue(voteModeGovernManager.hasAccount(endUser2Keypair.getAddress()));
 
@@ -97,7 +97,7 @@ public class GovernOfNormalVoteScene extends BaseTests {
         voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(governance.passed(requestId));
         tr = voteModeGovernManager.freezeAccount(requestId, endUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(
                 AccountStatusEnum.FROZEN.getStatus(), baseAccountService.getStatus(p1Address));
 
@@ -109,7 +109,7 @@ public class GovernOfNormalVoteScene extends BaseTests {
         voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(governance.passed(requestId));
         tr = voteModeGovernManager.unfreezeAccount(requestId, endUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         // assert end user2 status: normal
         Assertions.assertEquals(
                 AccountStatusEnum.NORMAL.getStatus(), baseAccountService.getStatus(p1Address));
@@ -122,7 +122,7 @@ public class GovernOfNormalVoteScene extends BaseTests {
         voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(governance.passed(requestId));
         tr = voteModeGovernManager.cancelAccount(requestId, endUser2Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(
                 AccountStatusEnum.CLOSED.getStatus(), baseAccountService.getStatus(p1Address));
         Assertions.assertTrue(!voteModeGovernManager.hasAccount(endUser2Keypair.getAddress()));
@@ -135,7 +135,7 @@ public class GovernOfNormalVoteScene extends BaseTests {
         voteModeGovernManager.vote(requestId, true);
         Assertions.assertTrue(governance.passed(requestId));
         tr = voteModeGovernManager.resetThreshold(requestId, 1);
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(1, governance.getWeightInfo().getValue3().intValue());
 
         // 9. 删除治理账户: governance user 3
@@ -155,7 +155,7 @@ public class GovernOfNormalVoteScene extends BaseTests {
         tr =
                 voteModeGovernManager.removeGovernAccount(
                         requestId, governanceUser3Keypair.getAddress());
-        Assertions.assertEquals("0x0", tr.getStatus());
+        Assertions.assertEquals(0, tr.getStatus());
         Assertions.assertEquals(
                 0,
                 governance
