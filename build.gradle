@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.webank'
-version = '1.0.0'
+version = '3.0.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -81,7 +81,7 @@ bootJar {
 jar {
     enabled = true
     destinationDir file('dist')
-    archiveName project.name + version + '.jar'
+    archiveName project.name + '_' + version + '.jar'
     exclude '**/*.xml'
     exclude '**/*.properties'
     //exclude '**/spring.factories'
