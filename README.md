@@ -24,8 +24,8 @@
 
 
 ## 文档
-- [**中文**](https://governance-doc.readthedocs.io/zh_CN/latest/docs/WeBankBlockchain-Governance-Acct/index.html)
-- [**快速开始**](https://governance-doc.readthedocs.io/zh_CN/latest/docs/WeBankBlockchain-Governance-Acct/quickstart.html)
+- [**中文**](https://governance-doc.readthedocs.io/zh_CN/v3.0.0/docs/WeBankBlockchain-Governance-Acct/index.html)
+- [**快速开始**](https://governance-doc.readthedocs.io/zh_CN/v3.0.0/docs/WeBankBlockchain-Governance-Acct/quickstart.html)
 
 
 ## 贡献代码
