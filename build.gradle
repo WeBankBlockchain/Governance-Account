@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.webank'
-version = '3.0.0-SNAPSHOT'
+version = '3.0.0'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -46,7 +46,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    implementation ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0-rc4-bugfix-SNAPSHOT') {
+    implementation ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.0.0') {
         exclude group: 'org.slf4j'
     }
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
